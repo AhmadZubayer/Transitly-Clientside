@@ -1,10 +1,16 @@
 import React from 'react';
-import BookingSelector from '../components/BookingSelector';
+import BookingSelector from '../components/home-components/BookingSelector';
+import BookingSteps from '../components/home-components/BookingSteps';
+import { useLoaderData } from 'react-router-dom';
+
 
 const Home = () => {
+    const { districts, bookingSteps } = useLoaderData();
+
     return (
-        <div className="flex justify-center m-3">
-            <BookingSelector />
+        <div className="flex flex-col items-center gap-y-3">
+             <BookingSelector districts={districts}></BookingSelector>
+             <BookingSteps steps={bookingSteps}></BookingSteps>
         </div>
     );
 };

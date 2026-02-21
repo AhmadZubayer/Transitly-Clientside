@@ -8,13 +8,26 @@ export const Router = createBrowserRouter([
     path: "/",
     Component: App,
     children: [
-      { 
-        index: true, 
+      {
+        index: true,
         Component: Home,
-        loader: () => fetch('/data/Districts.json').then(res => res.json()).then(data => data.districts)
+        loader: async () => {
+          const [districtRes, stepsRes] = await Promise.all([
+            fetch('/data/Districts.json'),
+            fetch('/data/BookingSteps.json')
+          ]);
+
+          const districtData = await districtRes.json();
+          const stepsData = await stepsRes.json();
+
+          return {
+            districts: districtData.districts,
+            bookingSteps: stepsData.steps
+          };
+        }
       }
     ]
-}
+  }
 
-     
+
 ]);

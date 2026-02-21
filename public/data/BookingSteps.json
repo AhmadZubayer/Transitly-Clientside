@@ -1,0 +1,24 @@
+{
+  "steps": [
+    {
+      "id": 1,
+      "title": "Search for Routes",
+      "description": "Select your departure and destination districts, choose your journey date, and optionally set a return date for round trips."
+    },
+    {
+      "id": 2,
+      "title": "Choose Your Bus",
+      "description": "Browse available buses for your route, compare timings, amenities, and prices to find the perfect match for your journey."
+    },
+    {
+      "id": 3,
+      "title": "Select Seats",
+      "description": "Pick your preferred seats from the interactive seat map and provide passenger details for a personalized travel experience."
+    },
+    {
+      "id": 4,
+      "title": "Complete Payment",
+      "description": "Review your booking summary, choose your payment method, and confirm your booking to receive instant ticket confirmation."
+    }
+  ]
+}

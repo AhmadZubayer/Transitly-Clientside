@@ -4,14 +4,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { FaSearch } from 'react-icons/fa';
-import '../App.css';
-import { useLoaderData } from 'react-router-dom';
+import '../../App.css';
 import { useForm, Controller, useWatch } from 'react-hook-form';
-import ErrorText from './ErrorText';
+import ErrorText from '../ErrorText';
 
-const BookingSelector = () => {
-    const districtList = useLoaderData();
-    const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm({ // why control? 
+const BookingSelector = ({ districts }) => {
+    const districtList = districts;
+    const { register, handleSubmit, control, setValue, formState: { errors } } = useForm({ // why control? 
 
         defaultValues: {
             departDistrict: '',
