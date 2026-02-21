@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../pages/Home";
+import SignIn from "../components/register/SignIn";
+import SignUp from "../components/register/SignUp";
 
 
 export const Router = createBrowserRouter([
@@ -25,6 +27,12 @@ export const Router = createBrowserRouter([
             bookingSteps: stepsData.steps
           };
         }
+      },
+      {
+        path: "signin", Component: SignIn
+      }, 
+      {
+        path:"signup", Component: SignUp
       }
     ]
   }
