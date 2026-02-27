@@ -40,6 +40,15 @@ const BookingSelector = ({ districts }) => {
 
     const onSubmit = (data) => {
         console.log(data);
+        
+    
+        localStorage.removeItem('bookingData');
+        localStorage.setItem('bookingData', JSON.stringify({
+            departDistrict: data.departDistrict,
+            destinationDistrict: data.destinationDistrict,
+            journeyDate: data.journeyDate,
+            returnDate: data.returnDate
+        }));
     }
 
 

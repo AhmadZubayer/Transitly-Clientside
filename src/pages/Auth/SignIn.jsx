@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import { FcGoogle } from 'react-icons/fc';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import './Auth.css';
+
 
 const SignIn = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();

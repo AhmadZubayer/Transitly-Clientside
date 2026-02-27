@@ -5,7 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import { updateProfile } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { FaEye, FaEyeSlash, FaImage } from 'react-icons/fa';
-import './Auth.css';
+
 import axios from 'axios';
 
 

@@ -2,7 +2,10 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../pages/Home";
 import SignIn from "../components/register/SignIn";
+import AuthLayout from "../layouts/AuthLayout";
+import Register from "../pages/Auth/Register";
 import SignUp from "../components/register/SignUp";
+import AllTickets from "../components/AllTickets";
 
 
 export const Router = createBrowserRouter([
@@ -29,10 +32,22 @@ export const Router = createBrowserRouter([
         }
       },
       {
-        path: "signin", Component: SignIn
-      }, 
+        path: 'all-tickets',
+        Component: AllTickets
+      }
+    ]
+  },
+  {
+    path: "/",
+    Component: AuthLayout,
+    children: [
       {
-        path:"signup", Component: SignUp
+        path: 'signin',
+        Component: SignIn
+      },
+      {
+        path: 'register',
+        Component: SignUp
       }
     ]
   }

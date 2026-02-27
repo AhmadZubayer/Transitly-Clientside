@@ -1,21 +1,25 @@
 import React from 'react';
-import Logo from '../components/Logo';
 import { Outlet } from 'react-router';
-import authImg from '../assets/authImage.png';
+import Footer from '../components/Footer';
+import Nav from '../components/Nav';
+import TicketPeek from '../components/register/TicketPeek';
+
 
 const AuthLayout = () => {
-    return (
-         <div className='max-w-7xl mx-auto'>
-            <Logo></Logo>
-            <div className='flex items-center'>
+    return ( 
+         <div>
+            <Nav></Nav>
+            <div className='flex items-start gap-8 max-w-7xl mx-auto px-4 py-8'>
                 <div className='flex-1'>
                     <Outlet></Outlet>
                 </div>
                 <div className='flex-1'>
-                    <img src={authImg} alt="" />
+                    <TicketPeek></TicketPeek>
                 </div>
             </div>
+            <Footer></Footer>
         </div>
+         
     );
 };
 

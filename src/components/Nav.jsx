@@ -20,12 +20,13 @@ const Nav = () => {
 
   const links = (
     <>
-      <li><NavLink to="/services">Bus</NavLink></li>
-      <li><NavLink to="/send-parcel">Train</NavLink></li>
-      <li><NavLink to="/coverage">Planes</NavLink></li>
-      <li><NavLink to="/about">Offers</NavLink></li>
+      <li><NavLink to="/all-tickets">All Tickets</NavLink></li>
+      <li><NavLink to="/bus">Bus</NavLink></li>
+      <li><NavLink to="/train">Train</NavLink></li>
+      <li><NavLink to="/planes">Planes</NavLink></li>
+      <li><NavLink to="/offers">Offers</NavLink></li>
       <li><NavLink to="/pricing">Contact</NavLink></li>
-      {user && <li><NavLink to="/dashboard/my-parcels">Dashboard</NavLink></li>}
+      {user && <li><NavLink to="/dashboard/user-tickets">Dashboard</NavLink></li>}
     </>
   );
 

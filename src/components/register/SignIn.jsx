@@ -92,7 +92,7 @@ const SignIn = () => {
   };
 
   const handleSignUpClick = () => {
-    navigate('/signup', { state: location?.state });
+    navigate('/register', { state: location?.state });
   };
 
   return (
