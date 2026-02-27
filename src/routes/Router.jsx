@@ -33,7 +33,8 @@ export const Router = createBrowserRouter([
       },
       {
         path: 'all-tickets',
-        Component: AllTickets
+        Component: AllTickets,
+        loader: () => fetch('/data/Tickets.json').then(res => res.json())
       }
     ]
   },
