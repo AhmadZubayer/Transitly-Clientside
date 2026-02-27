@@ -5,7 +5,8 @@ import SignIn from "../components/register/SignIn";
 import AuthLayout from "../layouts/AuthLayout";
 import Register from "../pages/Auth/Register";
 import SignUp from "../components/register/SignUp";
-import AllTickets from "../components/AllTickets";
+import AllTickets from "../components/AllTickets/AllTickets";
+
 
 
 export const Router = createBrowserRouter([

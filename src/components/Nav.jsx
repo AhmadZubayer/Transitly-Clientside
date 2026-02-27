@@ -31,7 +31,7 @@ const Nav = () => {
   );
 
   return (
-    <div className="p-4">
+    <div className="p-4 sticky top-0 z-50 bg-transparent">
       <div className="navbar bg-white/70 backdrop-blur-md rounded-full shadow-lg border border-gray-200/50 px-6">
 
         {/* LEFT */}
