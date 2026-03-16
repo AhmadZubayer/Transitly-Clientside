@@ -6,11 +6,11 @@ import ContactUs from '../components/home-components/ContactUs';
 
 
 const Home = () => {
-    const { districts, bookingSteps } = useLoaderData();
+    const {  bookingSteps } = useLoaderData();
 
     return (
         <div className="flex flex-col items-center gap-y-3">
-             <BookingSelector districts={districts}></BookingSelector>
+             <BookingSelector></BookingSelector>
              <BookingSteps steps={bookingSteps}></BookingSteps>
              <ContactUs></ContactUs>
         </div>

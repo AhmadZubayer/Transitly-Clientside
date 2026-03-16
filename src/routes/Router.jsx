@@ -17,25 +17,11 @@ export const Router = createBrowserRouter([
       {
         index: true,
         Component: Home,
-        loader: async () => {
-          const [districtRes, stepsRes] = await Promise.all([
-            fetch('/data/Districts.json'),
-            fetch('/data/BookingSteps.json')
-          ]);
-
-          const districtData = await districtRes.json();
-          const stepsData = await stepsRes.json();
-
-          return {
-            districts: districtData.districts,
-            bookingSteps: stepsData.steps
-          };
-        }
+        loader: async () => ({ bookingSteps: (await (await fetch('/data/BookingSteps.json')).json()).steps })
       },
       {
         path: 'all-tickets',
         Component: AllTickets,
-        loader: () => fetch('/data/Tickets.json').then(res => res.json())
       }
     ]
   },
