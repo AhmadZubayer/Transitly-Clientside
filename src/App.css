@@ -12,11 +12,12 @@
 }
 
 body {
-  background-color: #EAECED;
+  background-color: #E8E8E8;
 }
 
 .btn {
-  border-radius: 1.5rem;
+  border-radius: 0.5rem;
+  margin: 3px;
 }
 
 .btn-1 {
@@ -66,3 +67,28 @@ button:active {
   box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
+/* ticketSort */
+.btn-3 {
+  background: none;
+  border-color: grey;
+  font-weight: normal;
+}
+.btn-selected {
+  background: #5044E4;
+  border-color:  none;
+  color:white;
+  font-weight: normal;  
+}
+.btn-4{
+  color: #5044E4;
+  font-weight: bold;
+  border: none;
+  background: none;
+}
+
+.card {
+  background-color: #FFFFFF;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}

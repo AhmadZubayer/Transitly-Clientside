@@ -2,12 +2,17 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../assets/transitly.png';
 import useAuth from '../hooks/useAuth';
+import Loading from './Loading';
 
 const Nav = () => {
       const { user, loading, logOut } = useAuth();
 
   if (loading) {
-    return null; 
+    return (
+      <div className='flex justify-center items-center h-20'>
+        <Loading />
+      </div>
+    );
   }
 
   const handleSignOut = async () => {
@@ -26,13 +31,15 @@ const Nav = () => {
       <li><NavLink to="/planes">Planes</NavLink></li>
       <li><NavLink to="/offers">Offers</NavLink></li>
       <li><NavLink to="/pricing">Contact</NavLink></li>
+      <li><NavLink to="/policies">Policies</NavLink></li>
+
       {user && <li><NavLink to="/dashboard/user-tickets">Dashboard</NavLink></li>}
     </>
   );
 
   return (
     <div className="p-4 sticky top-0 z-50 bg-transparent">
-      <div className="navbar bg-white/70 backdrop-blur-md rounded-full shadow-lg border border-gray-200/50 px-6">
+      <div className="navbar bg-white/70 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 px-6">
 
         {/* LEFT */}
         <div className="navbar-start">

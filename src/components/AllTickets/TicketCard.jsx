@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const TicketCard = ({ ticket }) => {
+const TicketCard = ({ ticket, onClick }) => {
     // Format the date and time
     const formatDateTime = (dateTimeString) => {
         const date = new Date(dateTimeString);
@@ -17,48 +17,49 @@ const TicketCard = ({ ticket }) => {
 
     return (
         <StyledWrapper>
-            <div className="card">
-                <div className="card-content">
-                    {/* Route */}
-                    <div className="route">
-                        <span className="location">{ticket.from}</span>
-                        <span className="arrow">→</span>
-                        <span className="location">{ticket.to}</span>
+            <div className="card" onClick={onClick}>
+                <p className="card-title">{ticket.from} → {ticket.to}</p>
+                <p className="ticket-name">{ticket.ticketTitle}</p>
+
+                <div className="info-section">
+                    <div className="info-row">
+                        <span className="label">Transport:</span>
+                        <span className="value">{ticket.transportType}</span>
                     </div>
-
-                    {/* Ticket Name */}
-                    <h3 className="ticket-title">{ticket.ticketTitle}</h3>
-
-                    {/* Date & Time */}
-                    <div className="datetime">
-                        <p className="date">{date}</p>
-                        <p className="time">{time}</p>
+                    <div className="info-row">
+                        <span className="label">Company:</span>
+                        <span className="value">{ticket.busCompany}</span>
                     </div>
-
-                    {/* Price and Quantity */}
-                    <div className="price-quantity">
-                        <div className="price">
-                            <span className="label">Price:</span>
-                            <span className="value">৳{ticket.price}</span>
-                        </div>
-                        <div className="quantity">
-                            <span className="label">Available:</span>
-                            <span className="value">{ticket.quantity}</span>
-                        </div>
+                    <div className="info-row">
+                        <span className="label">Brand:</span>
+                        <span className="value">{ticket.busBrand}</span>
                     </div>
+                    <div className="info-row">
+                        <span className="label">Departure:</span>
+                        <span className="value">{date} at {time}</span>
+                    </div>
+                    <div className="info-row">
+                        <span className="label">Available:</span>
+                        <span className="value">{ticket.quantity} seats</span>
+                    </div>
+                </div>
 
-                    {/* Perks */}
-                    <div className="perks">
-                        <p className="perks-label">Perks:</p>
+                <div className="perks-section">
+                    {ticket.perks && ticket.perks.length > 0 && (
                         <div className="perks-list">
-                            {ticket.perks.map((perk, index) => (
-                                <span key={index} className="perk-tag">{perk}</span>
+                            {ticket.perks.slice(0, 3).map((perk, index) => (
+                                <span key={index} className="perk-badge">{perk}</span>
                             ))}
                         </div>
-                    </div>
+                    )}
+                </div>
 
-                    {/* View Details Button */}
-                    <button className="view-details-btn">View Details</button>
+                <div className="price-section">
+                    <span className="price">৳{ticket.price}</span>
+                </div>
+
+                <div className="go-corner">
+                    <div className="go-arrow">→</div>
                 </div>
             </div>
         </StyledWrapper>
@@ -66,160 +67,158 @@ const TicketCard = ({ ticket }) => {
 };
 
 const StyledWrapper = styled.div`
-    .card {
-        box-sizing: border-box;
-        width: 320px;
-        min-height: 400px;
-        background: rgba(217, 217, 217, 0.58);
-        border: 1px solid white;
-        box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
-        backdrop-filter: blur(6px);
-        border-radius: 17px;
-        cursor: pointer;
-        transition: all 0.5s;
-        user-select: none;
-        padding: 20px;
+    .card-title {
+        color: #262626;
+        font-size: 1.2em;
+        line-height: normal;
+        font-weight: 700;
+        margin-bottom: 0.3em;
     }
 
-    .card:hover {
-        border: 1px solid black;
-        transform: scale(1.05);
-    }
-
-    .card:active {
-        transform: scale(0.95) rotateZ(1.7deg);
-    }
-
-    .card-content {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        height: 100%;
-    }
-
-    .route {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .location {
-        color: #2c3e50;
-    }
-
-    .arrow {
-        color: #e74c3c;
-        font-size: 1.5rem;
-    }
-
-    .ticket-title {
-        text-align: center;
-        color: #2c3e50;
-        font-size: 1.1rem;
-        margin: 0;
+    .ticket-name {
+        font-size: 0.9em;
         font-weight: 600;
+        line-height: 1.2em;
+        color: #452c2c;
+        margin-bottom: 0.7em;
     }
 
-    .datetime {
-        text-align: center;
-        background: rgba(255, 255, 255, 0.5);
-        padding: 10px;
-        border-radius: 10px;
+    .info-section {
+        margin-bottom: 0.7em;
     }
 
-    .date {
-        margin: 0;
-        font-weight: 600;
-        color: #2c3e50;
-        font-size: 0.95rem;
-    }
-
-    .time {
-        margin: 5px 0 0 0;
-        color: #555;
-        font-size: 0.9rem;
-    }
-
-    .price-quantity {
+    .info-row {
         display: flex;
-        justify-content: space-around;
-        background: rgba(255, 255, 255, 0.5);
-        padding: 12px;
-        border-radius: 10px;
-    }
-
-    .price, .quantity {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.4em;
+        font-size: 0.85em;
     }
 
     .label {
-        font-size: 0.85rem;
         color: #666;
-        margin-bottom: 3px;
+        font-weight: 500;
     }
 
     .value {
-        font-size: 1.1rem;
-        font-weight: bold;
-        color: #2c3e50;
-    }
-
-    .perks {
-        background: rgba(255, 255, 255, 0.5);
-        padding: 12px;
-        border-radius: 10px;
-    }
-
-    .perks-label {
-        margin: 0 0 8px 0;
+        color: #262626;
         font-weight: 600;
-        color: #2c3e50;
-        font-size: 0.9rem;
+    }
+
+    .perks-section {
+        margin-bottom: 0.7em;
     }
 
     .perks-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 6px;
+        gap: 4px;
     }
 
-    .perk-tag {
-        background: rgba(52, 152, 219, 0.7);
-        color: white;
-        padding: 4px 10px;
-        border-radius: 15px;
-        font-size: 0.75rem;
+    .perk-badge {
+        background: rgba(255, 255, 255, 0.5);
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-size: 0.7em;
+        color: #452c2c;
         font-weight: 500;
     }
 
-    .view-details-btn {
-        width: 100%;
-        padding: 12px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-size: 1rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s;
+    .price-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin-top: auto;
+        padding-top: 0.7em;
     }
 
-    .view-details-btn:hover {
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    .price {
+        font-size: 1.5em;
+        font-weight: 800;
+        color: #262626;
     }
 
-    .view-details-btn:active {
-        transform: translateY(0px);
+    .go-corner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        width: 2em;
+        height: 2em;
+        overflow: hidden;
+        top: 0;
+        right: 0;
+        background: linear-gradient(135deg, #6293c8, #384c6c);
+        border-radius: 0 4px 0 32px;
+    }
+
+    .go-arrow {
+        margin-top: -4px;
+        margin-right: -4px;
+        color: white;
+        font-family: courier, sans;
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        width: 100%;
+        min-height: 320px;
+        background-color: #f2f8f9;
+        border-radius: 10px;
+        padding: 1.5em 1em;
+        text-decoration: none;
+        z-index: 0;
+        overflow: hidden;
+        background: linear-gradient(to bottom, #c3e6ec, #a7d1d9);
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: pointer;
+    }
+
+    .card:before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: -16px;
+        right: -16px;
+        background: linear-gradient(135deg, #364a60, #384c6c);
+        height: 32px;
+        width: 32px;
+        border-radius: 32px;
+        transform: scale(1);
+        transform-origin: 50% 50%;
+        transition: transform 0.35s ease-out;
+    }
+
+    .card:hover:before {
+        transform: scale(28);
+    }
+
+    .card:hover .ticket-name {
+        transition: all 0.5s ease-out;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .card:hover .card-title {
+        transition: all 0.5s ease-out;
+        color: #ffffff;
+    }
+
+    .card:hover .label,
+    .card:hover .value {
+        transition: all 0.5s ease-out;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .card:hover .perk-badge {
+        transition: all 0.5s ease-out;
+        background: rgba(255, 255, 255, 0.3);
+        color: rgba(255, 255, 255, 0.95);
+    }
+
+    .card:hover .price {
+        transition: all 0.5s ease-out;
+        color: #ffffff;
     }
 `;
 

@@ -1,117 +1,126 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useForm, useWatch } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import useAxios from './useAxios';
 
 const useTicketFinder = () => {
 
     const axiosInstance = useAxios();
+    const navigate = useNavigate();
 
     const [districts, setDistricts] = useState([]);
     const [busTypes, setBusTypes] = useState([]);
-    const [companies, setCompanies] = useState([]);
+    const [busCompanies, setBusCompanies] = useState([]);
     const [busBrands, setBusBrands] = useState([]);
+    const [busFeatures, setBusFeatures] = useState([]);
 
     useEffect(() => {
         axiosInstance.get('/districts').then(res => setDistricts(res.data.districts));
     }, []);
 
-     useEffect(() => {
+    useEffect(() => {
         axiosInstance.get('/bus-type').then(res => setBusTypes(res.data.busType));
     }, []);
 
-     useEffect(() => {
-        axiosInstance.get('/districts').then(res => setCompanies(res.data.districts));
+    useEffect(() => {
+        axiosInstance.get('/bus-company').then(res => setBusCompanies(res.data.busCompanies));
     }, []);
 
-     useEffect(() => {
-        axiosInstance.get('/districts').then(res => setBusBrands(res.data.districts));
+    useEffect(() => {
+        axiosInstance.get('/bus-brand').then(res => setBusBrands(res.data.busBrands));
     }, []);
 
+    useEffect(() => {
+        axiosInstance.get('/bus-features').then(res => setBusFeatures(res.data.busFeatures));
+    }, []);
+
+
+    // user selections
     const { register, handleSubmit, control, setValue, formState: { errors } } = useForm({
         defaultValues: {
-            departDistrict: '',
-            destinationDistrict: '',
-            journeyDate: dayjs(),
-            returnDate: null,
             search: '',
-            transportType: '',
-            busTypes: '',
-            busBrands: '',
+            selDepartDistrict: '',
+            selDestinationDistrict: '',
+            selJourneyDate: dayjs(),
+            selReturnDate: null,
+            selBusType: '',
+            selBusCompany: '',
+            selBusBrand: '',
+            selBusFeatures: [],
+            
             sort: 'departureDateTime',
-            order: 'asc'
+            selSeatAvailabilityOrder: 'asc'
         }
     });
 
-    const journeyDate = useWatch({ control, name: 'journeyDate' });
-    const departDistrict = useWatch({ control, name: 'departDistrict' });
-    const destinationDistrict = useWatch({ control, name: 'destinationDistrict' });
+    const selJourneyDate = useWatch({ control, name: 'selJourneyDate' });
+    const selDepartDistrict = useWatch({ control, name: 'selDepartDistrict' });
+    const selDestinationDistrict = useWatch({ control, name: 'selDestinationDistrict' });
+    const selBusType = useWatch({ control, name: 'selBusType' });
+    const selBusCompany = useWatch({ control, name: 'selBusCompany' });
+    const selBusBrand = useWatch({ control, name: 'selBusBrand' });
+    const selBusFeatures = useWatch({ control, name: 'selBusFeatures' });
+    const selSeatAvailabilityOrder = useWatch({ control, name: 'selSeatAvailabilityOrder' });
 
-    const departureDistricts = districts.filter(d => d !== destinationDistrict);
-    const destinationDistricts = districts.filter(d => d !== departDistrict);
+    const departureDistricts = districts.filter(d => d !== selDestinationDistrict);
+    const destinationDistricts = districts.filter(d => d !== selDepartDistrict);
 
     useEffect(() => {
-        if (!journeyDate) return;
+        if (!selJourneyDate) return;
         setValue('returnDate', (prev) => {
-            return prev && dayjs(prev).isBefore(journeyDate) ? journeyDate : prev;
+            return prev && dayjs(prev).isBefore(selJourneyDate) ? selJourneyDate : prev;
         });
-    }, [journeyDate, setValue]);
+    }, [selJourneyDate, setValue]);
 
 
-
-
-
-
-
-    const [features, setFeatures] = useState({
-        wifi: false,
-        food: false,
-        recliningSeats: false
-    });
-
-    const handleFeatureToggle = (feature) => {
-        setFeatures(prev => ({ ...prev, [feature]: !prev[feature] }));
-    };
 
     const [priceRange, setPriceRange] = useState({ minPrice: 0, maxPrice: 10000 });
 
     const buildQueryParams = (data) => {
         const params = new URLSearchParams();
 
-        if (data.search) params.set('search', data.search);
-        if (data.departDistrict) params.set('from', data.departDistrict);
-        if (data.destinationDistrict) params.set('to', data.destinationDistrict);
-        if (data.transportType) params.set('type', data.transportType);
-        if (data.busBrand) params.set('busBrand', data.busBrand);
-        if (data.sort) params.set('sort', data.sort);
-        if (data.order) params.set('order', data.order);
-        if (data.journeyDate) params.set('departureDate', dayjs(data.journeyDate).format('YYYY-MM-DD'));
+        // Only add parameters that have actual user-selected values
+        if (data.search && data.search !== '') params.set('search', data.search);
+        if (data.selDepartDistrict && data.selDepartDistrict !== '') params.set('from', data.selDepartDistrict);
+        if (data.selDestinationDistrict && data.selDestinationDistrict !== '') params.set('to', data.selDestinationDistrict);
+        if (data.selBusType && data.selBusType !== '') params.set('type', data.selBusType);
+        if (data.selBusBrand && data.selBusBrand !== '') params.set('busBrand', data.selBusBrand);
+        if (data.selBusCompany && data.selBusCompany !== '') params.set('busCompany', data.selBusCompany);
 
-        params.set('minPrice', priceRange.minPrice);
-        params.set('maxPrice', priceRange.maxPrice);
-        if (features.wifi) params.set('wifi', 'true');
-        if (features.snacks) params.set('snacks', 'true');
-        if (features.recliningSeats) params.set('recliningSeats', 'true');
+        // Only include sort if explicitly set and not default
+        if (data.sort && data.sort !== 'departureDateTime') params.set('sort', data.sort);
+
+        // Only include order if explicitly set and not default
+        if (data.selSeatAvailabilityOrder && data.selSeatAvailabilityOrder !== 'asc') params.set('order', data.selSeatAvailabilityOrder);
+
+        // Only include journey date if explicitly different from today
+        if (data.selJourneyDate && !dayjs(data.selJourneyDate).isSame(dayjs(), 'day')) {
+            params.set('departureDate', dayjs(data.selJourneyDate).format('YYYY-MM-DD'));
+        }
+
+        // Only include return date if it exists
+        if (data.selReturnDate) params.set('returnDate', dayjs(data.selReturnDate).format('YYYY-MM-DD'));
+
+        // Only include price range if it's different from defaults
+        if (priceRange.minPrice !== 0) params.set('minPrice', priceRange.minPrice);
+        if (priceRange.maxPrice !== 10000) params.set('maxPrice', priceRange.maxPrice);
+
+        // Only include features if any are selected
+        if (data.selBusFeatures?.length > 0) {
+            params.set('features', data.selBusFeatures.join(','));
+        }
 
         return params.toString();
     };
-
 
 
     const onSubmit = (data) => {
         const queryString = buildQueryParams(data);
         console.log('TICKET QUERY', queryString);
 
-
-
-
-        // localStorage.removeItem('bookingData');
-        // localStorage.setItem('bookingData', JSON.stringify({
-        //     departDistrict: data.departDistrict,
-        //     destinationDistrict: data.destinationDistrict,
-        //     journeyDate: data.journeyDate,
-        //     returnDate: data.returnDate,
-        // }));
+        // Navigate to all-tickets page with query parameters
+        navigate(`/all-tickets?${queryString}`);
     };
 
 
@@ -122,19 +131,26 @@ const useTicketFinder = () => {
         departureDistricts,
         destinationDistricts,
         register,
+        setValue,
         handleSubmit,
         control,
         errors,
-        journeyDate,
-        departDistrict,
-        destinationDistrict,
         onSubmit,
-        features,
-        handleFeatureToggle,
         priceRange,
         setPriceRange,
         busTypes,
-        busBrands
+        busBrands,
+        busCompanies,
+        busFeatures,
+
+        selDepartDistrict,
+        selDestinationDistrict,
+        selBusFeatures,
+        selBusBrand,
+        selBusCompany,
+        selJourneyDate,
+        selBusType,
+        selSeatAvailabilityOrder
     };
 };
 

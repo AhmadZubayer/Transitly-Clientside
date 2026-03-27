@@ -6,6 +6,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import Register from "../pages/Auth/Register";
 import SignUp from "../components/register/SignUp";
 import AllTickets from "../components/AllTickets/AllTickets";
+import Policies from "../pages/Policies";
 
 
 
@@ -21,7 +22,11 @@ export const Router = createBrowserRouter([
       },
       {
         path: 'all-tickets',
-        Component: AllTickets,
+        Component: AllTickets
+      },
+      {
+        path: 'policies',
+        Component: Policies
       }
     ]
   },

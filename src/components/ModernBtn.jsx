@@ -61,7 +61,7 @@ const StyledWrapper = styled.div`
     transform: translate(-50%, -50%);
     width: 20px;
     height: 20px;
-    background-color: #fd8a26;
+    background-color: #5044E4;
     border-radius: 50%;
     opacity: 0;
     transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
@@ -76,7 +76,7 @@ const StyledWrapper = styled.div`
 
   .animated-button:hover {
     box-shadow: 0 0 0 12px transparent;
-    color: #1e1e1e;
+    color: #ffffff;
     border-radius: 12px;
   }
 
@@ -93,12 +93,12 @@ const StyledWrapper = styled.div`
   }
 
   .animated-button:hover svg {
-    fill: #1e;
+    fill: #ffffff;
   }
 
   .animated-button:active {
     scale: 0.95;
-    box-shadow: 0 0 0 4px #fd8a26;
+    box-shadow: 0 0 0 4px #5044E4;
   }
 
   .animated-button:hover .circle {
