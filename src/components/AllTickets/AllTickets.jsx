@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import TicketCard from './TicketCard';
 import TicketSort from '../TicketSort';
 import Search from '../Search';
 import Loading from '../Loading';
 import CustomPagination from '../Pagination';
-import TicketDetails from '../TicketDetails';
 import useAxios from '../../hooks/useAxios';
 
 const AllTickets = () => {
     const axiosInstance = useAxios();
+    const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [searchParams] = useSearchParams();
-    const [selectedTicket, setSelectedTicket] = useState(null);
     const TICKETS_PER_PAGE = 20;
 
     // Reset page to 1 when search parameters change
@@ -46,8 +45,7 @@ const AllTickets = () => {
     };
 
     const handleTicketClick = (ticket) => {
-        setSelectedTicket(ticket);
-        document.getElementById('ticket_details_modal').showModal();
+        navigate(`/ticket/${ticket._id}`);
     };
 
     return (
@@ -136,9 +134,6 @@ const AllTickets = () => {
                     )}
                 </div>
             </div>
-
-            {/* Ticket Details Modal */}
-            <TicketDetails ticket={selectedTicket} modalId="ticket_details_modal" />
         </div>
     );
 };

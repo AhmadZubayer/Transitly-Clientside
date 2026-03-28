@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ModernBtn = ({ text = 'Modern Button', type = 'button', onClick, ...rest }) => {
+const ModernBtn = ({ text = 'Modern Button', type = 'button', onClick, disabled = false, ...rest }) => {
   return (
     <StyledWrapper>
-      <button className="animated-button" type={type} onClick={onClick} {...rest}>
+      <button className="animated-button" type={type} onClick={onClick} disabled={disabled} {...rest}>
         <svg xmlns="http://www.w3.org/2000/svg" className="arr-2" viewBox="0 0 24 24">
           <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
         </svg>
@@ -105,6 +105,24 @@ const StyledWrapper = styled.div`
     width: 220px;
     height: 220px;
     opacity: 1;
+  }
+
+  .animated-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: 0 0 0 2px #ccc;
+  }
+
+  .animated-button:disabled:hover {
+    box-shadow: 0 0 0 2px #ccc;
+    color: #1e1e1e;
+    border-radius: 100px;
+  }
+
+  .animated-button:disabled:hover .circle {
+    width: 20px;
+    height: 20px;
+    opacity: 0;
   }`;
 
 export default ModernBtn;

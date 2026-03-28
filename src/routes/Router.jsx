@@ -7,6 +7,8 @@ import Register from "../pages/Auth/Register";
 import SignUp from "../components/register/SignUp";
 import AllTickets from "../components/AllTickets/AllTickets";
 import Policies from "../pages/Policies";
+import TicketDetailsPage from "../pages/TicketDetailsPage";
+import PrivateRoute from "./PrivateRoute";
 
 
 
@@ -27,6 +29,10 @@ export const Router = createBrowserRouter([
       {
         path: 'policies',
         Component: Policies
+      },
+      {
+        path: 'ticket/:ticketId',
+        element: <PrivateRoute><TicketDetailsPage></TicketDetailsPage></PrivateRoute>
       }
     ]
   },
