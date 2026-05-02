@@ -133,7 +133,7 @@ const SignUp = () => {
           createdAt: new Date()
         };
         
-        return axios.post('http://localhost:5000/users', userInfo);
+        return axios.post('http://localhost:3000/users', userInfo);
       })
       .then(() => {
         // Reset form
@@ -160,6 +160,19 @@ const SignUp = () => {
   const handleGoogleSignIn = () => {
     setLoading(true);
     signInGoogle()
+      .then((result) => {
+        // Extract user info from Google result
+        const userInfo = {
+          email: result.user.email,
+          displayName: result.user.displayName,
+          phone: '',  // Google doesn't provide phone by default
+          photoURL: result.user.photoURL,
+          createdAt: new Date()
+        };
+        
+        // Send to backend
+        return axios.post('http://localhost:3000/users', userInfo);
+      })
       .then(() => {
         alert('Signed up with Google successfully!');
         navigate(location?.state || '/');

@@ -1,8 +1,7 @@
 import React from 'react';
 import { CiDeliveryTruck } from 'react-icons/ci';
-import { FaRegCreditCard } from 'react-icons/fa';
-import { MdOutlineAirlineSeatReclineExtra } from 'react-icons/md';
-import { Link, NavLink, Outlet, useLocation } from 'react-router';
+import { FiPlus } from 'react-icons/fi';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useTheme, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -13,9 +12,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Nav from '../components/Nav';
-import logoImg from '../assets/transitly.png';
 
-const DashboardLayout = () => {
+const VendorDashboardLayout = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
     const [open, setOpen] = React.useState(false);
@@ -45,7 +43,7 @@ const DashboardLayout = () => {
                 <ListItem disablePadding>
                     <ListItemButton
                         component={NavLink}
-                        to="/dashboard/user-profile"
+                        to="/vendor-dashboard/profile"
                         sx={{
                             '&.active': {
                                 backgroundColor: '#e0e7ff',
@@ -67,7 +65,7 @@ const DashboardLayout = () => {
                 <ListItem disablePadding>
                     <ListItemButton
                         component={NavLink}
-                        to="/dashboard/bookings"
+                        to="/vendor-dashboard/add-ticket"
                         sx={{
                             '&.active': {
                                 backgroundColor: '#e0e7ff',
@@ -77,28 +75,9 @@ const DashboardLayout = () => {
                         }}
                     >
                         <ListItemIcon>
-                            <MdOutlineAirlineSeatReclineExtra size={24} />
+                            <FiPlus size={24} />
                         </ListItemIcon>
-                        <ListItemText primary="My Bookings" />
-                    </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                    <ListItemButton
-                        component={NavLink}
-                        to="/dashboard/payment-history"
-                        sx={{
-                            '&.active': {
-                                backgroundColor: '#e0e7ff',
-                                fontWeight: 600,
-                                color: '#4f46e5',
-                            }
-                        }}
-                    >
-                        <ListItemIcon>
-                            <FaRegCreditCard size={24} />
-                        </ListItemIcon>
-                        <ListItemText primary="Payment History" />
+                        <ListItemText primary="Add Ticket" />
                     </ListItemButton>
                 </ListItem>
             </List>
@@ -132,9 +111,32 @@ const DashboardLayout = () => {
                 >
                     {sidebarContent}
                 </Drawer>
+
+                {/* Mobile menu button */}
+                {isMobile && (
+                    <Button
+                        onClick={toggleDrawer(true)}
+                        sx={{
+                            position: 'fixed',
+                            bottom: 20,
+                            left: 20,
+                            zIndex: 100,
+                            borderRadius: '50%',
+                            width: 56,
+                            height: 56,
+                            backgroundColor: '#4f46e5',
+                            color: 'white',
+                            '&:hover': {
+                                backgroundColor: '#4338ca',
+                            }
+                        }}
+                    >
+                        ☰
+                    </Button>
+                )}
             </Box>
         </>
     );
 };
 
-export default DashboardLayout;
+export default VendorDashboardLayout;

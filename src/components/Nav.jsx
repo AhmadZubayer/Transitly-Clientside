@@ -1,11 +1,14 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/transitly.png';
 import useAuth from '../hooks/useAuth';
+import useRole from '../hooks/useRole';
 import Loading from './Loading';
 
 const Nav = () => {
       const { user, loading, logOut } = useAuth();
+      const { role, roleLoading } = useRole();
+      const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -23,17 +26,29 @@ const Nav = () => {
     }
   };
 
+  const handleVendorClick = () => {
+    if (user && role === 'vendor') {
+      navigate('/vendor-dashboard');
+    } else {
+      navigate('/become-vendor');
+    }
+  };
+
   const links = (
     <>
       <li><NavLink to="/all-tickets">All Tickets</NavLink></li>
-      <li><NavLink to="/bus">Bus</NavLink></li>
-      <li><NavLink to="/train">Train</NavLink></li>
-      <li><NavLink to="/planes">Planes</NavLink></li>
-      <li><NavLink to="/offers">Offers</NavLink></li>
       <li><NavLink to="/pricing">Contact</NavLink></li>
       <li><NavLink to="/policies">Policies</NavLink></li>
 
-      {user && <li><NavLink to="/dashboard/user-tickets">Dashboard</NavLink></li>}
+      {(!user || user.role === 'user' || (user && role !== 'vendor')) && (
+        <li><button onClick={handleVendorClick} style={{ color: '#3b82f6' }}>Become a Vendor</button></li>
+      )}
+
+      {user && role === 'vendor' && (
+        <li><NavLink to="/vendor-dashboard" style={{ color: '#10b981' }}>Vendor Dashboard</NavLink></li>
+      )}
+
+      {user && role === 'user' && <li><NavLink to="/dashboard/bookings">Dashboard</NavLink></li>}
     </>
   );
 

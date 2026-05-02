@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/firebase.init';
+import axios from 'axios';
 
 const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({children}) => {
@@ -31,8 +32,23 @@ const AuthProvider = ({children}) => {
         const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
                 await currentUser.reload();
-                setUser(auth.currentUser);
-                console.log(auth.currentUser);
+
+                // Fetch user role from backend
+                try {
+                    const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${currentUser.email}/role`);
+                    const userData = response.data;
+
+                    // Add role to the user object
+                    const userWithRole = {
+                        ...currentUser,
+                        role: userData.role || 'user'
+                    };
+                    setUser(userWithRole);
+                } catch (error) {
+                    console.log('Error fetching user role:', error);
+                    // Set user without role if fetch fails
+                    setUser(currentUser);
+                }
             } else {
                 setUser(null);
                 console.log('User logged out');
@@ -45,9 +61,9 @@ const AuthProvider = ({children}) => {
     }, [])
 
     const authInfo = {
-        user, 
-        loading, 
-        registerUser, 
+        user,
+        loading,
+        registerUser,
         signInUser,
         signInWithGoogle: signInGoogle,
         signInGoogle,

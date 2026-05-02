@@ -1,23 +1,52 @@
 import React, { useState } from 'react';
 import ModernBtn from './ModernBtn';
 import QuantityInput from './QuantityInput';
+import useAxiosSecure from '../hooks/useAxiosSecure';
+import useAuth from '../hooks/useAuth';
+
 
 const BookingQuantityModal = ({ modalId, ticket, onSubmit }) => {
+    const axiosSecure = useAxiosSecure();
+    const { user } = useAuth();
+
     const [quantity, setQuantity] = useState(1);
 
-    const handleSubmit = () => {
-        if (quantity > 0) {
-            const totalBill = ticket.price * quantity;
-            console.log({
+
+
+    const handlePayment = async() => {
+        if (quantity <= 0) return;
+
+        try {
+            const totalPrice = ticket.price * quantity;
+
+            const paymentInfo = {
                 ticketId: ticket._id,
-                totalBill: totalBill,
-                numberOfTickets: quantity
-            });
-            onSubmit(quantity);
-            setQuantity(1); // Reset after submission
-            document.getElementById(modalId).close();
+                ticketName: ticket.ticketName,
+                price: ticket.price,
+                quantity: quantity,
+                totalPrice: totalPrice,
+                senderEmail: user?.email
+            };
+
+            console.log('Payment Info:', paymentInfo);
+
+            // Save payment data to sessionStorage for retrieval after payment
+            sessionStorage.setItem('pendingPayment', JSON.stringify({
+                ticketId: ticket._id,
+                quantity: quantity,
+                totalPrice: totalPrice
+            }));
+
+            const res = await axiosSecure.post('/create-checkout-session', paymentInfo);
+
+            console.log(res.data);
+
+            window.location.href = res.data.url;
+        } catch (error) {
+            console.error('Payment error:', error);
+            alert('Payment failed. Please try again.');
         }
-    };
+    }
 
     if (!ticket) return null;
 
@@ -67,8 +96,8 @@ const BookingQuantityModal = ({ modalId, ticket, onSubmit }) => {
                 {/* Confirm Button - Centered */}
                 <div className="flex justify-center">
                     <ModernBtn
-                        text="Confirm"
-                        onClick={handleSubmit}
+                        text="Proceed to Payment"
+                        onClick={handlePayment}
                         disabled={quantity === 0}
                     />
                 </div>
