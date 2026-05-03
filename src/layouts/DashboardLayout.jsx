@@ -33,9 +33,9 @@ const DashboardLayout = () => {
     const sidebarContent = (
         <Box
             sx={{
-                width: anchor === 'left' ? 300 : 'auto',
+                width: anchor === 'left' ? 240 : 'auto',
                 height: anchor === 'bottom' ? 'auto' : '100%',
-                p: 2,
+                p: 1.5,
             }}
             role="presentation"
             onClick={() => setOpen(false)}
@@ -47,20 +47,21 @@ const DashboardLayout = () => {
                         component={NavLink}
                         to="/dashboard/user-profile"
                         sx={{
+                            py: 0.75,
                             '&.active': {
-                                backgroundColor: '#e0e7ff',
+                                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(79, 70, 229, 0.2)' : '#e0e7ff',
                                 fontWeight: 600,
-                                color: '#4f46e5',
+                                color: theme.palette.mode === 'dark' ? '#818cf8' : '#4f46e5',
                             }
                         }}
                     >
-                        <ListItemIcon>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" style={{ width: 24, height: 24 }}>
+                        <ListItemIcon sx={{ minWidth: 40 }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" style={{ width: 20, height: 20, color: theme.palette.mode === 'dark' ? '#818cf8' : 'inherit' }}>
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
                         </ListItemIcon>
-                        <ListItemText primary="Your Profile" />
+                        <ListItemText primaryTypographyProps={{ fontSize: '0.9rem' }} primary="Your Profile" />
                     </ListItemButton>
                 </ListItem>
 
@@ -69,17 +70,18 @@ const DashboardLayout = () => {
                         component={NavLink}
                         to="/dashboard/bookings"
                         sx={{
+                            py: 0.75,
                             '&.active': {
-                                backgroundColor: '#e0e7ff',
+                                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(79, 70, 229, 0.2)' : '#e0e7ff',
                                 fontWeight: 600,
-                                color: '#4f46e5',
+                                color: theme.palette.mode === 'dark' ? '#818cf8' : '#4f46e5',
                             }
                         }}
                     >
-                        <ListItemIcon>
-                            <MdOutlineAirlineSeatReclineExtra size={24} />
+                        <ListItemIcon sx={{ minWidth: 40 }}>
+                            <MdOutlineAirlineSeatReclineExtra size={20} style={{ color: theme.palette.mode === 'dark' ? '#818cf8' : 'inherit' }} />
                         </ListItemIcon>
-                        <ListItemText primary="My Bookings" />
+                        <ListItemText primaryTypographyProps={{ fontSize: '0.9rem' }} primary="My Bookings" />
                     </ListItemButton>
                 </ListItem>
 
@@ -88,17 +90,18 @@ const DashboardLayout = () => {
                         component={NavLink}
                         to="/dashboard/payment-history"
                         sx={{
+                            py: 0.75,
                             '&.active': {
-                                backgroundColor: '#e0e7ff',
+                                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(79, 70, 229, 0.2)' : '#e0e7ff',
                                 fontWeight: 600,
-                                color: '#4f46e5',
+                                color: theme.palette.mode === 'dark' ? '#818cf8' : '#4f46e5',
                             }
                         }}
                     >
-                        <ListItemIcon>
-                            <FaRegCreditCard size={24} />
+                        <ListItemIcon sx={{ minWidth: 40 }}>
+                            <FaRegCreditCard size={20} style={{ color: theme.palette.mode === 'dark' ? '#818cf8' : 'inherit' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Payment History" />
+                        <ListItemText primaryTypographyProps={{ fontSize: '0.9rem' }} primary="Payment History" />
                     </ListItemButton>
                 </ListItem>
             </List>
@@ -107,11 +110,22 @@ const DashboardLayout = () => {
 
     return (
         <>
-            <Nav />
-            <Box sx={{ display: 'flex', height: 'calc(100vh - 64px)' }}>
+            <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 200px)', pt: 1, pb: 4 }}>
                 {/* Desktop sidebar */}
                 {!isMobile && (
-                    <Box sx={{ width: 300, bgcolor: 'background.paper', overflowY: 'auto' }}>
+                    <Box sx={{ 
+                        width: 240, 
+                        bgcolor: 'background.paper', 
+                        borderRadius: '16px',
+                        ml: 0,
+                        mr: 2,
+                        height: 'fit-content',
+                        position: 'sticky',
+                        top: '80px',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                        border: '1px solid',
+                        borderColor: 'divider'
+                    }}>
                         {sidebarContent}
                     </Box>
                 )}
@@ -129,6 +143,13 @@ const DashboardLayout = () => {
                     anchor={anchor}
                     open={open}
                     onClose={toggleDrawer(false)}
+                    PaperProps={{
+                        sx: {
+                            borderRadius: anchor === 'bottom' ? '20px 20px 0 0' : '0 20px 20px 0',
+                            margin: anchor === 'left' ? '10px' : '0',
+                            height: anchor === 'left' ? 'calc(100% - 20px)' : 'auto'
+                        }
+                    }}
                 >
                     {sidebarContent}
                 </Drawer>

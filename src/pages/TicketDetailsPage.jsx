@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import useAxios from '../hooks/useAxios';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 import Countdown from '../components/Countdown';
 import BookingQuantityModal from '../components/BookingQuantityModal';
 import Loading from '../components/Loading';
@@ -9,14 +9,14 @@ import Loading from '../components/Loading';
 const TicketDetailsPage = () => {
     const { ticketId } = useParams();
     const navigate = useNavigate();
-    const axiosInstance = useAxios();
+    const axiosSecure = useAxiosSecure();
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
     // Fetch ticket details
     const { data: ticket, isLoading, isError, error } = useQuery({
         queryKey: ['ticket', ticketId],
         queryFn: async () => {
-            const res = await axiosInstance.get(`/tickets/${ticketId}`);
+            const res = await axiosSecure.get(`/tickets/${ticketId}`);
             return res.data;
         },
         enabled: !!ticketId
@@ -95,12 +95,12 @@ const TicketDetailsPage = () => {
     const { date, time } = formatDateTime(ticket.departureDateTime);
 
     return (
-        <div className='p-4'>
-            <div className='bg-white/70 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 px-6 py-4'>
+        <div className='p-4 max-w-2xl mx-auto'>
+            <div className='bg-white/70 backdrop-blur-sm dark:bg-gray-800/70 rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 px-6 py-4'>
                 {/* Back Button */}
                 <button
                     onClick={() => navigate(-1)}
-                    className='mb-3 btn btn-ghost btn-xs text-sm'
+                    className='mb-3 btn btn-ghost btn-xs text-sm font-adaptive'
                 >
                     ← Back
                 </button>
@@ -108,61 +108,61 @@ const TicketDetailsPage = () => {
                 {/* Main Content */}
                 <div className='space-y-3'>
                     {/* Ticket Name Heading */}
-                    <h1 className='font-bold text-xl text-center text-gray-800'>
+                    <h1 className='font-bold text-xl text-center text-gray-800 font-adaptive'>
                         {ticket.ticketTitle}
                     </h1>
 
                     {/* Departure and Destination */}
                     <div className='grid grid-cols-2 gap-2'>
-                        <div className='p-2 rounded-lg border border-gray-300'>
-                            <p className='text-xs text-gray-600 mb-0.5'>Departure</p>
-                            <p className='text-sm font-bold text-gray-800'>{ticket.from}</p>
+                        <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
+                            <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Departure</p>
+                            <p className='text-sm font-bold text-gray-800 font-adaptive'>{ticket.from}</p>
                         </div>
-                        <div className='p-2 rounded-lg border border-gray-300'>
-                            <p className='text-xs text-gray-600 mb-0.5'>Destination</p>
-                            <p className='text-sm font-bold text-gray-800'>{ticket.to}</p>
+                        <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
+                            <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Destination</p>
+                            <p className='text-sm font-bold text-gray-800 font-adaptive'>{ticket.to}</p>
                         </div>
                     </div>
 
                     {/* Date and Time */}
                     <div className='grid grid-cols-2 gap-2'>
-                        <div className='p-2 rounded-lg border border-gray-300'>
-                            <p className='text-xs text-gray-600 mb-0.5'>Date</p>
-                            <p className='text-sm font-semibold text-gray-800'>{date}</p>
+                        <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
+                            <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Date</p>
+                            <p className='text-sm font-semibold text-gray-800 font-adaptive'>{date}</p>
                         </div>
-                        <div className='p-2 rounded-lg border border-gray-300'>
-                            <p className='text-xs text-gray-600 mb-0.5'>Time</p>
-                            <p className='text-sm font-semibold text-gray-800'>{time}</p>
+                        <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
+                            <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Time</p>
+                            <p className='text-sm font-semibold text-gray-800 font-adaptive'>{time}</p>
                         </div>
                     </div>
 
                     {/* Company and Bus Brand */}
                     <div className='grid grid-cols-2 gap-2'>
-                        <div className='p-2 rounded-lg border border-gray-300'>
-                            <p className='text-xs text-gray-600 mb-0.5'>Company</p>
-                            <p className='text-sm font-semibold text-gray-800'>{ticket.busCompany}</p>
+                        <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
+                            <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Company</p>
+                            <p className='text-sm font-semibold text-gray-800 font-adaptive'>{ticket.busCompany}</p>
                         </div>
-                        <div className='p-2 rounded-lg border border-gray-300'>
-                            <p className='text-xs text-gray-600 mb-0.5'>Bus Brand</p>
-                            <p className='text-sm font-semibold text-gray-800'>{ticket.busBrand}</p>
+                        <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
+                            <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Bus Brand</p>
+                            <p className='text-sm font-semibold text-gray-800 font-adaptive'>{ticket.busBrand}</p>
                         </div>
                     </div>
 
                     {/* Transport Type */}
-                    <div className='p-2 rounded-lg border border-gray-300'>
-                        <p className='text-xs text-gray-600 mb-0.5'>Transport Type</p>
-                        <p className='text-sm font-semibold text-gray-800'>{ticket.transportType}</p>
+                    <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
+                        <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Transport Type</p>
+                        <p className='text-sm font-semibold text-gray-800 font-adaptive'>{ticket.transportType}</p>
                     </div>
 
                     {/* Features */}
                     {ticket.perks && ticket.perks.length > 0 && (
                         <div>
-                            <p className='text-xs text-gray-600 mb-1.5 font-semibold'>Features</p>
+                            <p className='text-[10px] uppercase font-bold text-gray-500 mb-1.5 font-adaptive opacity-70'>Features</p>
                             <div className='flex flex-wrap gap-1.5'>
                                 {ticket.perks.map((perk, index) => (
                                     <span
                                         key={index}
-                                        className='px-2 py-1 rounded text-xs border border-gray-300 font-medium'
+                                        className='px-2 py-0.5 rounded text-[11px] border border-gray-200 dark:border-gray-700 font-medium font-adaptive'
                                     >
                                         {perk}
                                     </span>
@@ -173,28 +173,28 @@ const TicketDetailsPage = () => {
 
                     {/* Available Seats and Price */}
                     <div className='grid grid-cols-2 gap-2'>
-                        <div className={`p-2 rounded-lg border-2 ${isOutOfStock() ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}>
-                            <p className='text-xs text-gray-600 mb-0.5'>Available Seats</p>
-                            <p className={`text-lg font-bold ${isOutOfStock() ? 'text-red-600' : 'text-gray-800'}`}>
+                        <div className={`p-2 rounded-lg border-2 ${isOutOfStock() ? 'border-red-500/50 bg-red-50/30' : 'border-gray-200 dark:border-gray-700'}`}>
+                            <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Available Seats</p>
+                            <p className={`text-lg font-bold ${isOutOfStock() ? 'text-red-600' : 'text-gray-800 font-adaptive'}`}>
                                 {ticket.quantity}
                             </p>
                         </div>
-                        <div className='p-2 rounded-lg border-2 border-gray-300'>
-                            <p className='text-xs text-gray-600 mb-0.5'>Price</p>
-                            <p className='text-lg font-bold text-gray-800'>৳{ticket.price}</p>
+                        <div className='p-2 rounded-lg border-2 border-gray-200 dark:border-gray-700'>
+                            <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Price</p>
+                            <p className='text-lg font-bold text-gray-800 font-adaptive'>৳{ticket.price}</p>
                         </div>
                     </div>
 
                     {/* Status Messages */}
                     {isDeparturePassed() && (
-                        <div className='p-2 rounded-lg bg-red-50 border border-red-300'>
-                            <p className='text-red-600 font-semibold text-sm'>Booking unavailable - Departure time has passed</p>
+                        <div className='p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-800'>
+                            <p className='text-red-600 dark:text-red-400 font-semibold text-sm'>Booking unavailable - Departure time has passed</p>
                         </div>
                     )}
 
                     {isOutOfStock() && (
-                        <div className='p-2 rounded-lg bg-orange-50 border border-orange-300'>
-                            <p className='text-orange-600 font-semibold text-sm'>Out of stock - No tickets available</p>
+                        <div className='p-2 rounded-lg bg-orange-50 dark:bg-orange-900/20 border border-orange-300 dark:border-orange-800'>
+                            <p className='text-orange-600 dark:text-orange-400 font-semibold text-sm'>Out of stock - No tickets available</p>
                         </div>
                     )}
 
@@ -210,7 +210,7 @@ const TicketDetailsPage = () => {
                         <button
                             onClick={() => document.getElementById('booking_quantity_modal').showModal()}
                             disabled={!canBook}
-                            className={`btn btn-sm ${canBook ? 'btn-primary' : 'btn-disabled'}`}
+                            className={`btn btn-sm px-10 ${canBook ? 'btn-1' : 'btn-disabled'}`}
                         >
                             Book Now
                         </button>

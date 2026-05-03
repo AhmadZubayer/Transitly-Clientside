@@ -2,24 +2,15 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import Footer from '../components/Footer';
 import Nav from '../components/Nav';
-import TicketPeek from '../components/register/TicketPeek';
 
 
 const AuthLayout = () => {
     return ( 
-         <div>
-            <Nav></Nav>
-            <div className='flex items-start gap-8 max-w-7xl mx-auto px-4 py-8'>
-                <div className='flex-1'>
-                    <Outlet></Outlet>
-                </div>
-                <div className='flex-1'>
-                    <TicketPeek></TicketPeek>
-                </div>
-            </div>
-            <Footer></Footer>
+        <div className='flex items-center justify-center mx-auto px-4 py-12 min-h-[60vh]'>
+            <div className="w-full max-w-md">
+                <Outlet></Outlet>
+            </div>        
         </div>
-         
     );
 };
 

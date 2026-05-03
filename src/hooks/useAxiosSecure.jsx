@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import useAuth from './useAuth';
 import { useNavigate } from 'react-router';
+import { auth } from '../firebase/firebase.init';
 
 
 const axiosSecure = axios.create({
@@ -14,9 +15,13 @@ const useAxiosSecure = () => {
 
     useEffect(() => {
         // intercept request
-        const reqInterceptor = axiosSecure.interceptors.request.use(config => {
-            config.headers.Authorization = `Bearer ${user?.accessToken}`
-            return config
+        const reqInterceptor = axiosSecure.interceptors.request.use(async config => {
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                const token = await currentUser.getIdToken();
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
         })
 
         // interceptor response
@@ -25,7 +30,7 @@ const useAxiosSecure = () => {
         }, (error) => {
             console.log(error);
 
-            const statusCode = error.status;
+            const statusCode = error.response?.status;
             if (statusCode === 401 || statusCode === 403) {
                 logOut()
                     .then(() => {

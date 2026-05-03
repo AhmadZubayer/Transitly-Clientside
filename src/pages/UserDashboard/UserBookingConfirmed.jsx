@@ -60,28 +60,42 @@ const UserBookingConfirmed = () => {
   }, [sessionId, user?.email, axiosSecure, navigate]);
 
   return (
-    <div style={{ minHeight: '100vh', padding: '2rem' }}>
+    <div className='flex items-center justify-center min-h-[60vh] p-4'>
+      <div className='bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-2xl p-10 border border-gray-100 dark:border-gray-700 shadow-xl max-w-lg w-full text-center'>
+        <div className='inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 mb-6'>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className='w-12 h-12'
+          >
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+          </svg>
+        </div>
+        <h1 className='text-3xl font-black text-gray-800 font-adaptive mb-3'>Payment Successful!</h1>
+        <p className='text-gray-600 font-adaptive dark:text-gray-400 mb-8'>Your booking has been confirmed. You will be redirected to your dashboard in a moment.</p>
+        
+        <div className='w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden'>
+            <div className='bg-emerald-500 h-full w-full origin-left animate-[progress_2s_linear_forwards]'></div>
+        </div>
+        
+        <button 
+            onClick={() => navigate('/dashboard/bookings')}
+            className='btn btn-1 mt-8 px-10'
+        >
+            Go to Bookings Now
+        </button>
+      </div>
+
       {showToast && (
-        <Toast>
-          <ToastContent>
-            <CheckIcon>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                width="28"
-                height="28"
-              >
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
-              </svg>
-            </CheckIcon>
-            <div>
-              <ToastTitle>Payment Successful! 🎉</ToastTitle>
-              <ToastMessage>Your booking has been confirmed. Redirecting to bookings...</ToastMessage>
-            </div>
-          </ToastContent>
-          <ProgressBar />
-        </Toast>
+          <style>
+              {`
+                @keyframes progress {
+                    from { transform: scaleX(1); }
+                    to { transform: scaleX(0); }
+                }
+              `}
+          </style>
       )}
     </div>
   );

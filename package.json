@@ -14,9 +14,11 @@
     "@emotion/styled": "^11.14.1",
     "@heroui/date-input": "^2.3.31",
     "@internationalized/date": "^3.10.1",
+    "@material/web": "^2.4.1",
     "@mui/icons-material": "^7.3.9",
-    "@mui/material": "^7.3.8",
+    "@mui/material": "^7.3.10",
     "@mui/system": "^7.3.9",
+    "@mui/x-charts": "^9.0.4",
     "@mui/x-date-pickers": "^8.0.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-query": "^5.90.21",
@@ -36,7 +38,7 @@
     "recharts": "^3.7.0",
     "styled-components": "^6.3.11",
     "sweetalert2": "^11.26.18",
-    "swiper": "^12.1.1",
+    "swiper": "^12.1.4",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {

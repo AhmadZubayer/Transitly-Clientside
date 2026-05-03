@@ -8,6 +8,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [authInitialized, setAuthInitialized] = useState(false);
 
     const registerUser = (email, pass) => {
         setLoading(true);
@@ -30,30 +31,39 @@ const AuthProvider = ({children}) => {
     }
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
-            if (currentUser) {
-                await currentUser.reload();
+            try {
+                if (currentUser) {
+                    await currentUser.reload();
 
-                // Fetch user role from backend
-                try {
-                    const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${currentUser.email}/role`);
-                    const userData = response.data;
+                    // Fetch user role from backend
+                    try {
+                        const token = await currentUser.getIdToken();
+                        const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${currentUser.email}/role`, {
+                            headers: {
+                                authorization: `Bearer ${token}`
+                            }
+                        });
+                        const userData = response.data;
 
-                    // Add role to the user object
-                    const userWithRole = {
-                        ...currentUser,
-                        role: userData.role || 'user'
-                    };
-                    setUser(userWithRole);
-                } catch (error) {
-                    console.log('Error fetching user role:', error);
-                    // Set user without role if fetch fails
-                    setUser(currentUser);
+                        // Add role to the user object
+                        const userWithRole = {
+                            ...currentUser,
+                            role: userData.role || 'user'
+                        };
+                        setUser(userWithRole);
+                    } catch (error) {
+                        console.log('Error fetching user role:', error);
+                        // Set user without role if fetch fails
+                        setUser(currentUser);
+                    }
+                } else {
+                    setUser(null);
+                    console.log('User logged out');
                 }
-            } else {
-                setUser(null);
-                console.log('User logged out');
+            } finally {
+                setLoading(false);
+                setAuthInitialized(true);
             }
-            setLoading(false);
         })
         return () => {
             unSubscribe();
@@ -62,7 +72,7 @@ const AuthProvider = ({children}) => {
 
     const authInfo = {
         user,
-        loading,
+        loading: loading && !authInitialized,
         registerUser,
         signInUser,
         signInWithGoogle: signInGoogle,

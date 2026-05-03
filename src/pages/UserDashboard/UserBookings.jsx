@@ -28,18 +28,19 @@ const UserBookings = () => {
     };
 
     return (
-        <div className='p-6'>
-            <div className='space-y-6'>
+        <div className='p-4'>
+            <div className='space-y-4'>
+                <h2 className='text-xl font-bold text-gray-800 font-adaptive'>My Bookings ({bookings.length})</h2>
 
                 {/* Content */}
                 {isLoading && (
-                    <div className='flex justify-center items-center p-12'>
+                    <div className='flex justify-center items-center p-8'>
                         <Loading />
                     </div>
                 )}
 
                 {isError && (
-                    <div className='text-center p-6 text-red-500'>
+                    <div className='text-center p-4 text-red-500 font-adaptive'>
                         <p>Error loading bookings: {error?.message}</p>
                     </div>
                 )}
@@ -49,17 +50,18 @@ const UserBookings = () => {
                         {bookings.length > 0 ? (
                             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
                                 {bookings.map((booking) => (
-                                    <BookingCard
-                                        key={booking._id}
-                                        booking={booking}
-                                        onClick={() => handleBookingClick(booking)}
-                                    />
+                                    <div key={booking._id} className='h-full'>
+                                        <BookingCard
+                                            booking={booking}
+                                            onClick={() => handleBookingClick(booking)}
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         ) : (
-                            <div className='text-center p-12 bg-gray-50 rounded-lg'>
-                                <p className='text-gray-600 text-lg'>No bookings found</p>
-                                <p className='text-gray-500 text-sm mt-2'>Start booking tickets to see them here</p>
+                            <div className='text-center p-8 bg-gray-50 rounded-xl border border-dashed border-gray-200'>
+                                <p className='text-gray-600 text-lg font-adaptive'>No bookings found</p>
+                                <p className='text-gray-400 text-sm mt-1 font-adaptive'>Start booking tickets to see them here</p>
                             </div>
                         )}
                     </>

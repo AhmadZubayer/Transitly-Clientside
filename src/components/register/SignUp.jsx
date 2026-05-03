@@ -25,9 +25,9 @@ const SignUp = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate(location?.state?.from || '/', { replace: true });
     }
-  }, [user, navigate]);
+  }, [user, navigate, location.state]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -146,7 +146,7 @@ const SignUp = () => {
           photo: null
         });
         setImagePreview(null);
-        navigate(location?.state || '/');
+        // Navigation is handled by useEffect when user state changes
       })
       .catch((error) => {
         console.error('Registration error:', error);
@@ -174,12 +174,11 @@ const SignUp = () => {
         return axios.post('http://localhost:3000/users', userInfo);
       })
       .then(() => {
-        alert('Signed up with Google successfully!');
-        navigate(location?.state || '/');
+        // Navigation is handled by useEffect when user state changes
       })
       .catch((error) => {
         console.error('Google sign-up error:', error);
-        alert('Google sign-up failed');
+        setUploadError('Google sign-up failed');
       })
       .finally(() => setLoading(false));
   };

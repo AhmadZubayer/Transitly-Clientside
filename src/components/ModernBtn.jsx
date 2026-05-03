@@ -38,12 +38,21 @@ const StyledWrapper = styled.div`
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
+  [data-theme="dark"] .animated-button {
+    color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+  }
+
   .animated-button svg {
     position: absolute;
     width: 24px;
     fill: #1e1e1e;
     z-index: 9;
     transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  [data-theme="dark"] .animated-button svg {
+    fill: rgba(255, 255, 255, 0.9);
   }
 
   .animated-button .arr-1 {

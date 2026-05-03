@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
@@ -8,11 +8,16 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const SignIn = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { signInUser, signInWithGoogle, loading } = useAuth();
+  const { signInUser, signInWithGoogle, loading, user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    if (user) {
+      navigate(location?.state?.from || '/', { replace: true });
+    }
+  }, [user, navigate, location.state]);
 
   const handleSignIn = (data) => {
     console.log('form data', data);
@@ -20,7 +25,7 @@ const SignIn = () => {
       .then(result => {
         console.log(result.user)
         console.log(location.state);
-        navigate(location?.state ? location.state : '/');
+        navigate(location?.state?.from || '/', { replace: true });
       })
       .catch(error => {
         console.log(error)
@@ -33,7 +38,7 @@ const SignIn = () => {
       .then(result => {
         console.log(result.user)
         console.log(location.state);
-        navigate(location?.state ? location.state : '/');
+        navigate(location?.state?.from || '/', { replace: true });
       })
       .catch(error => {
         console.log(error)

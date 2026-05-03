@@ -6,7 +6,7 @@ const BookingCard = ({ booking, onClick }) => {
     if (!booking || !booking.ticket) {
         return (
             <StyledWrapper>
-                <div className="card">
+                <div className="ticket-card">
                     <p className="card-title">Booking Data Unavailable</p>
                 </div>
             </StyledWrapper>
@@ -27,7 +27,7 @@ const BookingCard = ({ booking, onClick }) => {
 
     return (
         <StyledWrapper>
-            <div className="card" onClick={onClick}>
+            <div className="ticket-card" onClick={onClick}>
                 <p className="card-title">{booking.ticket.from} → {booking.ticket.to}</p>
                 <p className="ticket-name">{booking.ticket.ticketTitle}</p>
 
@@ -147,7 +147,7 @@ const StyledWrapper = styled.div`
         font-family: courier, sans;
     }
 
-    .card {
+    .ticket-card {
         display: flex;
         flex-direction: column;
         position: relative;
@@ -164,7 +164,7 @@ const StyledWrapper = styled.div`
         cursor: pointer;
     }
 
-    .card:before {
+    .ticket-card:before {
         content: '';
         position: absolute;
         z-index: -1;
@@ -179,33 +179,33 @@ const StyledWrapper = styled.div`
         transition: transform 0.35s ease-out;
     }
 
-    .card:hover:before {
+    .ticket-card:hover:before {
         transform: scale(28);
     }
 
-    .card:hover .ticket-name {
+    .ticket-card:hover .ticket-name {
         transition: all 0.5s ease-out;
         color: rgba(255, 255, 255, 0.8);
     }
 
-    .card:hover .card-title {
+    .ticket-card:hover .card-title {
         transition: all 0.5s ease-out;
         color: #ffffff;
     }
 
-    .card:hover .label,
-    .card:hover .value {
+    .ticket-card:hover .label,
+    .ticket-card:hover .value {
         transition: all 0.5s ease-out;
         color: rgba(255, 255, 255, 0.9);
     }
 
-    .card:hover .value.badge {
+    .ticket-card:hover .value.badge {
         transition: all 0.5s ease-out;
         background: rgba(255, 255, 255, 0.3);
         color: rgba(255, 255, 255, 0.95);
     }
 
-    .card:hover .price {
+    .ticket-card:hover .price {
         transition: all 0.5s ease-out;
         color: #ffffff;
     }

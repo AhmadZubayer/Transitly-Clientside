@@ -18,9 +18,9 @@ const SignIn = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate(location?.state?.from || '/', { replace: true });
     }
-  }, [user, navigate]);
+  }, [user, navigate, location.state]);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -66,7 +66,7 @@ const SignIn = () => {
           email: '',
           password: ''
         });
-        navigate(location?.state || '/');
+        // Navigation is handled by useEffect when user state changes
       })
       .catch((error) => {
         console.error('Sign-in error:', error);
@@ -81,12 +81,11 @@ const SignIn = () => {
     setLoading(true);
     signInGoogle()
       .then(() => {
-        alert('Signed in with Google successfully!');
-        navigate(location?.state || '/');
+        // Navigation is handled by useEffect when user state changes
       })
       .catch((error) => {
         console.error('Google sign-in error:', error);
-        alert('Google sign-in failed');
+        setUploadError('Google sign-in failed');
       })
       .finally(() => setLoading(false));
   };

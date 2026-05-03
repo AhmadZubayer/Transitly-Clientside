@@ -1,11 +1,8 @@
 import React from 'react';
+import DashboardProfile from '../components/dashboard/DashboardProfile';
 
 const Profile = () => {
-    return (
-        <div>
-           profile will appear here 
-        </div>
-    );
+    return <DashboardProfile fallbackName='Admin' />;
 };
 
 export default Profile;

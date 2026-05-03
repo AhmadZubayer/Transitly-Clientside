@@ -23,9 +23,9 @@ const Register = () => {
 
     useEffect(() => {
         if (user) {
-            navigate('/');
+            navigate(location?.state?.from || '/', { replace: true });
         }
-    }, [user, navigate]);
+    }, [user, navigate, location.state]);
 
     // ✅ REACT HOOK FORM: handleSubmit wraps this function, data contains validated form values
     const handleRegistration = (data) => {
@@ -77,7 +77,7 @@ const Register = () => {
             })
             .then(() => {
                 reset();
-                navigate(location?.state || '/');
+                // Navigation is handled by useEffect when user state changes
             })
             .catch((error) => {
                 console.error('Registration error:', error);
@@ -93,7 +93,7 @@ const Register = () => {
         signInGoogle()
             .then(() => {
                 alert('Signed up with Google successfully!');
-                navigate(location?.state || '/');
+                // Navigation is handled by useEffect when user state changes
             })
             .catch((error) => {
                 console.error('Google sign-up error:', error);

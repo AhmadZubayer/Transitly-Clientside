@@ -5,9 +5,11 @@ import Footer from './components/Footer';
 
 const App = () => {
     return (
-        <div>
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
             <Nav></Nav>
-            <Outlet></Outlet>
+            <main className="min-height-[calc(100vh-200px)]">
+                <Outlet></Outlet>
+            </main>
             <Footer></Footer>
         </div>
     );

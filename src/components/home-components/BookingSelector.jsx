@@ -32,21 +32,21 @@ const BookingSelector = () => {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className="max-w-6xl mx-auto w-full">
                 <CardWrapper>
                     <Card1 width="100%" height="auto">
-                        <div className='flex flex-col items-center justify-center px-16 py-8  gap-6'>
-                            <h2 className="text-2xl font-bold text-gray-800 text-center">Select Your Travel Details</h2>
+                        <div className='flex flex-col items-center justify-center px-8 py-4 gap-4'>
+                            <h2 className="text-xl font-bold text-gray-800 text-center font-adaptive">Select Your Travel Details</h2>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 w-full">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 w-full">
 
                                 {/* Departure District */}
                                 <div>
-                                    <label className="label uppercase text-sm font-medium text-gray-700">Depart From</label>
+                                    <label className="label py-1 uppercase text-xs font-medium text-gray-700 font-adaptive">Depart From</label>
                                     <select
                                         {...register('selDepartDistrict', { required: true })}
                                         defaultValue="Pick a District"
-                                        className="select select-bordered w-full">
+                                        className="select select-bordered select-sm w-full">
                                         <option value="" disabled>Pick a District</option>
                                         {departureDistricts?.map((d, idx) => (
                                             <option key={idx} value={d}>{d}</option>
@@ -57,11 +57,11 @@ const BookingSelector = () => {
 
                                 {/* Destination District */}
                                 <div>
-                                    <label className="label uppercase text-sm font-medium text-gray-700">Destination</label>
+                                    <label className="label py-1 uppercase text-xs font-medium text-gray-700 font-adaptive">Destination</label>
                                     <select
                                         {...register('selDestinationDistrict', { required: true })}
                                         defaultValue="Pick a District"
-                                        className="select select-bordered w-full">
+                                        className="select select-bordered select-sm w-full">
                                         <option value="" disabled>Pick a District</option>
                                         {destinationDistricts?.map((d, idx) => (
                                             <option key={idx} value={d}>{d}</option>
@@ -72,7 +72,7 @@ const BookingSelector = () => {
 
                                 {/* Journey Date */}
                                 <div>
-                                    <label className="label uppercase text-sm font-medium text-gray-700">Journey Date</label>
+                                    <label className="label py-1 uppercase text-xs font-medium text-gray-700 font-adaptive">Journey Date</label>
                                     <Controller
                                         name="selJourneyDate"
                                         control={control}
@@ -89,8 +89,8 @@ const BookingSelector = () => {
 
                                 {/* Return Date */}
                                 <div>
-                                    <label className="label uppercase text-sm font-medium text-gray-700">
-                                        Return Date <span className="text-gray-400 text-xs">(Optional)</span>
+                                    <label className="label py-1 uppercase text-xs font-medium text-gray-700 font-adaptive">
+                                        Return Date <span className="text-gray-400 text-[10px]">(Optional)</span>
                                     </label>
                                     <Controller
                                         name="returnDate"
@@ -116,8 +116,8 @@ const BookingSelector = () => {
 
                                 {/* Search Button */}
                                 <div className="flex items-end">
-                                    <button type='submit' className="btn btn-1 font-semibold flex items-center justify-center gap-2 w-full h-10">
-                                        <FaSearch /> Search for Bus
+                                    <button type='submit' className="btn btn-1 btn-sm font-semibold flex items-center justify-center gap-2 w-full h-9">
+                                        <FaSearch /> Search
                                     </button>
                                 </div>
 

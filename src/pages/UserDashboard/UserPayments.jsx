@@ -32,24 +32,24 @@ const UserPayments = () => {
     };
 
     return (
-        <div className='p-6'>
-            <div className='space-y-6'>
+        <div className='p-4'>
+            <div className='space-y-4'>
                 {/* Header */}
                 <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
-                    <h2 className='text-2xl font-bold text-gray-800'>
+                    <h2 className='text-xl font-bold text-gray-800 font-adaptive'>
                         Payment Transactions ({payments.length})
                     </h2>
                 </div>
 
                 {/* Table */}
                 {isLoading && (
-                    <div className='flex justify-center items-center p-12'>
+                    <div className='flex justify-center items-center p-8'>
                         <Loading />
                     </div>
                 )}
 
                 {isError && (
-                    <div className='text-center p-6 text-red-500'>
+                    <div className='text-center p-4 text-red-500 font-adaptive'>
                         <p>Error loading payments: {error?.message}</p>
                     </div>
                 )}
@@ -57,35 +57,35 @@ const UserPayments = () => {
                 {!isLoading && !isError && (
                     <>
                         {payments.length > 0 ? (
-                            <div className="overflow-x-auto bg-white rounded-lg shadow">
-                                <table className="table table-zebra w-full">
+                            <div className="overflow-x-auto bg-white/50 backdrop-blur-sm rounded-xl border border-gray-100 shadow-sm">
+                                <table className="table table-zebra table-sm w-full">
                                     {/* head */}
                                     <thead>
-                                        <tr className='bg-gray-100'>
-                                            <th className='text-gray-700'>No.</th>
-                                            <th className='text-gray-700'>Transaction ID</th>
-                                            <th className='text-gray-700'>Ticket Title</th>
-                                            <th className='text-gray-700'>Amount</th>
-                                            <th className='text-gray-700'>Payment Date</th>
+                                        <tr className='bg-gray-50'>
+                                            <th className='text-gray-700 font-adaptive uppercase text-[11px]'>No.</th>
+                                            <th className='text-gray-700 font-adaptive uppercase text-[11px]'>Transaction ID</th>
+                                            <th className='text-gray-700 font-adaptive uppercase text-[11px]'>Ticket Title</th>
+                                            <th className='text-gray-700 font-adaptive uppercase text-[11px]'>Amount</th>
+                                            <th className='text-gray-700 font-adaptive uppercase text-[11px]'>Payment Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {payments.map((payment, index) => (
                                             <tr key={payment._id} className='hover'>
-                                                <th className='text-gray-600'>{index + 1}</th>
-                                                <td className='font-mono text-sm text-blue-600'>{payment._id.toString().slice(0, 8)}...</td>
-                                                <td className='font-semibold text-gray-800'>{payment.ticket?.ticketTitle || 'N/A'}</td>
-                                                <td className='font-bold text-green-600'>৳{payment.totalPrice.toLocaleString()}</td>
-                                                <td className='text-gray-600'>{formatDate(payment.paymentDate)}</td>
+                                                <th className='text-gray-600 font-adaptive'>{index + 1}</th>
+                                                <td className='font-mono text-[12px] text-blue-600 font-adaptive'>{payment._id.toString().slice(0, 8)}...</td>
+                                                <td className='font-semibold text-gray-800 font-adaptive'>{payment.ticket?.ticketTitle || 'N/A'}</td>
+                                                <td className='font-bold text-green-600 font-adaptive'>৳{payment.totalPrice.toLocaleString()}</td>
+                                                <td className='text-gray-600 font-adaptive text-[13px]'>{formatDate(payment.paymentDate)}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
                         ) : (
-                            <div className='text-center p-12 bg-gray-50 rounded-lg'>
-                                <p className='text-gray-600 text-lg'>No payment transactions found</p>
-                                <p className='text-gray-500 text-sm mt-2'>Complete a booking to see transactions here</p>
+                            <div className='text-center p-8 bg-gray-50 rounded-xl border border-dashed border-gray-200'>
+                                <p className='text-gray-600 text-lg font-adaptive'>No payment transactions found</p>
+                                <p className='text-gray-400 text-sm mt-1 font-adaptive'>Complete a booking to see transactions here</p>
                             </div>
                         )}
                     </>
