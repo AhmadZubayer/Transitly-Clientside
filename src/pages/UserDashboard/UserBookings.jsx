@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useOutletContext } from 'react-router-dom';
 import { HiMenuAlt2 } from 'react-icons/hi';
@@ -26,9 +26,19 @@ const UserBookings = () => {
         enabled: !!user?.email
     });
 
+    useEffect(() => {
+        if (selectedBooking) {
+            setTimeout(() => {
+                const modal = document.getElementById('booking_confirmation_modal');
+                if (modal) {
+                    modal.showModal();
+                }
+            }, 0);
+        }
+    }, [selectedBooking]);
+
     const handleBookingClick = (booking) => {
         setSelectedBooking(booking);
-        document.getElementById('booking_confirmation_modal').showModal();
     };
 
     return (

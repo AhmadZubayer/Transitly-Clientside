@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ModernBtn from './ModernBtn';
+import generateTicketPDF from '../utils/generateTicketPDF';
+import useAuth from '../hooks/useAuth';
 
 const BookingConfirmationModal = ({ modalId, booking }) => {
+    const { user } = useAuth();
+    const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
     if (!booking) return null;
 
     // Format the date and time
@@ -29,9 +34,21 @@ const BookingConfirmationModal = ({ modalId, booking }) => {
     const { date, time } = formatDateTime(booking.ticket.departureDateTime);
     const { date: paymentDate, time: paymentTime } = formatPaymentDate(booking.paymentDate);
 
-    const handleDownloadPDF = () => {
-        // TODO: Implement PDF download functionality
-        console.log('Download PDF for booking:', booking._id);
+    const handleDownloadPDF = async () => {
+        try {
+            setIsGeneratingPDF(true);
+            const userDetails = {
+                name: user?.displayName || 'Guest',
+                email: user?.email || booking.userEmail,
+                phone: user?.phone || 'N/A'
+            };
+            await generateTicketPDF(booking, userDetails);
+        } catch (error) {
+            console.error('Failed to generate PDF:', error);
+            alert('Failed to generate PDF. Please try again.');
+        } finally {
+            setIsGeneratingPDF(false);
+        }
     };
 
     return (
@@ -151,8 +168,9 @@ const BookingConfirmationModal = ({ modalId, booking }) => {
                             <button className="btn btn-ghost w-full font-adaptive">Close</button>
                         </form>
                         <ModernBtn
-                            text="📥 Ticket PDF"
+                            text={isGeneratingPDF ? 'Generating...' : 'Ticket PDF'}
                             onClick={handleDownloadPDF}
+                            disabled={isGeneratingPDF}
                             style={{ flex: 1.5 }}
                         />
                     </div>

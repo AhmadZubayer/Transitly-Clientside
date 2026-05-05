@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, useOutletContext } from 'react-router-dom';
+import { HiMenuAlt2 } from 'react-icons/hi';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Card from '../../components/Card';
@@ -9,6 +10,7 @@ const UserBookingConfirmed = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { setOpen } = useOutletContext();
   const axiosSecure = useAxiosSecure();
   const [paymentStored, setPaymentStored] = useState(false);
   const [showToast, setShowToast] = useState(false);
