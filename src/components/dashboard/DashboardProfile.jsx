@@ -1,5 +1,6 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { HiMenuAlt2 } from 'react-icons/hi';
 import useAuth from '../../hooks/useAuth';
 import useRole from '../../hooks/useRole';
 import Card from '../Card';
@@ -7,6 +8,7 @@ import Card from '../Card';
 const DashboardProfile = ({ fallbackName = 'User' }) => {
     const { user, logOut } = useAuth();
     const { role } = useRole();
+    const { setOpen } = useOutletContext();
     const navigate = useNavigate();
 
     const handleSignOut = async () => {
@@ -46,7 +48,8 @@ const DashboardProfile = ({ fallbackName = 'User' }) => {
                                 className='w-32 h-32 rounded-full object-cover shadow-lg border-4 border-white'
                             />
                         )}
-                        <h2 className='text-3xl font-bold font-adaptive mt-6'>
+                        <h2 className='text-3xl font-bold font-adaptive mt-6 flex items-center gap-3'>
+                            <HiMenuAlt2 className='lg:hidden cursor-pointer' onClick={() => setOpen(true)} />
                             {user?.displayName || fallbackName}
                         </h2>
                     </div>

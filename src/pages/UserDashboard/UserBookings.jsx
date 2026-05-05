@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useOutletContext } from 'react-router-dom';
+import { HiMenuAlt2 } from 'react-icons/hi';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
 import BookingCard from '../../components/AllTickets/BookingCard';
@@ -10,6 +12,7 @@ import Card from '../../components/Card';
 const UserBookings = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
+    const { setOpen } = useOutletContext();
     const [selectedBooking, setSelectedBooking] = useState(null);
 
     // Fetch user's payments
@@ -31,7 +34,12 @@ const UserBookings = () => {
     return (
         <div className='p-4'>
             <div className='space-y-4'>
-                <h2 className='text-xl font-bold text-gray-800 font-adaptive'>My Bookings ({bookings.length})</h2>
+                <div className='flex items-center gap-3'>
+                    <HiMenuAlt2 className='lg:hidden cursor-pointer text-xl' onClick={() => setOpen(true)} />
+                    <h2 className='text-xl font-bold text-gray-800 font-adaptive'>
+                        My Bookings ({bookings.length})
+                    </h2>
+                </div>
 
                 {/* Content */}
                 {isLoading && (

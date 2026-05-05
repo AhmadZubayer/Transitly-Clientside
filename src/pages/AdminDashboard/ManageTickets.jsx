@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useOutletContext } from 'react-router-dom';
+import { HiMenuAlt2 } from 'react-icons/hi';
 import { MdDelete } from 'react-icons/md';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import Swal from 'sweetalert2';
@@ -10,6 +12,7 @@ import CustomPagination from '../../components/Pagination';
 import Card from '../../components/Card';
 
 const ManageTickets = () => {
+    const { setOpen } = useOutletContext();
     const axiosSecure = useAxiosSecure();
     const [filter, setFilter] = useState('all'); // all | pending
     const [page, setPage] = useState(1);
@@ -145,12 +148,15 @@ const ManageTickets = () => {
     return (
         <div className='p-4'>
             <div className='space-y-4'>
-                <div className='flex flex-col gap-4'>
-                    <div>
-                        <h2 className='text-xl font-bold text-gray-800 font-adaptive'>
-                            Manage Tickets ({total})
-                        </h2>
-                        <p className='text-[12px] text-gray-500 mt-0.5 font-adaptive'>Page {page} of {totalPages}</p>
+                <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
+                    <div className='flex flex-row items-center gap-3'>
+                        <HiMenuAlt2 className='lg:hidden cursor-pointer' onClick={() => setOpen(true)} />
+                        <div>
+                            <h2 className='text-xl font-bold text-gray-800 font-adaptive'>
+                                Manage Tickets ({total})
+                            </h2>
+                            <p className='text-[12px] text-gray-500 mt-0.5 font-adaptive'>Page {page} of {totalPages}</p>
+                        </div>
                     </div>
                     <div className='flex justify-center'>
                         <div className='join'>

@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useOutletContext } from 'react-router-dom';
+import { HiMenuAlt2 } from 'react-icons/hi';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
@@ -8,6 +10,7 @@ import TicketCard from '../../components/AllTickets/TicketCard';
 import Card from '../../components/Card';
 
 const AdvertiseTickets = () => {
+    const { setOpen } = useOutletContext();
     const axiosSecure = useAxiosSecure();
     const TICKETS_PER_PAGE = 100;
 
@@ -93,11 +96,14 @@ const AdvertiseTickets = () => {
     return (
         <div className='p-4'>
             <div className='space-y-4'>
-                <div>
-                    <h2 className='text-xl font-black text-gray-800 dark:text-gray-100 font-adaptive'>
-                        Featured Tickets ({verifiedTickets.length}/{MAX_FEATURED_TICKETS})
-                    </h2>
-                    <p className='text-[12px] text-gray-500 font-adaptive opacity-70'>Verified tickets that are currently promoted on the homepage Swiper.</p>
+                <div className='flex flex-row items-center gap-3'>
+                    <HiMenuAlt2 className='lg:hidden cursor-pointer' onClick={() => setOpen(true)} />
+                    <div>
+                        <h2 className='text-xl font-black text-gray-800 dark:text-gray-100 font-adaptive'>
+                            Featured Tickets ({verifiedTickets.length}/{MAX_FEATURED_TICKETS})
+                        </h2>
+                        <p className='text-[12px] text-gray-500 font-adaptive opacity-70'>Verified tickets that are currently promoted on the homepage Swiper.</p>
+                    </div>
                 </div>
 
                 {isLoading && (

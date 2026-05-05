@@ -134,7 +134,7 @@ const DashboardLayout = () => {
                 <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%' }}>
                     {/* Page content */}
                     <Box sx={{ flex: 1, overflowY: 'auto' }}>
-                        <Outlet />
+                        <Outlet context={{ setOpen }} />
                     </Box>
                 </Box>
 

@@ -152,7 +152,7 @@ const VendorDashboardLayout = () => {
                 <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%' }}>
                     {/* Page content */}
                     <Box sx={{ flex: 1, overflowY: 'auto' }}>
-                        <Outlet />
+                        <Outlet context={{ setOpen }} />
                     </Box>
                 </Box>
 
@@ -171,29 +171,6 @@ const VendorDashboardLayout = () => {
                 >
                     {sidebarContent}
                 </Drawer>
-
-                {/* Mobile menu button */}
-                {isMobile && (
-                    <Button
-                        onClick={toggleDrawer(true)}
-                        sx={{
-                            position: 'fixed',
-                            bottom: 20,
-                            left: 20,
-                            zIndex: 100,
-                            borderRadius: '50%',
-                            width: 56,
-                            height: 56,
-                            backgroundColor: '#4f46e5',
-                            color: 'white',
-                            '&:hover': {
-                                backgroundColor: '#4338ca',
-                            }
-                        }}
-                    >
-                        ☰
-                    </Button>
-                )}
             </Box>
         </>
     );

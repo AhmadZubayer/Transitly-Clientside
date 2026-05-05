@@ -1,5 +1,7 @@
 import React from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useOutletContext } from 'react-router-dom';
+import { HiMenuAlt2 } from 'react-icons/hi';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +10,7 @@ import VendorTicketCard from './VendorTicketCard';
 import Card from '../../components/Card';
 
 const VendorTickets = () => {
+    const { setOpen } = useOutletContext();
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -53,7 +56,8 @@ const VendorTickets = () => {
     return (
         <div className='p-4'>
             <div className='space-y-4'>
-                <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
+                <div className='flex flex-row justify-start items-center gap-3'>
+                    <HiMenuAlt2 className='lg:hidden cursor-pointer' onClick={() => setOpen(true)} />
                     <h2 className='text-xl font-bold text-gray-800 font-adaptive'>
                         My Tickets ({tickets.length})
                     </h2>

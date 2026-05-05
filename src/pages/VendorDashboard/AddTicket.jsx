@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useOutletContext } from 'react-router-dom';
+import { HiMenuAlt2 } from 'react-icons/hi';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -10,6 +11,7 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Card from '../../components/Card';
 
 const AddTicket = () => {
+    const { setOpen } = useOutletContext();
     const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
         defaultValues: {
             ticketTitle: '',

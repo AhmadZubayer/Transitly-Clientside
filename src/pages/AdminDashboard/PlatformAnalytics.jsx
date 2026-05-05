@@ -1,12 +1,14 @@
-import React from 'react';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useOutletContext } from 'react-router-dom';
+import { HiMenuAlt2 } from 'react-icons/hi';
 import { BarChart } from '@mui/x-charts/BarChart';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Loading from '../../components/Loading';
 import Card from '../../components/Card';
 
 const PlatformAnalytics = () => {
+    const { setOpen } = useOutletContext();
     const axiosSecure = useAxiosSecure();
 
     const { data, isLoading, isError, error } = useQuery({
@@ -44,9 +46,12 @@ const PlatformAnalytics = () => {
     return (
         <div className='p-4'>
             <div className='space-y-4'>
-                <div className='flex flex-col gap-1'>
-                    <h2 className='text-xl font-black text-gray-800 dark:text-gray-100 font-adaptive'>Platform Analytics</h2>
-                    <p className='text-[12px] text-gray-500 font-adaptive'>Last 30 days overview</p>
+                <div className='flex flex-row items-center gap-3'>
+                    <HiMenuAlt2 className='lg:hidden cursor-pointer' onClick={() => setOpen(true)} />
+                    <div className='flex flex-col gap-1'>
+                        <h2 className='text-xl font-black text-gray-800 dark:text-gray-100 font-adaptive'>Platform Analytics</h2>
+                        <p className='text-[12px] text-gray-500 font-adaptive'>Last 30 days overview</p>
+                    </div>
                 </div>
 
                 {isLoading && (

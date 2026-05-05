@@ -61,7 +61,10 @@ const UserBookingConfirmed = () => {
   }, [sessionId, user?.email, axiosSecure, navigate]);
 
   return (
-    <div className='flex items-center justify-center min-h-[60vh] p-4'>
+    <div className='flex flex-col items-center justify-center min-h-[60vh] p-4'>
+      <div className='w-full max-w-lg mb-4 flex justify-start'>
+          <HiMenuAlt2 size={24} className='lg:hidden cursor-pointer text-gray-600' onClick={() => setOpen(true)} />
+      </div>
       <Card className='p-10 max-w-lg w-full text-center'>
         <div className='inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 mb-6'>
           <svg
