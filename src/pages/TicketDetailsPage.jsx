@@ -5,6 +5,7 @@ import useAxiosSecure from '../hooks/useAxiosSecure';
 import Countdown from '../components/Countdown';
 import BookingQuantityModal from '../components/BookingQuantityModal';
 import Loading from '../components/Loading';
+import Card from '../components/Card';
 
 const TicketDetailsPage = () => {
     const { ticketId } = useParams();
@@ -24,12 +25,27 @@ const TicketDetailsPage = () => {
 
     // Format the date and time
     const formatDateTime = (dateTimeString) => {
-        const date = new Date(dateTimeString);
+        if (!dateTimeString) return { date: 'N/A', time: 'N/A' };
+        let dateObj;
+        try {
+            const cleanStr = dateTimeString.replace(' ', 'T');
+            dateObj = new Date(cleanStr);
+            if (isNaN(dateObj.getTime())) {
+                const parts = dateTimeString.match(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/);
+                if (parts) {
+                    const [_, y, m, d, hr = 0, min = 0] = parts;
+                    dateObj = new Date(y, m - 1, d, hr, min);
+                }
+            }
+        } catch (e) {
+            return { date: 'N/A', time: 'N/A' };
+        }
+        if (isNaN(dateObj?.getTime())) return { date: 'N/A', time: 'N/A' };
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         const timeOptions = { hour: '2-digit', minute: '2-digit' };
         return {
-            date: date.toLocaleDateString('en-US', dateOptions),
-            time: date.toLocaleTimeString('en-US', timeOptions)
+            date: dateObj.toLocaleDateString('en-US', dateOptions),
+            time: dateObj.toLocaleTimeString('en-US', timeOptions)
         };
     };
 
@@ -96,7 +112,7 @@ const TicketDetailsPage = () => {
 
     return (
         <div className='p-4 max-w-2xl mx-auto'>
-            <div className='bg-white/70 backdrop-blur-sm dark:bg-gray-800/70 rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 px-6 py-4'>
+            <Card className='px-6 py-4'>
                 {/* Back Button */}
                 <button
                     onClick={() => navigate(-1)}
@@ -216,7 +232,7 @@ const TicketDetailsPage = () => {
                         </button>
                     </div>
                 </div>
-            </div>
+            </Card>
 
             {/* Booking Quantity Modal */}
             <BookingQuantityModal

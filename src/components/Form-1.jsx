@@ -125,7 +125,7 @@ const Form1 = ({
             <div className="acc-text">
               {footerText}
               <span 
-                style={{color: '#0034de', cursor: 'pointer', marginLeft: '5px'}}
+                className="footer-link"
                 onClick={onFooterLinkClick}
               >
                 {footerLinkText}
@@ -149,7 +149,7 @@ const StyledWrapper = styled.div`
   }
 
   [data-theme="dark"] .container {
-    background-color: rgba(17, 24, 39, 0.95);
+    background-color: #111827;
     border-color: rgba(148, 163, 184, 0.18);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   }
@@ -282,7 +282,7 @@ const StyledWrapper = styled.div`
 
   [data-theme="dark"] .input-field input:focus ~ label,
   [data-theme="dark"] .input-field input:valid ~ label {
-    background-color: #1f2937;
+    background-color: #111827;
     color: #5044e4;
   }
 
@@ -383,6 +383,17 @@ const StyledWrapper = styled.div`
 
   [data-theme="dark"] .acc-text {
     color: rgba(148, 163, 184, 0.9);
+  }
+
+  .footer-link {
+    color: #0034de;
+    cursor: pointer;
+    margin-left: 5px;
+    font-weight: 600;
+  }
+
+  [data-theme="dark"] .footer-link {
+    color: #5044e4;
   }
 `;
 

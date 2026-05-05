@@ -28,7 +28,7 @@ const LatestTickets = () => {
         return (
             <div className='w-full px-6 py-8'>
                 <div className='max-w-7xl mx-auto'>
-                    <h2 className='text-3xl font-bold text-gray-800 mb-6'>Latest Tickets</h2>
+                    <h2 className='text-3xl font-bold text-gray-800 mb-6 font-adaptive'>Newly Added Tickets</h2>
                     <div className='flex justify-center items-center py-12'>
                         <Loading />
                     </div>
@@ -44,8 +44,8 @@ const LatestTickets = () => {
     return (
         <div className='w-full px-6 py-8'>
             <div className='max-w-7xl mx-auto'>
-                <h2 className='text-3xl font-bold text-gray-800 mb-6'>Latest Tickets</h2>
-
+                <h2 className='text-3xl font-bold text-gray-800 mb-8 font-adaptive'>Newly Added Tickets</h2>
+                
                 <Swiper
                     modules={[Autoplay]}
                     autoplay={{ delay: 0, disableOnInteraction: false }}
@@ -54,14 +54,14 @@ const LatestTickets = () => {
                     slidesPerView={3}
                     spaceBetween={20}
                     breakpoints={{
-                        0: { slidesPerView: 1 },
+                        0:   { slidesPerView: 1 },
                         640: { slidesPerView: 2 },
-                        1024: { slidesPerView: 3 },
+                        1024:{ slidesPerView: 3 },
                     }}
                 >
                     {tickets.map(ticket => (
                         <SwiperSlide key={ticket._id}>
-                            <div className="h-full" onClick={() => handleTicketClick(ticket)}>
+                            <div className="h-full py-2">
                                 <TicketCard ticket={ticket} onClick={() => handleTicketClick(ticket)} />
                             </div>
                         </SwiperSlide>

@@ -50,6 +50,12 @@ const Input = styled('input')(`
   width: 4rem;
   text-align: center;
 
+  [data-theme="dark"] & {
+    background: ${grey[900]};
+    color: ${grey[100]};
+    border-color: ${grey[700]};
+  }
+
   &:hover {
     border-color: ${blue[400]};
   }
@@ -96,6 +102,12 @@ const Button = styled('button')(`
   cursor: pointer;
   padding: 0;
 
+  [data-theme="dark"] & {
+    background: ${grey[800]};
+    color: ${grey[100]};
+    border-color: ${grey[700]};
+  }
+
   &:hover {
     cursor: pointer;
     background: ${blue[500]};
@@ -112,6 +124,11 @@ const Button = styled('button')(`
     cursor: not-allowed;
     background: ${grey[50]};
     color: ${grey[900]};
+
+    [data-theme="dark"] & {
+      background: ${grey[800]};
+      color: ${grey[600]};
+    }
   }
 
   &.increment {

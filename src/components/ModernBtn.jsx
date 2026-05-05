@@ -28,31 +28,22 @@ const StyledWrapper = styled.div`
     border: 4px solid;
     border-color: transparent;
     font-size: 16px;
-    background-color: inherit;
+    background-color: #ffffff;
     border-radius: 100px;
     font-weight: 600;
-    color: #1e1e1e;
+    color: #1e1e1e !important;
     box-shadow: 0 0 0 2px #1e1e1e;
     cursor: pointer;
     overflow: hidden;
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  [data-theme="dark"] .animated-button {
-    color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
-  }
-
   .animated-button svg {
     position: absolute;
     width: 24px;
-    fill: #1e1e1e;
+    fill: #1e1e1e !important;
     z-index: 9;
     transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  [data-theme="dark"] .animated-button svg {
-    fill: rgba(255, 255, 255, 0.9);
   }
 
   .animated-button .arr-1 {
@@ -81,11 +72,12 @@ const StyledWrapper = styled.div`
     z-index: 1;
     transform: translateX(-12px);
     transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    color: #1e1e1e !important;
   }
 
   .animated-button:hover {
     box-shadow: 0 0 0 12px transparent;
-    color: #ffffff;
+    color: #ffffff !important;
     border-radius: 12px;
   }
 
@@ -99,10 +91,11 @@ const StyledWrapper = styled.div`
 
   .animated-button:hover .text {
     transform: translateX(12px);
+    color: #ffffff !important;
   }
 
   .animated-button:hover svg {
-    fill: #ffffff;
+    fill: #ffffff !important;
   }
 
   .animated-button:active {
@@ -124,7 +117,7 @@ const StyledWrapper = styled.div`
 
   .animated-button:disabled:hover {
     box-shadow: 0 0 0 2px #ccc;
-    color: #1e1e1e;
+    color: #1e1e1e !important;
     border-radius: 100px;
   }
 
@@ -132,6 +125,14 @@ const StyledWrapper = styled.div`
     width: 20px;
     height: 20px;
     opacity: 0;
+  }
+
+  .animated-button:disabled svg {
+    fill: #ccc !important;
+  }
+
+  .animated-button:disabled .text {
+    color: #ccc !important;
   }`;
 
 export default ModernBtn;

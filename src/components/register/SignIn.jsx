@@ -95,7 +95,7 @@ const SignIn = () => {
   };
 
   return (
-    <div className='w-sm'>
+    <div className='w-full'>
       <Form1
         heading="Welcome Back!"
         fields={['email', 'password']}

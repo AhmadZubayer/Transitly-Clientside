@@ -47,10 +47,24 @@ const Nav = () => {
   const dashboardPath = currentRole ? dashboardPathByRole[currentRole] : null;
   const profilePath = currentRole ? profilePathByRole[currentRole] : null;
 
+  const handleContactClick = (e) => {
+    e.preventDefault();
+    const isHomePage = window.location.pathname === '/';
+    
+    if (isHomePage) {
+      const contactSection = document.getElementById('contact-section');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate('/', { state: { scrollToContact: true } });
+    }
+  };
+
   const links = (
     <>
       <li><NavLink to="/all-tickets">All Tickets</NavLink></li>
-      <li><NavLink to="/pricing">Contact</NavLink></li>
+      <li><a href="#contact" onClick={handleContactClick}>Contact</a></li>
       <li><NavLink to="/policies">Policies</NavLink></li>
       {user && dashboardPath && (
         <li><NavLink to={dashboardPath}>Dashboard</NavLink></li>

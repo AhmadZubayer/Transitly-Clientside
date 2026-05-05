@@ -10,7 +10,7 @@ import { Controller } from 'react-hook-form';
 import '../../App.css';
 import ErrorText from '../ErrorText';
 import useTicketFinder from '../../hooks/useTicketFinder';
-import Card1, { CardWrapper } from '../Card-1';
+import Card from '../Card';
 
 
 const BookingSelector = () => {
@@ -33,9 +33,8 @@ const BookingSelector = () => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <form onSubmit={handleSubmit(onSubmit)} className="max-w-6xl mx-auto w-full">
-                <CardWrapper>
-                    <Card1 width="100%" height="auto">
-                        <div className='flex flex-col items-center justify-center px-8 py-4 gap-4'>
+                <Card className='p-4'>
+                    <div className='flex flex-col items-center justify-center px-8 py-4 gap-4'>
                             <h2 className="text-xl font-bold text-gray-800 text-center font-adaptive">Select Your Travel Details</h2>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 w-full">
@@ -123,8 +122,7 @@ const BookingSelector = () => {
 
                             </div>
                         </div>
-                    </Card1>
-                </CardWrapper>
+                </Card>
 
             </form>
         </LocalizationProvider>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Loading from '../../components/Loading';
+import Card from '../../components/Card';
 
 const ManageUsers = () => {
     const axiosSecure = useAxiosSecure();
@@ -62,61 +63,63 @@ const ManageUsers = () => {
                 {!isLoading && !isError && (
                     <>
                         {users.length > 0 ? (
-                            <div className='overflow-x-auto bg-white/50 backdrop-blur-sm rounded-xl border border-gray-100 shadow-sm'>
-                                <table className='table table-zebra table-sm w-full'>
-                                    <thead>
-                                        <tr className='bg-gray-50'>
-                                            <th className='text-gray-700 font-adaptive uppercase text-[11px]'>No.</th>
-                                            <th className='text-gray-700 font-adaptive uppercase text-[11px]'>Name</th>
-                                            <th className='text-gray-700 font-adaptive uppercase text-[11px]'>Email</th>
-                                            <th className='text-gray-700 font-adaptive uppercase text-[11px]'>Role</th>
-                                            <th className='text-gray-700 font-adaptive uppercase text-[11px] text-center'>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {users.map((user, index) => (
-                                            <tr key={user._id} className='hover'>
-                                                <th className='text-gray-600 font-adaptive'>{index + 1}</th>
-                                                <td className='font-semibold text-gray-800 font-adaptive'>{user.name || user.displayName || 'N/A'}</td>
-                                                <td className='text-gray-700 font-adaptive'>{user.email}</td>
-                                                <td className='text-gray-700 font-adaptive capitalize'>{user.role || 'user'}</td>
-                                                <td className='text-center'>
-                                                    <div className='dropdown dropdown-end'>
-                                                        <button
-                                                            tabIndex={0}
-                                                            className='btn btn-ghost btn-sm text-xl'
-                                                            disabled={isRoleUpdating}
-                                                        >
-                                                            ⋮
-                                                        </button>
-                                                        <ul tabIndex={0} className='dropdown-content menu bg-base-100 rounded-box z-1 w-44 p-2 shadow'>
-                                                            <li>
-                                                                <button onClick={() => handleRoleChange(user._id, 'admin')}>
-                                                                    Make Admin
-                                                                </button>
-                                                            </li>
-                                                            <li>
-                                                                <button onClick={() => handleRoleChange(user._id, 'vendor')}>
-                                                                    Make Vendor
-                                                                </button>
-                                                            </li>
-                                                            <li>
-                                                                <button className='text-red-600' onClick={() => handleRoleChange(user._id, 'fraud')}>
-                                                                    Mark as Fraud
-                                                                </button>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
+                            <Card className='overflow-hidden !p-0'>
+                                <div className='overflow-x-auto'>
+                                    <table className='table table-zebra table-sm w-full'>
+                                        <thead>
+                                            <tr className='bg-gray-100 dark:bg-gray-800/50'>
+                                                <th className='text-gray-900 dark:text-gray-200 font-bold font-adaptive uppercase text-[11px]'>No.</th>
+                                                <th className='text-gray-900 dark:text-gray-200 font-bold font-adaptive uppercase text-[11px]'>Name</th>
+                                                <th className='text-gray-900 dark:text-gray-200 font-bold font-adaptive uppercase text-[11px]'>Email</th>
+                                                <th className='text-gray-900 dark:text-gray-200 font-bold font-adaptive uppercase text-[11px]'>Role</th>
+                                                <th className='text-gray-900 dark:text-gray-200 font-bold font-adaptive uppercase text-[11px] text-center'>Actions</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            {users.map((user, index) => (
+                                                <tr key={user._id} className='hover:bg-gray-100/50 dark:hover:bg-gray-700/50'>
+                                                    <th className='text-gray-600 dark:text-gray-400 font-adaptive'>{index + 1}</th>
+                                                    <td className='font-semibold text-gray-800 dark:text-gray-100 font-adaptive'>{user.name || user.displayName || 'N/A'}</td>
+                                                    <td className='text-gray-700 dark:text-gray-300 font-adaptive'>{user.email}</td>
+                                                    <td className='text-gray-700 dark:text-gray-300 font-adaptive capitalize'>{user.role || 'user'}</td>
+                                                    <td className='text-center'>
+                                                        <div className='dropdown dropdown-end'>
+                                                            <button
+                                                                tabIndex={0}
+                                                                className='btn btn-ghost btn-sm text-xl dark:text-gray-300'
+                                                                disabled={isRoleUpdating}
+                                                            >
+                                                                ⋮
+                                                            </button>
+                                                            <ul tabIndex={0} className='dropdown-content menu bg-base-100 dark:bg-gray-800 rounded-box z-1 w-44 p-2 shadow border dark:border-gray-700'>
+                                                                <li>
+                                                                    <button onClick={() => handleRoleChange(user._id, 'admin')} className="dark:text-gray-200">
+                                                                        Make Admin
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button onClick={() => handleRoleChange(user._id, 'vendor')} className="dark:text-gray-200">
+                                                                        Make Vendor
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button className='text-red-600 dark:text-red-400' onClick={() => handleRoleChange(user._id, 'fraud')}>
+                                                                        Mark as Fraud
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Card>
                         ) : (
-                            <div className='text-center p-12 bg-gray-50 rounded-lg'>
-                                <p className='text-gray-600 text-lg'>No users found</p>
-                            </div>
+                            <Card className='text-center p-12'>
+                                <p className='text-gray-600 dark:text-gray-400 text-lg'>No users found</p>
+                            </Card>
                         )}
                     </>
                 )}

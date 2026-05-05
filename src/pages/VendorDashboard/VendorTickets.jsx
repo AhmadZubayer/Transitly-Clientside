@@ -5,6 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../components/Loading';
 import VendorTicketCard from './VendorTicketCard';
+import Card from '../../components/Card';
 
 const VendorTickets = () => {
     const axiosSecure = useAxiosSecure();
@@ -86,10 +87,10 @@ const VendorTickets = () => {
                                 ))}
                             </div>
                         ) : (
-                            <div className='text-center p-8 bg-gray-50 rounded-xl border border-dashed border-gray-200'>
-                                <p className='text-gray-600 text-lg font-adaptive'>No tickets found</p>
-                                <p className='text-gray-400 text-sm mt-1 font-adaptive'>Add a ticket to see it here</p>
-                            </div>
+                            <Card className='text-center p-8'>
+                                <p className='text-gray-600 dark:text-gray-400 text-lg font-adaptive'>No tickets found</p>
+                                <p className='text-gray-400 dark:text-gray-500 text-sm mt-1 font-adaptive'>Add a ticket to see it here</p>
+                            </Card>
                         )}
                     </>
                 )}

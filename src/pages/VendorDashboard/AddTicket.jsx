@@ -7,6 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Card from '../../components/Card';
 
 const AddTicket = () => {
     const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
@@ -191,211 +192,213 @@ const AddTicket = () => {
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 bg-white/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-100 shadow-sm">
-                    {/* 3-Column Grid for Desktop */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <Card>
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+                        {/* 3-Column Grid for Desktop */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-                        {/* TICKET DETAILS */}
-                        <div className="flex flex-col gap-3">
-                            <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Ticket Details</h4>
+                            {/* TICKET DETAILS */}
+                            <div className="flex flex-col gap-3">
+                                <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Ticket Details</h4>
 
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Ticket Title</label>
-                                <input
-                                    type="text"
-                                    {...register('ticketTitle', { required: 'Title is required' })}
-                                    className='input input-bordered input-sm w-full'
-                                    placeholder="e.g., Dhaka to Chittagong Express"
-                                />
-                                {errors.ticketTitle && <span className="text-red-500 text-xs">{errors.ticketTitle.message}</span>}
-                            </fieldset>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Transport Type</label>
-                                <select
-                                    {...register('transportType', { required: 'Transport type is required' })}
-                                    defaultValue=""
-                                    className="select select-bordered select-sm w-full"
-                                >
-                                    <option disabled value="">Select transport type</option>
-                                    {busTypes.map((type, i) => (
-                                        <option key={i} value={type}>{type}</option>
-                                    ))}
-                                </select>
-                                {errors.transportType && <span className="text-red-500 text-xs">{errors.transportType.message}</span>}
-                            </fieldset>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Price (৳)</label>
-                                <input
-                                    type="number"
-                                    {...register('price', { required: 'Price is required', min: 0 })}
-                                    className='input input-bordered input-sm w-full'
-                                    placeholder="Enter price"
-                                />
-                                {errors.price && <span className="text-red-500 text-xs">{errors.price.message}</span>}
-                            </fieldset>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Available Quantity</label>
-                                <input
-                                    type="number"
-                                    {...register('quantity', { required: 'Quantity is required', min: 1 })}
-                                    className='input input-bordered input-sm w-full'
-                                    placeholder="Enter available tickets"
-                                />
-                                {errors.quantity && <span className="text-red-500 text-xs">{errors.quantity.message}</span>}
-                            </fieldset>
-                        </div>
-
-                        {/* ROUTE DETAILS */}
-                        <div className="flex flex-col gap-3">
-                            <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Route Details</h4>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Departure Location (From)</label>
-                                <select
-                                    {...register('from', { required: 'Departure location is required' })}
-                                    defaultValue=""
-                                    className="select select-bordered select-sm w-full"
-                                >
-                                    <option disabled value="">Select departure</option>
-                                    {departureDistricts.map((d, idx) => (
-                                        <option key={idx} value={d}>{d}</option>
-                                    ))}
-                                </select>
-                                {errors.from && <span className="text-red-500 text-xs">{errors.from.message}</span>}
-                            </fieldset>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Destination (To)</label>
-                                <select
-                                    {...register('to', { required: 'Destination is required' })}
-                                    defaultValue=""
-                                    className="select select-bordered select-sm w-full"
-                                >
-                                    <option disabled value="">Select destination</option>
-                                    {destinationDistricts.map((d, idx) => (
-                                        <option key={idx} value={d}>{d}</option>
-                                    ))}
-                                </select>
-                                {errors.to && <span className="text-red-500 text-xs">{errors.to.message}</span>}
-                            </fieldset>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Departure Date & Time</label>
-                                <Controller
-                                    name="departureDateTime"
-                                    control={control}
-                                    rules={{ required: 'Departure date & time is required' }}
-                                    render={({ field }) => (
-                                        <DatePicker
-                                            {...field}
-                                            minDate={dayjs()}
-                                            slotProps={{ textField: { fullWidth: true, variant: 'outlined', size: 'small' } }}
-                                        />
-                                    )}
-                                />
-                                {errors.departureDateTime && <span className="text-red-500 text-xs">{errors.departureDateTime.message}</span>}
-                            </fieldset>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Return Date & Time (Optional)</label>
-                                <Controller
-                                    name="returnDateTime"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <DatePicker
-                                            {...field}
-                                            minDate={dayjs()}
-                                            slotProps={{ textField: { fullWidth: true, variant: 'outlined', size: 'small' } }}
-                                        />
-                                    )}
-                                />
-                            </fieldset>
-                        </div>
-
-                        {/* BUS & VENDOR DETAILS */}
-                        <div className="flex flex-col gap-3">
-                            <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Bus & Vendor Details</h4>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Bus Company</label>
-                                <select
-                                    {...register('busCompany', { required: 'Bus company is required' })}
-                                    defaultValue=""
-                                    className="select select-bordered select-sm w-full"
-                                >
-                                    <option disabled value="">Select company</option>
-                                    {busCompanies.map((company, idx) => (
-                                        <option key={idx} value={company}>{company}</option>
-                                    ))}
-                                </select>
-                                {errors.busCompany && <span className="text-red-500 text-xs">{errors.busCompany.message}</span>}
-                            </fieldset>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Bus Brand</label>
-                                <select
-                                    {...register('busBrand', { required: 'Bus brand is required' })}
-                                    defaultValue=""
-                                    className="select select-bordered select-sm w-full"
-                                >
-                                    <option disabled value="">Select brand</option>
-                                    {busBrands.map((brand, idx) => (
-                                        <option key={idx} value={brand}>{brand}</option>
-                                    ))}
-                                </select>
-                                {errors.busBrand && <span className="text-red-500 text-xs">{errors.busBrand.message}</span>}
-                            </fieldset>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Vendor Name (Read-Only)</label>
-                                <input
-                                    type="text"
-                                    value={user?.displayName || ''}
-                                    disabled
-                                    className='input input-bordered input-sm w-full bg-gray-50'
-                                />
-                            </fieldset>
-
-                            <fieldset>
-                                <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Vendor Email (Read-Only)</label>
-                                <input
-                                    type="email"
-                                    value={user?.email || ''}
-                                    disabled
-                                    className='input input-bordered input-sm w-full bg-gray-50'
-                                />
-                            </fieldset>
-                        </div>
-                    </div>
-
-                    {/* FEATURES/PERKS SECTION */}
-                    <div className="flex flex-col gap-3">
-                        <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Features/Perks</h4>
-                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                            {busFeatures.map((feature, index) => (
-                                <label key={index} className='flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors'>
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Ticket Title</label>
                                     <input
-                                        type="checkbox"
-                                        {...register('perks')}
-                                        value={feature}
-                                        className="checkbox checkbox-sm"
+                                        type="text"
+                                        {...register('ticketTitle', { required: 'Title is required' })}
+                                        className='input input-bordered input-sm w-full'
+                                        placeholder="e.g., Dhaka to Chittagong Express"
                                     />
-                                    <span className="text-xs font-medium font-adaptive">{feature}</span>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
+                                    {errors.ticketTitle && <span className="text-red-500 text-xs">{errors.ticketTitle.message}</span>}
+                                </fieldset>
 
-                    {/* Centered Submit Button */}
-                    <div className="flex justify-center mt-2">
-                        <button type="submit" className='btn btn-1 px-10'>
-                            {isEditing ? 'Update Ticket' : 'Add Ticket'}
-                        </button>
-                    </div>
-                </form>
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Transport Type</label>
+                                    <select
+                                        {...register('transportType', { required: 'Transport type is required' })}
+                                        defaultValue=""
+                                        className="select select-bordered select-sm w-full"
+                                    >
+                                        <option disabled value="">Select transport type</option>
+                                        {busTypes.map((type, i) => (
+                                            <option key={i} value={type}>{type}</option>
+                                        ))}
+                                    </select>
+                                    {errors.transportType && <span className="text-red-500 text-xs">{errors.transportType.message}</span>}
+                                </fieldset>
+
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Price (৳)</label>
+                                    <input
+                                        type="number"
+                                        {...register('price', { required: 'Price is required', min: 0 })}
+                                        className='input input-bordered input-sm w-full'
+                                        placeholder="Enter price"
+                                    />
+                                    {errors.price && <span className="text-red-500 text-xs">{errors.price.message}</span>}
+                                </fieldset>
+
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Available Quantity</label>
+                                    <input
+                                        type="number"
+                                        {...register('quantity', { required: 'Quantity is required', min: 1 })}
+                                        className='input input-bordered input-sm w-full'
+                                        placeholder="Enter available tickets"
+                                    />
+                                    {errors.quantity && <span className="text-red-500 text-xs">{errors.quantity.message}</span>}
+                                </fieldset>
+                            </div>
+
+                            {/* ROUTE DETAILS */}
+                            <div className="flex flex-col gap-3">
+                                <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Route Details</h4>
+
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Departure Location (From)</label>
+                                    <select
+                                        {...register('from', { required: 'Departure location is required' })}
+                                        defaultValue=""
+                                        className="select select-bordered select-sm w-full"
+                                    >
+                                        <option disabled value="">Select departure</option>
+                                        {departureDistricts.map((d, idx) => (
+                                            <option key={idx} value={d}>{d}</option>
+                                        ))}
+                                    </select>
+                                    {errors.from && <span className="text-red-500 text-xs">{errors.from.message}</span>}
+                                </fieldset>
+
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Destination (To)</label>
+                                    <select
+                                        {...register('to', { required: 'Destination is required' })}
+                                        defaultValue=""
+                                        className="select select-bordered select-sm w-full"
+                                    >
+                                        <option disabled value="">Select destination</option>
+                                        {destinationDistricts.map((d, idx) => (
+                                            <option key={idx} value={d}>{d}</option>
+                                        ))}
+                                    </select>
+                                    {errors.to && <span className="text-red-500 text-xs">{errors.to.message}</span>}
+                                </fieldset>
+
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Departure Date & Time</label>
+                                    <Controller
+                                        name="departureDateTime"
+                                        control={control}
+                                        rules={{ required: 'Departure date & time is required' }}
+                                        render={({ field }) => (
+                                            <DatePicker
+                                                {...field}
+                                                minDate={dayjs()}
+                                                slotProps={{ textField: { fullWidth: true, variant: 'outlined', size: 'small' } }}
+                                            />
+                                        )}
+                                    />
+                                    {errors.departureDateTime && <span className="text-red-500 text-xs">{errors.departureDateTime.message}</span>}
+                                </fieldset>
+
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Return Date & Time (Optional)</label>
+                                    <Controller
+                                        name="returnDateTime"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <DatePicker
+                                                {...field}
+                                                minDate={dayjs()}
+                                                slotProps={{ textField: { fullWidth: true, variant: 'outlined', size: 'small' } }}
+                                            />
+                                        )}
+                                    />
+                                </fieldset>
+                            </div>
+
+                            {/* BUS & VENDOR DETAILS */}
+                            <div className="flex flex-col gap-3">
+                                <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Bus & Vendor Details</h4>
+
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Bus Company</label>
+                                    <select
+                                        {...register('busCompany', { required: 'Bus company is required' })}
+                                        defaultValue=""
+                                        className="select select-bordered select-sm w-full"
+                                    >
+                                        <option disabled value="">Select company</option>
+                                        {busCompanies.map((company, idx) => (
+                                            <option key={idx} value={company}>{company}</option>
+                                        ))}
+                                    </select>
+                                    {errors.busCompany && <span className="text-red-500 text-xs">{errors.busCompany.message}</span>}
+                                </fieldset>
+
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Bus Brand</label>
+                                    <select
+                                        {...register('busBrand', { required: 'Bus brand is required' })}
+                                        defaultValue=""
+                                        className="select select-bordered select-sm w-full"
+                                    >
+                                        <option disabled value="">Select brand</option>
+                                        {busBrands.map((brand, idx) => (
+                                            <option key={idx} value={brand}>{brand}</option>
+                                        ))}
+                                    </select>
+                                    {errors.busBrand && <span className="text-red-500 text-xs">{errors.busBrand.message}</span>}
+                                </fieldset>
+
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Vendor Name (Read-Only)</label>
+                                    <input
+                                        type="text"
+                                        value={user?.displayName || ''}
+                                        disabled
+                                        className='input input-bordered input-sm w-full bg-gray-50'
+                                    />
+                                </fieldset>
+
+                                <fieldset>
+                                    <label className="label py-1 uppercase text-[11px] font-semibold text-gray-600 font-adaptive">Vendor Email (Read-Only)</label>
+                                    <input
+                                        type="email"
+                                        value={user?.email || ''}
+                                        disabled
+                                        className='input input-bordered input-sm w-full bg-gray-50'
+                                    />
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        {/* FEATURES/PERKS SECTION */}
+                        <div className="flex flex-col gap-3">
+                            <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Features/Perks</h4>
+                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                                {busFeatures.map((feature, index) => (
+                                    <label key={index} className='flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors'>
+                                        <input
+                                            type="checkbox"
+                                            {...register('perks')}
+                                            value={feature}
+                                            className="checkbox checkbox-sm"
+                                        />
+                                        <span className="text-xs font-medium font-adaptive">{feature}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Centered Submit Button */}
+                        <div className="flex justify-center mt-2">
+                            <button type="submit" className='btn btn-1 px-10'>
+                                {isEditing ? 'Update Ticket' : 'Add Ticket'}
+                            </button>
+                        </div>
+                    </form>
+                </Card>
 
                 {/* Confirmation Dialog */}
                 {showConfirmation && (

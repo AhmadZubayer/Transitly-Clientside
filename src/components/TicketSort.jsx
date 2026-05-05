@@ -107,7 +107,21 @@ const TicketSort = () => {
                             <DatePicker
                                 {...field}
                                 minDate={dayjs()}
-                                slotProps={{ textField: { fullWidth: true, variant: 'outlined', size: 'small' } }}
+                                slotProps={{
+                                    textField: {
+                                        fullWidth: true,
+                                        variant: 'outlined',
+                                        size: 'small',
+                                    },
+                                    popper: {
+                                        disablePortal: true,
+                                        sx: { zIndex: 99999 },
+                                    },
+                                    dialog: {
+                                        disablePortal: true,
+                                        sx: { zIndex: 99999 },
+                                    },
+                                }}
                             />
                         )}
                     />

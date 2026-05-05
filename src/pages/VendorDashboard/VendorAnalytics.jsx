@@ -4,6 +4,7 @@ import { LineChart } from '@mui/x-charts/LineChart';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
 import Loading from '../../components/Loading';
+import Card from '../../components/Card';
 
 const VendorAnalytics = () => {
     const axiosSecure = useAxiosSecure();
@@ -37,7 +38,7 @@ const VendorAnalytics = () => {
         <div className='p-4'>
             <div className='space-y-4'>
                 <div className='flex flex-col gap-1'>
-                    <h2 className='text-xl font-bold text-gray-800 font-adaptive'>Vendor Analytics</h2>
+                    <h2 className='text-xl font-black text-gray-800 dark:text-gray-100 font-adaptive'>Vendor Analytics</h2>
                     <p className='text-[12px] text-gray-500 font-adaptive'>Last 30 days overview</p>
                 </div>
 
@@ -56,47 +57,44 @@ const VendorAnalytics = () => {
                 {!isLoading && !isError && (
                     <>
                         <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
-                            <div className='bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-4'>
-                                <p className='text-gray-500 text-[11px] font-bold uppercase font-adaptive'>Total Revenue</p>
-                                <p className='text-2xl font-bold text-emerald-600 font-adaptive'>৳{Number(totals.totalRevenue || 0).toLocaleString()}</p>
-                            </div>
-                            <div className='bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-4'>
-                                <p className='text-gray-500 text-[11px] font-bold uppercase font-adaptive'>Tickets Sold</p>
-                                <p className='text-2xl font-bold text-gray-800 font-adaptive'>{totals.ticketsSold || 0}</p>
-                            </div>
-                            <div className='bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-4'>
-                                <p className='text-gray-500 text-[11px] font-bold uppercase font-adaptive'>Tickets Added</p>
-                                <p className='text-2xl font-bold text-gray-800 font-adaptive'>{totals.ticketsAdded || 0}</p>
-                            </div>
+                            <Card className='p-4'>
+                                <p className='text-gray-500 dark:text-gray-400 text-[11px] font-bold uppercase font-adaptive'>Total Revenue</p>
+                                <p className='text-2xl font-black text-emerald-600 dark:text-emerald-500 font-adaptive'>৳{Number(totals.totalRevenue || 0).toLocaleString()}</p>
+                            </Card>
+                            <Card className='p-4'>
+                                <p className='text-gray-500 dark:text-gray-400 text-[11px] font-bold uppercase font-adaptive'>Tickets Sold</p>
+                                <p className='text-2xl font-black text-gray-800 dark:text-gray-100 font-adaptive'>{totals.ticketsSold || 0}</p>
+                            </Card>
+                            <Card className='p-4'>
+                                <p className='text-gray-500 dark:text-gray-400 text-[11px] font-bold uppercase font-adaptive'>Tickets Added</p>
+                                <p className='text-2xl font-black text-gray-800 dark:text-gray-100 font-adaptive'>{totals.ticketsAdded || 0}</p>
+                            </Card>
                         </div>
 
                         <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
-                            <div className='bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-3'>
-                                <h3 className='font-bold text-gray-700 text-sm mb-2 font-adaptive'>Revenue</h3>
+                            <Card title="Revenue" className='p-3'>
                                 <LineChart
                                     xAxis={[{ scaleType: 'point', data: revenueX }]}
                                     series={[{ data: revenueY, label: 'Revenue (৳)' }]}
                                     height={240}
                                 />
-                            </div>
+                            </Card>
 
-                            <div className='bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-3'>
-                                <h3 className='font-bold text-gray-700 text-sm mb-2 font-adaptive'>Tickets Sold</h3>
+                            <Card title="Tickets Sold" className='p-3'>
                                 <LineChart
                                     xAxis={[{ scaleType: 'point', data: soldX }]}
                                     series={[{ data: soldY, label: 'Tickets Sold' }]}
                                     height={240}
                                 />
-                            </div>
+                            </Card>
 
-                            <div className='bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-3'>
-                                <h3 className='font-bold text-gray-700 text-sm mb-2 font-adaptive'>Tickets Added</h3>
+                            <Card title="Tickets Added" className='p-3'>
                                 <LineChart
                                     xAxis={[{ scaleType: 'point', data: addedX }]}
                                     series={[{ data: addedY, label: 'Tickets Added' }]}
                                     height={240}
                                 />
-                            </div>
+                            </Card>
                         </div>
                     </>
                 )}

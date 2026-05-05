@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useRole from '../../hooks/useRole';
+import Card from '../Card';
 
 const DashboardProfile = ({ fallbackName = 'User' }) => {
     const { user, logOut } = useAuth();
@@ -36,7 +37,7 @@ const DashboardProfile = ({ fallbackName = 'User' }) => {
     return (
         <div className='p-6'>
             <div className='max-w-2xl mx-auto'>
-                <div className='bg-white rounded-lg shadow-lg p-8'>
+                <Card className='p-8'>
                     <div className='flex flex-col items-center mb-8'>
                         {user?.photoURL && (
                             <img
@@ -84,7 +85,7 @@ const DashboardProfile = ({ fallbackName = 'User' }) => {
                             Sign Out
                         </button>
                     </div>
-                </div>
+                </Card>
             </div>
         </div>
     );

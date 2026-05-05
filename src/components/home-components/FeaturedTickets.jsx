@@ -30,7 +30,7 @@ const FeaturedTickets = () => {
         return (
             <div className='w-full px-6 py-8'>
                 <div className='max-w-7xl mx-auto'>
-                    <h2 className='text-3xl font-bold text-gray-800 mb-6'>Featured Tickets</h2>
+                    <h2 className='text-3xl font-bold text-gray-800 mb-6 font-adaptive'>Featured Tickets</h2>
                     <div className='flex justify-center items-center py-12'>
                         <Loading />
                     </div>
@@ -44,10 +44,10 @@ const FeaturedTickets = () => {
     }
 
     return (
-        <div className='w-full px-6 py-8'>
+        <div className='w-full px-6 py-12 overflow-hidden'>
             <div className='max-w-7xl mx-auto'>
-                <h2 className='text-3xl font-bold text-gray-800 mb-6'>Featured Tickets</h2>
-
+                <h2 className='text-3xl font-bold text-gray-800 mb-10 font-adaptive text-center'>Featured Tickets</h2>
+                
                 <Swiper
                     effect={'coverflow'}
                     grabCursor={true}
@@ -62,11 +62,11 @@ const FeaturedTickets = () => {
                     }}
                     pagination={true}
                     modules={[EffectCoverflow, Pagination]}
-                    className="mySwiper"
+                    className="featured-swiper !pb-12"
                 >
                     {tickets.map(ticket => (
-                        <SwiperSlide key={ticket._id} style={{ width: '300px' }} className="h-full">
-                            <div className="h-full" onClick={() => handleTicketClick(ticket)}>
+                        <SwiperSlide key={ticket._id} style={{ width: '320px' }}>
+                            <div className="h-full px-2">
                                 <TicketCard ticket={ticket} onClick={() => handleTicketClick(ticket)} />
                             </div>
                         </SwiperSlide>

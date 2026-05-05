@@ -5,6 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import BookingCard from '../../components/AllTickets/BookingCard';
 import BookingConfirmationModal from '../../components/BookingConfirmationModal';
 import Loading from '../../components/Loading';
+import Card from '../../components/Card';
 
 const UserBookings = () => {
     const axiosSecure = useAxiosSecure();
@@ -59,10 +60,10 @@ const UserBookings = () => {
                                 ))}
                             </div>
                         ) : (
-                            <div className='text-center p-8 bg-gray-50 rounded-xl border border-dashed border-gray-200'>
-                                <p className='text-gray-600 text-lg font-adaptive'>No bookings found</p>
-                                <p className='text-gray-400 text-sm mt-1 font-adaptive'>Start booking tickets to see them here</p>
-                            </div>
+                            <Card className='text-center p-8'>
+                                <p className='text-gray-600 dark:text-gray-400 text-lg font-adaptive'>No bookings found</p>
+                                <p className='text-gray-400 dark:text-gray-500 text-sm mt-1 font-adaptive'>Start booking tickets to see them here</p>
+                            </Card>
                         )}
                     </>
                 )}

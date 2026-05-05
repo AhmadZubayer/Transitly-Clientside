@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Card from '../../components/Card';
 
 const UserBookingConfirmed = () => {
   const [searchParams] = useSearchParams();
@@ -61,7 +62,7 @@ const UserBookingConfirmed = () => {
 
   return (
     <div className='flex items-center justify-center min-h-[60vh] p-4'>
-      <div className='bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-2xl p-10 border border-gray-100 dark:border-gray-700 shadow-xl max-w-lg w-full text-center'>
+      <Card className='p-10 max-w-lg w-full text-center'>
         <div className='inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 mb-6'>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +86,7 @@ const UserBookingConfirmed = () => {
         >
             Go to Bookings Now
         </button>
-      </div>
+      </Card>
 
       {showToast && (
           <style>

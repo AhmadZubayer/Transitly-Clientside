@@ -188,7 +188,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className='w-sm'>
+    <div className='w-full'>
       <Form1
         heading="Sign Up, It's Free"
         fields={['name', 'phone', 'email', 'password', 'retypePassword']}

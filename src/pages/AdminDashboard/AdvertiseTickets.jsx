@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Loading from '../../components/Loading';
 import TicketCard from '../../components/AllTickets/TicketCard';
+import Card from '../../components/Card';
 
 const AdvertiseTickets = () => {
     const axiosSecure = useAxiosSecure();
@@ -93,7 +94,7 @@ const AdvertiseTickets = () => {
         <div className='p-4'>
             <div className='space-y-4'>
                 <div>
-                    <h2 className='text-xl font-bold text-gray-800 font-adaptive'>
+                    <h2 className='text-xl font-black text-gray-800 dark:text-gray-100 font-adaptive'>
                         Featured Tickets ({verifiedTickets.length}/{MAX_FEATURED_TICKETS})
                     </h2>
                     <p className='text-[12px] text-gray-500 font-adaptive opacity-70'>Verified tickets that are currently promoted on the homepage Swiper.</p>
@@ -143,12 +144,12 @@ const AdvertiseTickets = () => {
                                 </div>
                             </>
                         ) : (
-                            <div className='text-center p-12 bg-gray-50/50 dark:bg-gray-900/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800'>
+                            <Card className='text-center p-12 border-2 border-dashed border-gray-200 dark:border-blue-500/20'>
                                 <p className='text-gray-400 font-adaptive'>
                                     No featured tickets yet.
                                 </p>
                                 <p className='text-[12px] text-gray-400 font-adaptive mt-1'>Approve and feature tickets from Manage Tickets page.</p>
-                            </div>
+                            </Card>
                         )}
                     </>
                 )}

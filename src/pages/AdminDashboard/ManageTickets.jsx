@@ -7,6 +7,7 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Loading from '../../components/Loading';
 import TicketCard from '../../components/AllTickets/TicketCard';
 import CustomPagination from '../../components/Pagination';
+import Card from '../../components/Card';
 
 const ManageTickets = () => {
     const axiosSecure = useAxiosSecure();
@@ -250,13 +251,13 @@ const ManageTickets = () => {
                                 })}
                             </div>
                         ) : (
-                            <div className='text-center p-12 bg-gray-50 rounded-lg'>
-                                <p className='text-gray-600 text-lg'>
+                            <Card className='text-center p-12'>
+                                <p className='text-gray-600 dark:text-gray-400 text-lg'>
                                     {filter === 'pending'
                                         ? 'No tickets pending approval'
                                         : 'No tickets found'}
                                 </p>
-                            </div>
+                            </Card>
                         )}
 
                         {totalPages > 1 && (
@@ -297,4 +298,3 @@ const ManageTickets = () => {
 };
 
 export default ManageTickets;
-

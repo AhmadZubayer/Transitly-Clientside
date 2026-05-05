@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import { FcGoogle } from 'react-icons/fc';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Card from '../../components/Card';
 
 
 const SignIn = () => {
@@ -48,7 +49,7 @@ const SignIn = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-card">
+      <Card className="auth-card">
         <h1 className="auth-title">Sign In</h1>
         <p className="auth-subtitle">Welcome back! Please login to your account</p>
 
@@ -135,7 +136,7 @@ const SignIn = () => {
             Sign Up
           </Link>
         </p>
-      </div>
+      </Card>
     </div>
   );
 };

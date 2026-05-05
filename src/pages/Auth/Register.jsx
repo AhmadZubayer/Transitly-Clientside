@@ -5,6 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import { updateProfile } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { FaEye, FaEyeSlash, FaImage } from 'react-icons/fa';
+import Card from '../../components/Card';
 
 import axios from 'axios';
 
@@ -104,7 +105,7 @@ const Register = () => {
 
     return (
         <div className="auth-container">
-            <div className="auth-card">
+            <Card className="auth-card">
                 <h1 className="auth-title">Sign Up</h1>
                 <p className="auth-subtitle">Create your account to start building habits</p>
 
@@ -247,7 +248,7 @@ const Register = () => {
                         Sign In
                     </Link>
                 </p>
-            </div>
+            </Card>
         </div>
     );
 };
