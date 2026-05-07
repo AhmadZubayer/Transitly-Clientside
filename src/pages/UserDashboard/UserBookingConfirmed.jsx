@@ -5,6 +5,7 @@ import { HiMenuAlt2 } from 'react-icons/hi';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Card from '../../components/Card';
+import generateTicketPDF from '../../utils/generateTicketPDF';
 
 const UserBookingConfirmed = () => {
   const [searchParams] = useSearchParams();
@@ -14,6 +15,7 @@ const UserBookingConfirmed = () => {
   const axiosSecure = useAxiosSecure();
   const [paymentStored, setPaymentStored] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [isDownloadingPDF, setIsDownloadingPDF] = useState(false);
 
   const sessionId = searchParams.get('session_id');
 
@@ -47,6 +49,22 @@ const UserBookingConfirmed = () => {
         setShowToast(true);
         sessionStorage.removeItem('pendingPayment');
 
+        // Auto-download ticket PDF
+        try {
+          setIsDownloadingPDF(true);
+          const booking = response.data.booking;
+          const userDetails = {
+            name: user?.displayName || 'Guest',
+            email: user?.email,
+            phone: user?.phoneNumber || 'N/A'
+          };
+          await generateTicketPDF(booking, userDetails);
+        } catch (pdfError) {
+          console.error('Error generating PDF:', pdfError);
+        } finally {
+          setIsDownloadingPDF(false);
+        }
+
         // Auto-redirect after 2 seconds
         const timer = setTimeout(() => {
           navigate('/dashboard/bookings');
@@ -60,7 +78,7 @@ const UserBookingConfirmed = () => {
     };
 
     storePayment();
-  }, [sessionId, user?.email, axiosSecure, navigate]);
+  }, [sessionId, user?.email, axiosSecure, navigate, user?.displayName, user?.phoneNumber]);
 
   return (
     <div className='flex flex-col items-center justify-center min-h-[60vh] p-4'>
@@ -79,13 +97,17 @@ const UserBookingConfirmed = () => {
           </svg>
         </div>
         <h1 className='text-3xl font-black text-gray-800 font-adaptive mb-3'>Payment Successful!</h1>
-        <p className='text-gray-600 font-adaptive dark:text-gray-400 mb-8'>Your booking has been confirmed. You will be redirected to your dashboard in a moment.</p>
-        
+        <p className='text-gray-600 font-adaptive dark:text-gray-400 mb-2'>Your booking has been confirmed.</p>
+        {isDownloadingPDF && (
+          <p className='text-sm text-blue-600 dark:text-blue-400 mb-4'>Downloading your ticket PDF...</p>
+        )}
+        <p className='text-gray-600 font-adaptive dark:text-gray-400 mb-8'>You will be redirected to your dashboard in a moment.</p>
+
         <div className='w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden'>
             <div className='bg-emerald-500 h-full w-full origin-left animate-[progress_2s_linear_forwards]'></div>
         </div>
-        
-        <button 
+
+        <button
             onClick={() => navigate('/dashboard/bookings')}
             className='btn btn-1 mt-8 px-10'
         >

@@ -3,7 +3,9 @@ import transitlyLogo from '../assets/transitly.png';
 
 const generateTicketPDF = async (booking, userDetails) => {
     try {
-        const doc        = new jsPDF();
+        const doc = new jsPDF({
+            compress: true
+        });
         const pageWidth  = doc.internal.pageSize.getWidth();
         const margin     = 15;
         const tableWidth = pageWidth - 2 * margin;
@@ -11,7 +13,7 @@ const generateTicketPDF = async (booking, userDetails) => {
 
         const logoW = 70;
         const logoH = 20;
-        doc.addImage(transitlyLogo, 'PNG', margin, y, logoW, logoH);
+        doc.addImage(transitlyLogo, 'PNG', margin, y, logoW, logoH, undefined, 'FAST');
 
         doc.setFont('inter', 'normal');
         doc.setFontSize(12);
