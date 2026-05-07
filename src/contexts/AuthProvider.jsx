@@ -5,6 +5,8 @@ import { auth } from '../firebase/firebase.init';
 import axios from 'axios';
 
 const googleProvider = new GoogleAuthProvider();
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -38,7 +40,7 @@ const AuthProvider = ({children}) => {
                     // Fetch user role from backend
                     try {
                         const token = await currentUser.getIdToken();
-                        const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${currentUser.email}/role`, {
+                        const response = await axios.get(`${API_URL}/users/${currentUser.email}/role`, {
                             headers: {
                                 authorization: `Bearer ${token}`
                             }

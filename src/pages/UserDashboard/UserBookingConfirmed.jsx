@@ -12,11 +12,14 @@ const UserBookingConfirmed = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [isProcessing, setIsProcessing] = useState(true);
+  const isStored = React.useRef(false);
 
   const sessionId = searchParams.get('session_id');
 
   useEffect(() => {
     const storePayment = async () => {
+      if (isStored.current) return;
+      
       try {
         if (!sessionId || !user?.email) {
           return;
@@ -25,12 +28,17 @@ const UserBookingConfirmed = () => {
         // Get payment data from sessionStorage
         const paymentData = sessionStorage.getItem('pendingPayment');
         if (!paymentData) {
-          console.error('No payment data found');
-          navigate('/dashboard/bookings');
+          // If no data but we haven't stored yet, maybe it's already gone
+          if (!isStored.current) navigate('/dashboard/bookings');
           return;
         }
 
-        const { ticketId, quantity, totalPrice, bookingId } = JSON.parse(paymentData);
+        isStored.current = true;
+        const parsedPaymentData = JSON.parse(paymentData);
+        const { ticketId, quantity, totalPrice, bookingId } = parsedPaymentData;
+        
+        // Remove it immediately to prevent double processing from other turns/strict mode
+        sessionStorage.removeItem('pendingPayment');
 
         // Store payment in database
         const response = await axiosSecure.post('/store-payment', {
@@ -44,8 +52,6 @@ const UserBookingConfirmed = () => {
 
         console.log('Payment stored:', response.data);
         
-        sessionStorage.removeItem('pendingPayment');
-
         // Show SweetAlert
         await Swal.fire({
             icon: 'success',

@@ -6,7 +6,7 @@ import { auth } from '../firebase/firebase.init';
 
 
 const axiosSecure = axios.create({
-    baseURL: 'https://transitly-server.vercel.app//'
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/'
 })
 
 const useAxiosSecure = () => {

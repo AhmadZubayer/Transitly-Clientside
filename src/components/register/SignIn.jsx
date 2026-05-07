@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import Form1 from '../Form-1';
+import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const SignIn = () => {
   const { signInUser, signInGoogle, user } = useAuth();
@@ -80,6 +83,18 @@ const SignIn = () => {
   const handleGoogleSignIn = () => {
     setLoading(true);
     signInGoogle()
+      .then((result) => {
+        // Extract user info from Google result
+        const userInfo = {
+          email: result.user.email,
+          displayName: result.user.displayName,
+          phone: result.user.phoneNumber || '',
+          photoURL: result.user.photoURL
+        };
+        
+        // Send to backend (upsert)
+        return axios.post(`${API_URL}/users`, userInfo);
+      })
       .then(() => {
         // Navigation is handled by useEffect when user state changes
       })

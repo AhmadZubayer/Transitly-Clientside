@@ -11,6 +11,7 @@ const Footer = () => {
                 {/* Column 1: Logo + Description */}
                 <div className="footer-section">
                     <img src={logo} alt="Transitly Logo" className="footer-logo" />
+                    
                     <p className="tagline font-adaptive">Seamless Ticket Booking & Management - Your Bookings Redefined</p>
                 </div>
 

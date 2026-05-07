@@ -5,6 +5,8 @@ import { updateProfile } from 'firebase/auth';
 import axios from 'axios';
 import Form1 from '../Form-1';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const SignUp = () => {
   const { registerUser, signInGoogle, user } = useAuth();
   
@@ -54,19 +56,19 @@ const SignUp = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required.';
     }
-    
+
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required.';
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required.';
     }
-    
+
     if (!formData.password) {
       newErrors.password = 'Password is required.';
     } else if (formData.password.length < 6) {
@@ -74,17 +76,13 @@ const SignUp = () => {
     } else if (!/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/.test(formData.password)) {
       newErrors.password = 'Password must have at least one uppercase, one lowercase, one number, and one special character.';
     }
-    
+
     if (!formData.retypePassword) {
       newErrors.retypePassword = 'Please retype your password.';
     } else if (formData.password !== formData.retypePassword) {
       newErrors.retypePassword = 'Passwords do not match.';
     }
-    
-    if (!formData.photo) {
-      newErrors.photo = 'Profile photo is required.';
-    }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -92,69 +90,118 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setUploadError('');
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setLoading(true);
-    
-    // 1. Upload image to ImgBB
-    const imgFormData = new FormData();
-    imgFormData.append('image', formData.photo);
-    
-    const imgbbApiKey = import.meta.env.VITE_imgbbKey;
-    const imgbbUrl = `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`;
-    
-    axios.post(imgbbUrl, imgFormData)
-      .then((imgResponse) => {
-        const photoURL = imgResponse.data.data.display_url;
-        
-        // 2. Create Firebase user
-        return registerUser(formData.email, formData.password)
-          .then((result) => {
-            // 3. Update Firebase profile
-            const userProfile = {
-              displayName: formData.name,
-              photoURL: photoURL
-            };
-            
-            return updateProfile(result.user, userProfile)
-              .then(() => ({ ...result, photoURL }));
-          });
-      })
-      .then((result) => {
-        // 4. Save to your database
-        const userInfo = {
-          email: formData.email,
-          displayName: formData.name,
-          phone: formData.phone,
-          photoURL: result.photoURL,
-          createdAt: new Date()
-        };
-        
-        return axios.post('https://transitly-server.vercel.app//users', userInfo);
-      })
-      .then(() => {
-        // Reset form
-        setFormData({
-          name: '',
-          phone: '',
-          email: '',
-          password: '',
-          retypePassword: '',
-          photo: null
+
+    const processRegistration = (photoURL) => {
+      return registerUser(formData.email, formData.password)
+        .then((result) => {
+          const userProfile = {
+            displayName: formData.name
+          };
+          if (photoURL) {
+            userProfile.photoURL = photoURL;
+          }
+          return updateProfile(result.user, userProfile)
+            .then(() => ({ ...result, photoURL }));
         });
-        setImagePreview(null);
-        // Navigation is handled by useEffect when user state changes
-      })
-      .catch((error) => {
-        console.error('Registration error:', error);
-        setUploadError(error.message || 'Registration failed');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    };
+
+    // If photo is provided, upload to ImgBB first
+    if (formData.photo) {
+      const imgFormData = new FormData();
+      imgFormData.append('image', formData.photo);
+      const imgbbApiKey = import.meta.env.VITE_imgbbKey;
+      const imgbbUrl = `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`;
+
+      axios.post(imgbbUrl, imgFormData)
+        .then((imgResponse) => {
+          const photoURL = imgResponse.data.data.display_url;
+          return processRegistration(photoURL);
+        })
+        .then((result) => {
+          const userInfo = {
+            email: formData.email,
+            displayName: formData.name,
+            phone: formData.phone,
+            photoURL: result.photoURL
+          };
+
+          console.log('Registration complete. Saving user:', userInfo);
+          return axios.post(`${API_URL}/users`, userInfo);
+        })
+        .then((response) => {
+          console.log('User saved to MongoDB:', response.data);
+          setFormData({
+            name: '',
+            phone: '',
+            email: '',
+            password: '',
+            retypePassword: '',
+            photo: null
+          });
+          setImagePreview(null);
+        })
+        .catch((error) => {
+          console.error('Registration error:', error);
+          if (error.response) {
+            console.error('Backend error:', error.response.status, error.response.data);
+            setUploadError(`Registration failed: ${error.response.data?.error || 'Unknown error'}`);
+          } else if (error.request) {
+            console.error('No response from server');
+            setUploadError('Server not responding. Check if backend is running.');
+          } else {
+            setUploadError(error.message || 'Registration failed');
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      // No photo provided, skip ImgBB upload
+      processRegistration(null)
+        .then((result) => {
+          const userInfo = {
+            email: formData.email,
+            displayName: formData.name,
+            phone: formData.phone
+          };
+
+          console.log('Registration complete. Saving user:', userInfo);
+          return axios.post(`${API_URL}/users`, userInfo);
+        })
+        .then((response) => {
+          console.log('User saved to MongoDB:', response.data);
+          setFormData({
+            name: '',
+            phone: '',
+            email: '',
+            password: '',
+            retypePassword: '',
+            photo: null
+          });
+          setImagePreview(null);
+        })
+        .catch((error) => {
+          console.error('Registration error:', error);
+          if (error.response) {
+            console.error('Backend error:', error.response.status, error.response.data);
+            setUploadError(`Registration failed: ${error.response.data?.error || 'Unknown error'}`);
+          } else if (error.request) {
+            console.error('No response from server');
+            setUploadError('Server not responding. Check if backend is running.');
+          } else {
+            setUploadError(error.message || 'Registration failed');
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -165,20 +212,30 @@ const SignUp = () => {
         const userInfo = {
           email: result.user.email,
           displayName: result.user.displayName,
-          phone: '',  // Google doesn't provide phone by default
-          photoURL: result.user.photoURL,
-          createdAt: new Date()
+          phone: result.user.phoneNumber || '',
+          photoURL: result.user.photoURL
         };
-        
+
+        console.log('Google sign-up successful. Saving user:', userInfo);
         // Send to backend
-        return axios.post('https://transitly-server.vercel.app//users', userInfo);
+        return axios.post(`${API_URL}/users`, userInfo);
       })
-      .then(() => {
+      .then((response) => {
+        console.log('User saved to MongoDB:', response.data);
         // Navigation is handled by useEffect when user state changes
       })
       .catch((error) => {
         console.error('Google sign-up error:', error);
-        setUploadError('Google sign-up failed');
+        if (error.response) {
+          console.error('Backend error status:', error.response.status);
+          console.error('Backend error message:', error.response.data);
+          setUploadError(`Sign-up failed: ${error.response.data?.error || 'Unknown error'}`);
+        } else if (error.request) {
+          console.error('No response from server:', error.request);
+          setUploadError('Server not responding. Check if backend is running.');
+        } else {
+          setUploadError(error.message || 'Google sign-up failed');
+        }
       })
       .finally(() => setLoading(false));
   };
