@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../hooks/useAxiosSecure';
+import useAuth from '../hooks/useAuth';
+import useRole from '../hooks/useRole';
 import Countdown from '../components/Countdown';
 import BookingQuantityModal from '../components/BookingQuantityModal';
 import Loading from '../components/Loading';
@@ -11,7 +13,8 @@ const TicketDetailsPage = () => {
     const { ticketId } = useParams();
     const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
-    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+    const { user } = useAuth();
+    const { role, roleLoading } = useRole();
 
     // Fetch ticket details
     const { data: ticket, isLoading, isError, error } = useQuery({
@@ -37,7 +40,7 @@ const TicketDetailsPage = () => {
                     dateObj = new Date(y, m - 1, d, hr, min);
                 }
             }
-        } catch (e) {
+        } catch {
             return { date: 'N/A', time: 'N/A' };
         }
         if (isNaN(dateObj?.getTime())) return { date: 'N/A', time: 'N/A' };
@@ -221,16 +224,34 @@ const TicketDetailsPage = () => {
                         </div>
                     )}
 
-                    {/* Book Now Button */}
-                    <div className='flex justify-center pt-2'>
-                        <button
-                            onClick={() => document.getElementById('booking_quantity_modal').showModal()}
-                            disabled={!canBook}
-                            className={`btn btn-sm px-10 ${canBook ? 'btn-1' : 'btn-disabled'}`}
-                        >
-                            Book Now
-                        </button>
-                    </div>
+                    {/* Book Now Button - Only visible for users */}
+                    {roleLoading ? (
+                        <div className="flex justify-center p-2">
+                            <span className="loading loading-dots loading-sm text-blue-500"></span>
+                        </div>
+                    ) : role === 'user' ? (
+                        <div className='flex justify-center pt-2'>
+                            <button
+                                onClick={() => document.getElementById('booking_quantity_modal').showModal()}
+                                disabled={!canBook}
+                                className={`btn btn-sm px-10 ${canBook ? 'btn-1' : 'btn-disabled'}`}
+                            >
+                                Book Now
+                            </button>
+                        </div>
+                    ) : (role === 'admin' || role === 'vendor') ? (
+                        <div className='p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-300 dark:border-blue-800'>
+                            <p className='text-blue-600 dark:text-blue-400 font-semibold text-sm text-center'>
+                                Sign in with a different account to book tickets.
+                            </p>
+                        </div>
+                    ) : (
+                        <div className='p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-300 dark:border-blue-800'>
+                            <p className='text-blue-600 dark:text-blue-400 font-semibold text-sm text-center'>
+                                {user ? 'Booking is only available for user accounts' : 'Please sign in to book tickets'}
+                            </p>
+                        </div>
+                    )}
                 </div>
             </Card>
 
