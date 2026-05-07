@@ -47,6 +47,8 @@ const Nav = () => {
   const dashboardPath = currentRole ? dashboardPathByRole[currentRole] : null;
   const profilePath = currentRole ? profilePathByRole[currentRole] : null;
 
+  const activeLinkClass = "active !bg-blue-600 !text-white font-bold";
+
   const handleContactClick = (e) => {
     e.preventDefault();
     const isHomePage = window.location.pathname === '/';
@@ -63,11 +65,11 @@ const Nav = () => {
 
   const links = (
     <>
-      <li><NavLink to="/all-tickets">All Tickets</NavLink></li>
+      <li><NavLink to="/all-tickets" className={({ isActive }) => isActive ? activeLinkClass : ""}>All Tickets</NavLink></li>
       <li><a href="#contact" onClick={handleContactClick}>Contact</a></li>
-      <li><NavLink to="/policies">Policies</NavLink></li>
+      <li><NavLink to="/policies" className={({ isActive }) => isActive ? activeLinkClass : ""}>Policies</NavLink></li>
       {user && dashboardPath && (
-        <li><NavLink to={dashboardPath}>Dashboard</NavLink></li>
+        <li><NavLink to={dashboardPath} className={({ isActive }) => isActive ? activeLinkClass : ""}>Dashboard</NavLink></li>
       )}
       <li className="lg:hidden mt-2 border-t border-gray-100/50 pt-2 flex flex-row items-center justify-between px-4">
         <span className="text-sm opacity-70">Appearance</span>
@@ -140,7 +142,7 @@ const Nav = () => {
               <ul tabIndex={0} className="dropdown-content menu nav-dropdown bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
                 <li className="px-4 py-1 text-xs opacity-70">{user.email}</li>
                 {profilePath && (
-                  <li><NavLink to={profilePath}>Your Account</NavLink></li>
+                  <li><NavLink to={profilePath} className={({ isActive }) => isActive ? activeLinkClass : ""}>Your Account</NavLink></li>
                 )}
                 <li><button onClick={handleSignOut}>Sign Out</button></li>
               </ul>
