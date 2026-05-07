@@ -12,7 +12,7 @@ const queryClient = new QueryClient()
 
 // Apply saved theme ASAP (prevents flash)
 const savedTheme = localStorage.getItem('transitly-theme');
-document.documentElement.setAttribute('data-theme', savedTheme === 'dark' ? 'dark' : 'light');
+document.documentElement.setAttribute('data-theme', savedTheme ? savedTheme : 'dark');
 
 createRoot(document.getElementById('root')).render(
    <StrictMode>

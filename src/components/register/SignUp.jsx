@@ -133,7 +133,7 @@ const SignUp = () => {
           createdAt: new Date()
         };
         
-        return axios.post('http://localhost:3000/users', userInfo);
+        return axios.post('https://transitly-server.vercel.app//users', userInfo);
       })
       .then(() => {
         // Reset form
@@ -171,7 +171,7 @@ const SignUp = () => {
         };
         
         // Send to backend
-        return axios.post('http://localhost:3000/users', userInfo);
+        return axios.post('https://transitly-server.vercel.app//users', userInfo);
       })
       .then(() => {
         // Navigation is handled by useEffect when user state changes
