@@ -11,8 +11,7 @@ const Footer = () => {
                 {/* Column 1: Logo + Description */}
                 <div className="footer-section">
                     <img src={logo} alt="Transitly Logo" className="footer-logo" />
-                    <p className="tagline font-adaptive">Book bus, train, launch & flight tickets easily</p>
-                    <p className="sub-tagline font-adaptive">Seamless Ticket Booking & Management - Your Bookings Redefined</p>
+                    <p className="tagline font-adaptive">Seamless Ticket Booking & Management - Your Bookings Redefined</p>
                 </div>
 
                 {/* Column 2: Quick Links */}
@@ -69,11 +68,11 @@ const Footer = () => {
             <hr className="footer-divider" />
 
             <div className="footer-bottom">
-                <p className="copyright font-adaptive">© 2025 TicketBari. All rights reserved.</p>
+                <p className="copyright font-adaptive">© 2025 Transitly. All rights reserved.</p>
                 <p className="developer-info font-adaptive">This is a Web Dev project, built by Ahmad Zubayer</p>
                 <div className="source-code font-adaptive">
                     Visit source code on 
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="font-adaptive">
+                    <a href="https://github.com/AhmadZubayer/Transitly-Clientside" target="_blank" rel="noopener noreferrer" className="font-adaptive">
                         <FaGithub />
                     </a>
                 </div>

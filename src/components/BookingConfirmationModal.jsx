@@ -143,18 +143,20 @@ const BookingConfirmationModal = ({ modalId, booking }) => {
 
                     {/* Total Amount */}
                     <div className="p-4 rounded-xl border-2 border-emerald-500/20 bg-emerald-500/5 dark:bg-emerald-500/10 text-center">
-                        <p className="text-[10px] uppercase font-bold text-emerald-600/80 mb-1 font-adaptive tracking-wider">Total Amount Paid</p>
+                        <p className="text-[10px] uppercase font-bold text-emerald-600/80 mb-1 font-adaptive tracking-wider">Total Amount</p>
                         <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400 font-adaptive">৳{booking.totalPrice.toLocaleString()}</p>
                     </div>
 
                     {/* Payment Completed Date */}
-                    <div className="p-4 rounded-xl border border-base-300 bg-base-200/30">
-                        <p className="text-[10px] uppercase font-bold text-base-content/40 mb-2 font-adaptive tracking-wider">Payment Confirmation</p>
-                        <div className="flex justify-between items-center">
-                            <span className="text-base font-semibold text-base-content font-adaptive">{paymentDate}</span>
-                            <span className="text-base font-semibold text-base-content font-adaptive">{paymentTime}</span>
+                    {booking.status === 'paid' && (
+                        <div className="p-4 rounded-xl border border-base-300 bg-base-200/30">
+                            <p className="text-[10px] uppercase font-bold text-base-content/40 mb-2 font-adaptive tracking-wider">Payment Confirmation</p>
+                            <div className="flex justify-between items-center">
+                                <span className="text-base font-semibold text-base-content font-adaptive">{paymentDate}</span>
+                                <span className="text-base font-semibold text-base-content font-adaptive">{paymentTime}</span>
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Booking Reference ID */}
                     <div className="p-4 rounded-xl border border-base-300 bg-base-100">
@@ -167,12 +169,14 @@ const BookingConfirmationModal = ({ modalId, booking }) => {
                         <form method="dialog" className="flex-1">
                             <button className="btn btn-ghost w-full font-adaptive">Close</button>
                         </form>
-                        <ModernBtn
-                            text={isGeneratingPDF ? 'Generating...' : 'Ticket PDF'}
-                            onClick={handleDownloadPDF}
-                            disabled={isGeneratingPDF}
-                            style={{ flex: 1.5 }}
-                        />
+                        {booking.status === 'paid' && (
+                            <ModernBtn
+                                text={isGeneratingPDF ? 'Generating...' : 'Ticket PDF'}
+                                onClick={handleDownloadPDF}
+                                disabled={isGeneratingPDF}
+                                style={{ flex: 1.5 }}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
