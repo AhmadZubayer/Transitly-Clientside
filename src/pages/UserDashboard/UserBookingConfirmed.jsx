@@ -33,7 +33,7 @@ const UserBookingConfirmed = () => {
           return;
         }
 
-        const { ticketId, quantity, totalPrice } = JSON.parse(paymentData);
+        const { ticketId, quantity, totalPrice, bookingId } = JSON.parse(paymentData);
 
         // Store payment in database
         const response = await axiosSecure.post('/store-payment', {
@@ -41,7 +41,8 @@ const UserBookingConfirmed = () => {
           ticketId,
           quantity,
           totalPrice,
-          stripeSessionId: sessionId
+          stripeSessionId: sessionId,
+          bookingId
         });
 
         console.log('Payment stored:', response.data);

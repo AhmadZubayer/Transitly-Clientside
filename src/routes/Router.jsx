@@ -19,8 +19,9 @@ import VendorDashboardLayout from "../layouts/VendorDashboardLayout";
 import AdminDashboardLayout from "../layouts/AdminDashboardLayout";
 import VendorProfile from "../pages/VendorDashboard/VendorProfile";
 import AddTicket from "../pages/VendorDashboard/AddTicket";
-import VendorTickets from "../pages/VendorDashboard/VendorTickets.jsx";
-import VendorAnalytics from "../pages/VendorDashboard/VendorAnalytics.jsx";
+import VendorTickets from "../pages/VendorDashboard/VendorTickets";
+import RequestedBookings from "../pages/VendorDashboard/RequestedBookings";
+import VendorAnalytics from "../pages/VendorDashboard/VendorAnalytics";
 import VendorRoute from "./VendorRoute";
 import AdminRoute from "./AdminRoute";
 import ManageUsers from "../pages/AdminDashboard/ManageUsers.jsx";
@@ -45,7 +46,7 @@ export const Router = createBrowserRouter([
       },
       {
         path: 'all-tickets',
-        Component: AllTickets
+        element: <PrivateRoute><AllTickets></AllTickets></PrivateRoute>
       },
       {
         path: 'policies',
@@ -126,6 +127,10 @@ export const Router = createBrowserRouter([
           {
             path: 'tickets',
             element: <VendorRoute><VendorTickets></VendorTickets></VendorRoute>
+          },
+          {
+            path: 'requested-bookings',
+            element: <VendorRoute><RequestedBookings></RequestedBookings></VendorRoute>
           },
           {
             path: 'analytics',

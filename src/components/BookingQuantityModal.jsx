@@ -5,46 +5,53 @@ import useAxiosSecure from '../hooks/useAxiosSecure';
 import useAuth from '../hooks/useAuth';
 
 
+import Swal from 'sweetalert2';
+
 const BookingQuantityModal = ({ modalId, ticket, onSubmit }) => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
-
     const [quantity, setQuantity] = useState(1);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-
-
-    const handlePayment = async() => {
-        if (quantity <= 0) return;
+    const handleBooking = async() => {
+        if (quantity <= 0 || isSubmitting) return;
+        setIsSubmitting(true);
 
         try {
             const totalPrice = ticket.price * quantity;
 
-            const paymentInfo = {
+            const bookingInfo = {
                 ticketId: ticket._id,
-                ticketName: ticket.ticketName,
-                price: ticket.price,
                 quantity: quantity,
                 totalPrice: totalPrice,
-                senderEmail: user?.email
+                userEmail: user?.email,
+                status: 'pending'
             };
 
-            console.log('Payment Info:', paymentInfo);
+            const res = await axiosSecure.post('/bookings', bookingInfo);
 
-            // Save payment data to sessionStorage for retrieval after payment
-            sessionStorage.setItem('pendingPayment', JSON.stringify({
-                ticketId: ticket._id,
-                quantity: quantity,
-                totalPrice: totalPrice
-            }));
-
-            const res = await axiosSecure.post('/create-checkout-session', paymentInfo);
-
-            console.log(res.data);
-
-            window.location.href = res.data.url;
+            if (res.data.insertedId) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Booking Requested',
+                    text: 'Your booking request has been sent to the vendor for approval.',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+                
+                // Close modal
+                document.getElementById(modalId).close();
+                if (onSubmit) onSubmit(quantity);
+            }
         } catch (error) {
-            console.error('Payment error:', error);
-            alert('Payment failed. Please try again.');
+            console.error('Booking error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Request Failed',
+                text: 'Could not process your booking request.'
+            });
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -98,9 +105,9 @@ const BookingQuantityModal = ({ modalId, ticket, onSubmit }) => {
                     {/* Confirm Button - Centered */}
                     <div className="flex justify-center pb-2">
                         <ModernBtn 
-                            onClick={handlePayment}
-                            disabled={quantity === 0}
-                            text="Proceed to Payment"
+                            onClick={handleBooking}
+                            disabled={quantity === 0 || isSubmitting}
+                            text={isSubmitting ? "Requesting..." : "Request Booking"}
                             style={{ width: '100%' }}
                         />
                     </div>

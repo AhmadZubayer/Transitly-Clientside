@@ -15,12 +15,12 @@ const UserBookings = () => {
     const { setOpen } = useOutletContext();
     const [selectedBooking, setSelectedBooking] = useState(null);
 
-    // Fetch user's payments
-    const { data: bookings = [], isLoading, isError, error } = useQuery({
+    // Fetch user's bookings
+    const { data: bookings = [], isLoading, isError, error, refetch } = useQuery({
         queryKey: ['userBookings', user?.email],
         queryFn: async () => {
             if (!user?.email) return [];
-            const res = await axiosSecure.get(`/payments/user/${user.email}`);
+            const res = await axiosSecure.get(`/bookings/user/${user.email}`);
             return res.data;
         },
         enabled: !!user?.email

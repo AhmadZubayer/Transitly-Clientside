@@ -106,6 +106,26 @@ const VendorDashboardLayout = () => {
                 <ListItem disablePadding>
                     <ListItemButton
                         component={NavLink}
+                        to="/vendor-dashboard/requested-bookings"
+                        sx={{
+                            py: 0.75,
+                            '&.active': {
+                                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(79, 70, 229, 0.2)' : '#e0e7ff',
+                                fontWeight: 600,
+                                color: theme.palette.mode === 'dark' ? '#818cf8' : '#4f46e5',
+                            }
+                        }}
+                    >
+                        <ListItemIcon sx={{ minWidth: 40 }}>
+                            <MdConfirmationNumber size={20} style={{ color: theme.palette.mode === 'dark' ? '#818cf8' : 'inherit' }} />
+                        </ListItemIcon>
+                        <ListItemText primaryTypographyProps={{ fontSize: '0.9rem' }} primary="Requested Bookings" />
+                    </ListItemButton>
+                </ListItem>
+
+                <ListItem disablePadding>
+                    <ListItemButton
+                        component={NavLink}
                         to="/vendor-dashboard/analytics"
                         sx={{
                             py: 0.75,

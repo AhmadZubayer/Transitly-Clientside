@@ -14,7 +14,7 @@ const AllTickets = () => {
     const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [searchParams] = useSearchParams();
-    const TICKETS_PER_PAGE = 20;
+    const TICKETS_PER_PAGE = 8; // Requirement: 6-9 per page
 
     // Reset page to 1 when search parameters change
     useEffect(() => {
