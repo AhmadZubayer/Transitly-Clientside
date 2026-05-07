@@ -6,6 +6,7 @@ import axios from 'axios';
 import Form1 from '../Form-1';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const DEFAULT_PHOTO_URL = 'https://i.ibb.co/pjGx3Psc/images.jpg';
 
 const SignUp = () => {
   const { registerUser, signInGoogle, user } = useAuth();
@@ -98,16 +99,15 @@ const SignUp = () => {
     setLoading(true);
 
     const processRegistration = (photoURL) => {
+      const finalPhotoURL = photoURL || DEFAULT_PHOTO_URL;
       return registerUser(formData.email, formData.password)
         .then((result) => {
           const userProfile = {
-            displayName: formData.name
+            displayName: formData.name,
+            photoURL: finalPhotoURL
           };
-          if (photoURL) {
-            userProfile.photoURL = photoURL;
-          }
           return updateProfile(result.user, userProfile)
-            .then(() => ({ ...result, photoURL }));
+            .then(() => ({ ...result, photoURL: finalPhotoURL }));
         });
     };
 
@@ -168,7 +168,8 @@ const SignUp = () => {
           const userInfo = {
             email: formData.email,
             displayName: formData.name,
-            phone: formData.phone
+            phone: formData.phone,
+            photoURL: result.photoURL
           };
 
           console.log('Registration complete. Saving user:', userInfo);
