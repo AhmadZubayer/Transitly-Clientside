@@ -75,7 +75,7 @@ const TicketDetails = ({ ticket, modalId }) => {
 
                     {/* Transport Type */}
                     <div className="p-4 rounded-xl border border-base-300 bg-base-100">
-                        <p className="text-[10px] uppercase font-bold text-base-content/60 mb-1 font-adaptive tracking-wider">Transport Type</p>
+                        <p className="text-[10px] uppercase font-bold text-base-content/60 mb-1 font-adaptive tracking-wider">Category</p>
                         <p className="text-lg font-semibold text-base-content font-adaptive">{ticket.transportType}</p>
                     </div>
 
