@@ -11,7 +11,10 @@ const BookingConfirmationModal = ({ modalId, booking }) => {
 
     // Format the date and time
     const formatDateTime = (dateTimeString) => {
+        if (!dateTimeString) return { date: 'N/A', time: 'N/A' };
         const date = new Date(dateTimeString);
+        if (isNaN(date.getTime())) return { date: 'N/A', time: 'N/A' };
+        
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         const timeOptions = { hour: '2-digit', minute: '2-digit' };
         return {
@@ -21,8 +24,13 @@ const BookingConfirmationModal = ({ modalId, booking }) => {
     };
 
     // Format payment date
-    const formatPaymentDate = (dateString) => {
-        const date = new Date(dateString);
+    const formatPaymentDate = (dateString, fallbackDate) => {
+        const finalDateString = dateString || fallbackDate;
+        if (!finalDateString) return { date: 'N/A', time: 'N/A' };
+        
+        const date = new Date(finalDateString);
+        if (isNaN(date.getTime())) return { date: 'N/A', time: 'N/A' };
+
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         const timeOptions = { hour: '2-digit', minute: '2-digit' };
         return {
@@ -31,8 +39,8 @@ const BookingConfirmationModal = ({ modalId, booking }) => {
         };
     };
 
-    const { date, time } = formatDateTime(booking.ticket.departureDateTime);
-    const { date: paymentDate, time: paymentTime } = formatPaymentDate(booking.paymentDate);
+    const { date, time } = formatDateTime(booking.ticket?.departureDateTime);
+    const { date: paymentDate, time: paymentTime } = formatPaymentDate(booking.paymentDate, booking.updatedAt);
 
     const handleDownloadPDF = async () => {
         try {

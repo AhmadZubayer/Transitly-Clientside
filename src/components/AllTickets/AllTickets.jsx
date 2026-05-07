@@ -53,7 +53,18 @@ const AllTickets = () => {
         <div className='p-6'>
             {/* Sorting Modal */}
             <dialog id="ticket_sort_modal" className="modal modal-bottom sm:modal-middle">
-                <div className="modal-box max-w-md p-0 bg-base-100 border border-base-300 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="filter-title">
+                <div 
+                    className="modal-box max-w-md p-0 bg-base-100 border border-base-300 shadow-2xl" 
+                    role="dialog" 
+                    aria-modal="true" 
+                    aria-labelledby="filter-title"
+                    onClick={(e) => {
+                        if (e.target.type === 'submit') {
+                            // Small delay to allow form processing before closing
+                            setTimeout(() => document.getElementById('ticket_sort_modal').close(), 100);
+                        }
+                    }}
+                >
                     {/* Modal Header: [Close] [Title] [Search] */}
                     <div className='px-4 py-3 border-b flex justify-between items-center bg-base-200/50 backdrop-blur-md sticky top-0 z-10'>
                         <form method="dialog">
@@ -73,12 +84,7 @@ const AllTickets = () => {
 
                     <div className='max-h-[70vh] overflow-y-auto p-2'>
                         {/* Wrap TicketSort to close modal after search button in header (or internal submit) is clicked */}
-                        <div onClick={(e) => {
-                            if (e.target.type === 'submit') {
-                                // Small delay to allow form processing before closing
-                                setTimeout(() => document.getElementById('ticket_sort_modal').close(), 100);
-                            }
-                        }}>
+                        <div>
                             <TicketSort />
                         </div>
                     </div>

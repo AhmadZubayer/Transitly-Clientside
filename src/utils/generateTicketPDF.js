@@ -1,4 +1,5 @@
 import { jsPDF } from 'jspdf';
+import QRCode from 'qrcode';
 import transitlyLogo from '../assets/transitly.png';
 
 const generateTicketPDF = async (booking, userDetails) => {
@@ -15,7 +16,7 @@ const generateTicketPDF = async (booking, userDetails) => {
         const logoH = 20;
         doc.addImage(transitlyLogo, 'PNG', margin, y, logoW, logoH, undefined, 'FAST');
 
-        doc.setFont('inter', 'normal');
+        doc.setFont('lora', 'italic');
         doc.setFontSize(12);
         doc.setTextColor(80, 80, 80);
         doc.text(
@@ -24,7 +25,8 @@ const generateTicketPDF = async (booking, userDetails) => {
         );
 
         const rx = pageWidth - margin;
-        doc.setFontSize(8);
+        doc.setFont('lora', 'normal');
+        doc.setFontSize(10);
         doc.setTextColor(60, 60, 60);
         doc.text('contact@transitly.com',               rx, y + 5,  { align: 'right' });
         doc.text('Road 01, Building 123, Banani Dhaka',  rx, y + 11, { align: 'right' });
@@ -36,8 +38,8 @@ const generateTicketPDF = async (booking, userDetails) => {
         doc.line(margin, y, pageWidth - margin, y);
         y += 10;
 
-        doc.setFont('inter', 'normal');
-        doc.setFontSize(13);
+        doc.setFont('lora', 'bold');
+        doc.setFontSize(15);
         doc.setTextColor(0, 0, 0);
         doc.text('TICKET INVOICE', pageWidth / 2, y, { align: 'center' });
         y += 12;
@@ -60,7 +62,7 @@ const generateTicketPDF = async (booking, userDetails) => {
                 x += widths[i];
             });
 
-            doc.setFont('inter', isHeader ? 'bold' : 'normal');
+            doc.setFont('lora', isHeader ? 'bold' : 'normal');
             doc.setFontSize(10);
             doc.setTextColor(0, 0, 0);
             x = margin;
@@ -79,8 +81,8 @@ const generateTicketPDF = async (booking, userDetails) => {
             y += rowH;
         };
 
-        doc.setFont('inter', 'bold');
-        doc.setFontSize(10);
+        doc.setFont('lora', 'bold');
+        doc.setFontSize(12);
         doc.setTextColor(0, 0, 0);
         doc.text('CUSTOMER DETAILS', margin, y);
         y += 6;
@@ -90,9 +92,9 @@ const generateTicketPDF = async (booking, userDetails) => {
         const rowH  = 8;
 
         const customerRows = [
-            ['Customer Name',     userDetails?.name  || 'N/A'],
-            ['Customer Email',    userDetails?.email || booking?.userEmail || 'N/A'],
-            ['Customer Phone No', userDetails?.phone || 'N/A'],
+            ['Name',     userDetails?.name  || 'N/A'],
+            ['Email',    userDetails?.email || booking?.userEmail || 'N/A'],
+            ['Phone No', userDetails?.phone || 'N/A'],
         ];
 
         customerRows.forEach(([label, value]) => {
@@ -105,11 +107,11 @@ const generateTicketPDF = async (booking, userDetails) => {
             doc.rect(margin,        y, col1W, rowH, 'S');
             doc.rect(margin + col1W, y, col2W, rowH, 'S');
 
-            doc.setFont('inter', 'bold');
+            doc.setFont('lora', 'bold');
             doc.setFontSize(10);
             doc.setTextColor(0, 0, 0);
             doc.text(label, margin + 3,        y + rowH / 2 + 1);
-            doc.setFont('inter', 'normal');
+            doc.setFont('lora', 'normal');
             doc.text(value, margin + col1W + 3, y + rowH / 2 + 1);
 
             y += rowH;
@@ -117,16 +119,16 @@ const generateTicketPDF = async (booking, userDetails) => {
 
         y += 9;
 
-        doc.setFont('inter', 'bold');
-        doc.setFontSize(10);
+        doc.setFont('lora', 'bold');
+        doc.setFontSize(12);
         doc.setTextColor(0, 0, 0);
-        doc.text('TICKET DETAILS', margin, y);
+        doc.text('JOURNEY DETAILS', margin, y);
         y += 6;
 
         const ticket  = booking.ticket;
         const depDT   = new Date(ticket.departureDateTime);
-        const depDate = depDT.toISOString().split('T')[0];
-        const depTime = depDT.toTimeString().substring(0, 5);
+        const depDate = !isNaN(depDT.getTime()) ? depDT.toISOString().split('T')[0] : 'N/A';
+        const depTime = !isNaN(depDT.getTime()) ? depDT.toTimeString().substring(0, 5) : 'N/A';
 
         const tktW = [35, 22, 22, 28, 20, 20, 20, 13];
 
@@ -148,14 +150,15 @@ const generateTicketPDF = async (booking, userDetails) => {
 
         y += 9;
 
-        doc.setFont('inter', 'bold');
-        doc.setFontSize(10);
+        doc.setFont('lora', 'bold');
+        doc.setFontSize(12);
         doc.setTextColor(0, 0, 0);
-        doc.text('PAYMENT TABLE', margin, y);
+        doc.text('PAYMENT DETAILS', margin, y);
         y += 6;
 
-        const payDate    = new Date(booking.paymentDate);
-        const payDateStr = payDate.toISOString().split('T')[0];
+        const payDate    = new Date(booking.paymentDate || booking.updatedAt);
+        const payDateStr = !isNaN(payDate.getTime()) ? payDate.toISOString().split('T')[0] : 'N/A';
+        const payTimeStr = !isNaN(payDate.getTime()) ? payDate.toTimeString().substring(0, 5) : 'N/A';
 
         const payW = [25, 27, 27, 25, 27, 27, 22];
 
@@ -171,8 +174,8 @@ const generateTicketPDF = async (booking, userDetails) => {
             'BDT 0',
             `BDT ${booking.totalPrice || 0}`,
             'Stripe',
-            payDateStr,
-        ], payW, 10);
+            `${payDateStr}\n${payTimeStr}`,
+        ], payW, 12);
 
         y += 12;
 
@@ -180,7 +183,15 @@ const generateTicketPDF = async (booking, userDetails) => {
         doc.line(margin, y, pageWidth - margin, y);
         y += 7;
 
-        doc.setFont('inter', 'normal');
+        
+        const qrData = `Ticket ID: ${booking._id}\nUser: ${userDetails?.email || booking?.userEmail}\nPayment: ${payDateStr} ${payTimeStr}\nJourney: ${ticket.from} to ${ticket.to}\nDate: ${depDate} ${depTime}`;
+        const qrCodeDataUrl = await QRCode.toDataURL(qrData, { margin: 1 });
+        
+        const qrSize = 35;
+        doc.addImage(qrCodeDataUrl, 'PNG', (pageWidth - qrSize) / 2, y + 2, qrSize, qrSize);
+        y += qrSize + 8;
+
+        doc.setFont('lora', 'normal');
         doc.setFontSize(10);
         doc.setTextColor(80, 80, 80);
         [
