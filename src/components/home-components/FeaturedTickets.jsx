@@ -72,6 +72,15 @@ const FeaturedTickets = () => {
                         </SwiperSlide>
                     ))}
                 </Swiper>
+
+                <div className='flex justify-center mt-6'>
+                    <button 
+                        onClick={() => navigate('/all-tickets')}
+                        className='btn btn-1 px-8'
+                    >
+                        View All Tickets
+                    </button>
+                </div>
             </div>
         </div>
     );

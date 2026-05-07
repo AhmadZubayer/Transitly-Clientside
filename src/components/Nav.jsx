@@ -79,10 +79,10 @@ const Nav = () => {
         {/* LEFT */}
         <div className="navbar-start">
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden btn-sm">
+            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -98,7 +98,7 @@ const Nav = () => {
 
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-white/90 backdrop-blur-md rounded-2xl z-1 mt-3 w-52 p-2 shadow-lg border border-gray-200/50"
+              className="menu menu-md dropdown-content bg-white/90 backdrop-blur-md rounded-2xl z-1 mt-3 w-64 p-3 shadow-lg border border-gray-200/50 text-lg font-medium"
             >
               {links}
             </ul>
