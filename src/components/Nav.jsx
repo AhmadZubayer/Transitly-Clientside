@@ -69,6 +69,10 @@ const Nav = () => {
       {user && dashboardPath && (
         <li><NavLink to={dashboardPath}>Dashboard</NavLink></li>
       )}
+      <li className="lg:hidden mt-2 border-t border-gray-100/50 pt-2 flex flex-row items-center justify-between px-4">
+        <span className="text-sm opacity-70">Appearance</span>
+        <ThemeSwitch checked={theme === 'dark'} onChange={toggle} />
+      </li>
     </>
   );
 
@@ -103,18 +107,31 @@ const Nav = () => {
               {links}
             </ul>
           </div>
-
-          <NavLink to="/" className="flex items-center gap-2">
+          
+          {/* Desktop Logo */}
+          <NavLink to="/" className="hidden lg:flex items-center gap-2">
             <img src={logo} alt="Transitly" className="h-8 w-auto" />
           </NavLink>
         </div>
 
         {/* CENTER */}
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 gap-1">{links}</ul>
+        <div className="navbar-center">
+          {/* Mobile Logo */}
+          <NavLink to="/" className="flex lg:hidden items-center">
+            <img src={logo} alt="Transitly" className="h-8 w-auto" />
+          </NavLink>
+
+          {/* Desktop Links */}
+          <ul className="menu menu-horizontal px-1 gap-1 hidden lg:flex">
+            {links}
+          </ul>
         </div>
+
+        {/* END */}
         <div className="navbar-end gap-1">
-          <ThemeSwitch checked={theme === 'dark'} onChange={toggle} />
+          <div className="hidden lg:flex">
+            <ThemeSwitch checked={theme === 'dark'} onChange={toggle} />
+          </div>
           {user ? (
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button">
