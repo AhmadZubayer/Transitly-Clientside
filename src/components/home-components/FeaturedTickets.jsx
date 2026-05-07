@@ -2,10 +2,11 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Pagination } from 'swiper/modules';
+import { EffectCoverflow, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 import TicketCard from '../AllTickets/TicketCard';
 import Loading from '../Loading';
 import useAxios from '../../hooks/useAxios';
@@ -60,8 +61,14 @@ const FeaturedTickets = () => {
                         modifier: 1,
                         slideShadows: true,
                     }}
-                    pagination={true}
-                    modules={[EffectCoverflow, Pagination]}
+                    pagination={{
+                        clickable: true,
+                    }}
+                    autoplay={{
+                        delay: 2000,
+                        disableOnInteraction: false,
+                    }}
+                    modules={[EffectCoverflow, Pagination, Autoplay]}
                     className="featured-swiper !pb-12"
                 >
                     {tickets.map(ticket => (
