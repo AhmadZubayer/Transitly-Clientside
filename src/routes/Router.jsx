@@ -28,6 +28,7 @@ import ManageTickets from "../pages/AdminDashboard/ManageTickets.jsx";
 import AdvertiseTickets from "../pages/AdminDashboard/AdvertiseTickets.jsx";
 import PlatformAnalytics from "../pages/AdminDashboard/PlatformAnalytics.jsx";
 import Profile from "../pages/Profile.jsx";
+import Error404 from "../pages/Error404.jsx";
 
 
 
@@ -161,6 +162,10 @@ export const Router = createBrowserRouter([
             element: <AdminRoute><PlatformAnalytics></PlatformAnalytics></AdminRoute>
           }
         ]
+      },
+      {
+        path: '*',
+        Component: Error404
       }
     ]
   }
