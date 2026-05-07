@@ -29,6 +29,7 @@ const VendorTicketCard = ({ ticket, onDelete, onEdit, disableActions }) => {
 
     const { date, time } = formatDateTime(ticket.departureDateTime);
     const isVerified = (ticket.adminVerified || 'No') === 'Yes';
+    const isRejected = (ticket.adminVerified || 'No') === 'Rejected';
 
     return (
         <TicketCardStyle>
@@ -37,9 +38,11 @@ const VendorTicketCard = ({ ticket, onDelete, onEdit, disableActions }) => {
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                         isVerified 
                             ? 'bg-emerald-100/50 text-emerald-600 border-emerald-200' 
+                            : isRejected
+                            ? 'bg-red-100/50 text-red-600 border-red-200'
                             : 'bg-amber-100/50 text-amber-600 border-amber-200'
                     }`}>
-                        {isVerified ? 'Admin Verified' : 'Awaiting Verify'}
+                        {isVerified ? 'Admin Verified' : isRejected ? 'Rejected' : 'Awaiting Verify'}
                     </span>
                 </div>
 
@@ -74,17 +77,17 @@ const VendorTicketCard = ({ ticket, onDelete, onEdit, disableActions }) => {
                         <div className="flex gap-2">
                             <button
                                 type="button"
-                                className="px-3 py-1 bg-gray-100/80 text-[10px] font-bold rounded-lg hover:bg-gray-200 transition-colors"
+                                className="px-3 py-1 bg-gray-100/80 text-[10px] font-bold rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
                                 onClick={onEdit}
-                                disabled={disableActions}
+                                disabled={disableActions || isRejected}
                             >
                                 Edit
                             </button>
                             <button
                                 type="button"
-                                className="px-3 py-1 bg-red-100/80 text-red-600 text-[10px] font-bold rounded-lg hover:bg-red-200 transition-colors"
+                                className="px-3 py-1 bg-red-100/80 text-red-600 text-[10px] font-bold rounded-lg hover:bg-red-200 transition-colors disabled:opacity-50"
                                 onClick={onDelete}
-                                disabled={disableActions}
+                                disabled={disableActions || isRejected}
                             >
                                 Delete
                             </button>

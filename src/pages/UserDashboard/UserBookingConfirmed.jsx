@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { useSearchParams, useNavigate, useOutletContext } from 'react-router-dom';
-import { HiMenuAlt2 } from 'react-icons/hi';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-import Card from '../../components/Card';
 import generateTicketPDF from '../../utils/generateTicketPDF';
+import Swal from 'sweetalert2';
+import Loading from '../../components/Loading';
 
 const UserBookingConfirmed = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { setOpen } = useOutletContext();
   const axiosSecure = useAxiosSecure();
-  const [paymentStored, setPaymentStored] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [isDownloadingPDF, setIsDownloadingPDF] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(true);
 
   const sessionId = searchParams.get('session_id');
 
@@ -30,6 +26,7 @@ const UserBookingConfirmed = () => {
         const paymentData = sessionStorage.getItem('pendingPayment');
         if (!paymentData) {
           console.error('No payment data found');
+          navigate('/dashboard/bookings');
           return;
         }
 
@@ -46,164 +43,57 @@ const UserBookingConfirmed = () => {
         });
 
         console.log('Payment stored:', response.data);
-        setPaymentStored(true);
-        setShowToast(true);
+        
         sessionStorage.removeItem('pendingPayment');
 
-        // Auto-download ticket PDF
-        try {
-          setIsDownloadingPDF(true);
-          const booking = response.data.booking;
-          const userDetails = {
-            name: user?.displayName || 'Guest',
-            email: user?.email,
-            phone: user?.phoneNumber || 'N/A'
-          };
-          await generateTicketPDF(booking, userDetails);
-        } catch (pdfError) {
-          console.error('Error generating PDF:', pdfError);
-        } finally {
-          setIsDownloadingPDF(false);
-        }
+        // Show SweetAlert
+        await Swal.fire({
+            icon: 'success',
+            title: 'Payment Successful!',
+            text: 'Your booking has been confirmed and your ticket is being downloaded.',
+            timer: 3000,
+            showConfirmButton: false,
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: async () => {
+                // Auto-download ticket PDF
+                try {
+                  const booking = response.data.booking;
+                  const userDetails = {
+                    name: user?.displayName || 'Guest',
+                    email: user?.email,
+                    phone: user?.phoneNumber || 'N/A'
+                  };
+                  await generateTicketPDF(booking, userDetails);
+                } catch (pdfError) {
+                  console.error('Error generating PDF:', pdfError);
+                }
+            }
+        });
 
-        // Auto-redirect after 2 seconds
-        const timer = setTimeout(() => {
-          navigate('/dashboard/bookings');
-        }, 2000);
-
-        return () => clearTimeout(timer);
+        // Redirect after SweetAlert
+        navigate('/dashboard/bookings');
       } catch (error) {
         console.error('Error storing payment:', error);
-        setPaymentStored(false);
+        Swal.fire({
+            icon: 'error',
+            title: 'Payment Storage Failed',
+            text: 'There was an issue confirming your payment in our system. Please contact support.',
+            confirmButtonText: 'Go to Bookings'
+        }).then(() => {
+            navigate('/dashboard/bookings');
+        });
+      } finally {
+        setIsProcessing(false);
       }
     };
 
-    storePayment();
+    if (user?.email && sessionId) {
+        storePayment();
+    }
   }, [sessionId, user?.email, axiosSecure, navigate, user?.displayName, user?.phoneNumber]);
 
-  return (
-    <div className='flex flex-col items-center justify-center min-h-[60vh] p-4'>
-      <div className='w-full max-w-lg mb-4 flex justify-start'>
-          <HiMenuAlt2 size={24} className='lg:hidden cursor-pointer text-gray-600' onClick={() => setOpen(true)} />
-      </div>
-      <Card className='p-10 max-w-lg w-full text-center'>
-        <div className='inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 mb-6'>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className='w-12 h-12'
-          >
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
-          </svg>
-        </div>
-        <h1 className='text-3xl font-black text-gray-800 font-adaptive mb-3'>Payment Successful!</h1>
-        <p className='text-gray-600 font-adaptive dark:text-gray-400 mb-2'>Your booking has been confirmed.</p>
-        {isDownloadingPDF && (
-          <p className='text-sm text-blue-600 dark:text-blue-400 mb-4'>Downloading your ticket PDF...</p>
-        )}
-        <p className='text-gray-600 font-adaptive dark:text-gray-400 mb-8'>You will be redirected to your dashboard in a moment.</p>
-
-        <div className='w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden'>
-            <div className='bg-emerald-500 h-full w-full origin-left animate-[progress_2s_linear_forwards]'></div>
-        </div>
-
-        <button
-            onClick={() => navigate('/dashboard/bookings')}
-            className='btn btn-1 mt-8 px-10'
-        >
-            Go to Bookings Now
-        </button>
-      </Card>
-
-      {showToast && (
-          <style>
-              {`
-                @keyframes progress {
-                    from { transform: scaleX(1); }
-                    to { transform: scaleX(0); }
-                }
-              `}
-          </style>
-      )}
-    </div>
-  );
+  return <Loading />;
 };
-
-const Toast = styled.div`
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #10b981;
-  color: white;
-  padding: 16px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  max-width: 400px;
-  animation: slideIn 0.3s ease-out;
-  z-index: 9999;
-
-  @keyframes slideIn {
-    from {
-      transform: translateX(400px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  @media (max-width: 640px) {
-    left: 20px;
-    right: 20px;
-    max-width: none;
-  }
-`;
-
-const ToastContent = styled.div`
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-`;
-
-const CheckIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: white;
-`;
-
-const ToastTitle = styled.h3`
-  margin: 0;
-  font-weight: 600;
-  font-size: 14px;
-`;
-
-const ToastMessage = styled.p`
-  margin: 4px 0 0 0;
-  font-size: 13px;
-  opacity: 0.9;
-`;
-
-const ProgressBar = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.4);
-  animation: progress 2s linear forwards;
-  border-radius: 0 0 8px 0;
-
-  @keyframes progress {
-    from {
-      width: 100%;
-    }
-    to {
-      width: 0%;
-    }
-  }
-`;
 
 export default UserBookingConfirmed;

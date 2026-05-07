@@ -3,6 +3,7 @@ import ModernBtn from './ModernBtn';
 import QuantityInput from './QuantityInput';
 import useAxiosSecure from '../hooks/useAxiosSecure';
 import useAuth from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 
 import Swal from 'sweetalert2';
@@ -10,6 +11,7 @@ import Swal from 'sweetalert2';
 const BookingQuantityModal = ({ modalId, ticket, onSubmit }) => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,17 +33,20 @@ const BookingQuantityModal = ({ modalId, ticket, onSubmit }) => {
             const res = await axiosSecure.post('/bookings', bookingInfo);
 
             if (res.data.insertedId) {
-                Swal.fire({
+                // Close modal
+                document.getElementById(modalId).close();
+                
+                await Swal.fire({
                     icon: 'success',
                     title: 'Booking Requested',
                     text: 'Your booking request has been sent to the vendor for approval.',
                     timer: 3000,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    timerProgressBar: true
                 });
                 
-                // Close modal
-                document.getElementById(modalId).close();
                 if (onSubmit) onSubmit(quantity);
+                navigate('/dashboard/bookings');
             }
         } catch (error) {
             console.error('Booking error:', error);

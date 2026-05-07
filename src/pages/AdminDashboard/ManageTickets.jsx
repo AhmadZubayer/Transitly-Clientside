@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useOutletContext } from 'react-router-dom';
 import { HiMenuAlt2 } from 'react-icons/hi';
 import { MdDelete } from 'react-icons/md';
-import { FaStar, FaRegStar } from 'react-icons/fa';
+import { FaStar, FaRegStar, FaCheck, FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Loading from '../../components/Loading';
@@ -51,6 +51,14 @@ const ManageTickets = () => {
         onSuccess: () => refetch()
     });
 
+    const { mutateAsync: rejectTicket, isPending: isRejecting } = useMutation({
+        mutationFn: async (id) => {
+            const res = await axiosSecure.patch(`/tickets/${id}/reject`);
+            return res.data;
+        },
+        onSuccess: () => refetch()
+    });
+
     const { mutateAsync: deleteTicket, isPending: isDeleting } = useMutation({
         mutationFn: async (id) => {
             const res = await axiosSecure.delete(`/tickets/${id}`);
@@ -58,6 +66,16 @@ const ManageTickets = () => {
         },
         onSuccess: () => refetch()
     });
+
+    const handleReject = async (ticket) => {
+        const id = getTicketId(ticket);
+        try {
+            await rejectTicket(id);
+        } catch (e) {
+            console.error('Reject failed:', e);
+            alert('Failed to reject ticket');
+        }
+    };
 
     const { mutateAsync: featureTicket, isPending: isFeaturing } = useMutation({
         mutationFn: async (id) => {
@@ -82,6 +100,14 @@ const ManageTickets = () => {
         const id = getTicketId(ticket);
         try {
             await verifyTicket(id);
+            Swal.fire({
+                icon: 'success',
+                title: 'Ticket Approved!',
+                text: 'The ticket is now verified and visible on the platform.',
+                timer: 2500,
+                showConfirmButton: false,
+                timerProgressBar: true
+            });
         } catch (e) {
             console.error('Approve failed:', e);
             alert('Failed to approve ticket');
@@ -143,7 +169,7 @@ const ManageTickets = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const busy = isVerifying || isDeleting || isFeaturing || isUnfeaturing;
+    const busy = isVerifying || isRejecting || isDeleting || isFeaturing || isUnfeaturing;
 
     return (
         <div className='p-4'>
@@ -211,45 +237,68 @@ const ManageTickets = () => {
                         {tickets.length > 0 ? (
                             <div className='tickets-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
                                 {tickets.map((ticket) => {
-                                    const isVerified =
-                                        (ticket.adminVerified || 'No') === 'Yes';
+                                    const isVerified = (ticket.adminVerified || 'No') === 'Yes';
+                                    const isRejected = (ticket.adminVerified || 'No') === 'Rejected';
+                                    const isPending = !isVerified && !isRejected;
+
                                     return (
                                         <div key={getTicketId(ticket)} className='flex flex-col gap-2 h-full'>
                                             <div className='h-full'>
                                                 <TicketCard ticket={ticket} onClick={() => {}} />
                                             </div>
-                                            <div className='flex gap-1 flex-wrap items-center mt-auto'>
-                                                {!isVerified && (
-                                                    <button
-                                                        type='button'
-                                                        className='btn btn-xs btn-success flex-1'
-                                                        disabled={busy}
-                                                        onClick={() => handleApprove(ticket)}
-                                                    >
-                                                        Approve
-                                                    </button>
+                                            <div className='flex justify-center gap-3 items-center mt-auto p-3'>
+                                                {isPending && (
+                                                    <>
+                                                        <button
+                                                            type='button'
+                                                            className='w-8 h-8 flex items-center justify-center rounded-full border border-emerald-500/50 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition-colors disabled:opacity-30'
+                                                            disabled={busy}
+                                                            onClick={() => handleApprove(ticket)}
+                                                            title='Approve this ticket'
+                                                        >
+                                                            <FaCheck size={12} />
+                                                        </button>
+                                                        <button
+                                                            type='button'
+                                                            className='w-8 h-8 flex items-center justify-center rounded-full border border-red-500/50 text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors disabled:opacity-30'
+                                                            disabled={busy}
+                                                            onClick={() => handleReject(ticket)}
+                                                            title='Reject this ticket'
+                                                        >
+                                                            <FaTimes size={12} />
+                                                        </button>
+                                                    </>
+                                                )}
+                                                {isRejected && (
+                                                    <span className='text-[9px] font-bold uppercase tracking-wider text-red-500 px-3 py-1 border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-900/10 rounded-full'>
+                                                        Rejected
+                                                    </span>
                                                 )}
                                                 <button
                                                     type='button'
-                                                    className='btn btn-xs btn-ghost text-yellow-500 hover:text-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed'
+                                                    className={`w-8 h-8 flex items-center justify-center rounded-full border transition-colors disabled:opacity-30 ${
+                                                        (ticket.adminFeatured || 'No') === 'Yes'
+                                                            ? 'border-yellow-400 text-yellow-500 bg-yellow-50/50 dark:bg-yellow-500/10'
+                                                            : 'border-gray-300 dark:border-gray-600 text-gray-400 hover:border-yellow-400 hover:text-yellow-500 hover:bg-yellow-50 dark:hover:bg-yellow-500/10'
+                                                    }`}
                                                     disabled={busy || (featuredCount >= MAX_FEATURED_TICKETS && (ticket.adminFeatured || 'No') === 'No')}
                                                     onClick={() => handleFeature(ticket)}
                                                     title={featuredCount >= MAX_FEATURED_TICKETS && (ticket.adminFeatured || 'No') === 'No' ? `Maximum ${MAX_FEATURED_TICKETS} featured tickets reached` : `${(ticket.adminFeatured || 'No') === 'Yes' ? 'Unfeature' : 'Feature'} this ticket`}
                                                 >
                                                     {(ticket.adminFeatured || 'No') === 'Yes' ? (
-                                                        <FaStar size={16} />
+                                                        <FaStar size={12} />
                                                     ) : (
-                                                        <FaRegStar size={16} />
+                                                        <FaRegStar size={12} />
                                                     )}
                                                 </button>
                                                 <button
                                                     type='button'
-                                                    className='btn btn-xs btn-ghost text-red-500 hover:text-red-700'
+                                                    className='w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 dark:border-gray-600 text-gray-400 hover:border-red-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors disabled:opacity-30'
                                                     disabled={busy}
                                                     onClick={() => handleDelete(ticket)}
                                                     title='Delete this ticket'
                                                 >
-                                                    <MdDelete size={16} />
+                                                    <MdDelete size={14} />
                                                 </button>
                                             </div>
                                         </div>

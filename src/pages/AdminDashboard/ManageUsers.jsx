@@ -106,11 +106,13 @@ const ManageUsers = () => {
                                                                         Make Vendor
                                                                     </button>
                                                                 </li>
-                                                                <li>
-                                                                    <button className='text-red-600 dark:text-red-400' onClick={() => handleRoleChange(user._id, 'fraud')}>
-                                                                        Mark as Fraud
-                                                                    </button>
-                                                                </li>
+                                                                {user.role === 'vendor' && (
+                                                                    <li>
+                                                                        <button className='text-red-600 dark:text-red-400 font-bold' onClick={() => handleRoleChange(user._id, 'fraud')}>
+                                                                            Mark as Fraud
+                                                                        </button>
+                                                                    </li>
+                                                                )}
                                                             </ul>
                                                         </div>
                                                     </td>

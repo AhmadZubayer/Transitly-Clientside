@@ -10,6 +10,8 @@ import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Card from '../../components/Card';
 
+import Swal from 'sweetalert2';
+
 const AddTicket = () => {
     const { setOpen } = useOutletContext();
     const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
@@ -161,17 +163,39 @@ const AddTicket = () => {
             if (isEditing && editId) {
                 const response = await axiosSecure.patch(`/tickets/${editId}`, formData);
                 console.log('Ticket updated successfully:', response.data);
-                alert('Ticket updated successfully! Status: Pending (Awaiting admin verification)');
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Ticket Updated!',
+                    text: 'Your ticket has been updated and is awaiting admin verification.',
+                    timer: 3000,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                });
             } else {
                 const response = await axiosSecure.post('/tickets', formData);
                 console.log('Ticket added successfully:', response.data);
-                alert('Ticket added successfully! Status: Pending (Awaiting admin verification)');
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Ticket Added!',
+                    text: 'Your ticket has been added and is awaiting admin verification.',
+                    timer: 3000,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                });
             }
             setShowConfirmation(false);
             reset();
         } catch (error) {
             console.error('Error adding ticket:', error);
-            alert('Failed to save ticket. Please try again.');
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Operation Failed',
+                text: 'Failed to save ticket. Please try again.'
+            });
+            
             setShowConfirmation(false);
         }
     };
@@ -183,10 +207,13 @@ const AddTicket = () => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <div className="max-w-6xl mx-auto px-4 py-4">
-                {/* Centered Heading */}
-                <h1 className='text-3xl font-bold text-center mb-6 font-adaptive'>
-                    {isEditing ? 'Edit Ticket' : 'Add New Ticket'}
-                </h1>
+                {/* Header with Menu Icon */}
+                <div className='flex items-center gap-3 mb-6'>
+                    <HiMenuAlt2 className='lg:hidden cursor-pointer text-2xl' onClick={() => setOpen(true)} />
+                    <h1 className='text-3xl font-bold font-adaptive'>
+                        {isEditing ? 'Edit Ticket' : 'Add New Ticket'}
+                    </h1>
+                </div>
 
                 {loadingTicket && (
                     <div className='flex justify-center items-center p-4'>

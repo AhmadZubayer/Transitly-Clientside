@@ -39,6 +39,13 @@ const DashboardProfile = ({ fallbackName = 'User' }) => {
     return (
         <div className='p-6'>
             <div className='max-w-2xl mx-auto'>
+                <div className='flex items-center gap-3 mb-6'>
+                    <HiMenuAlt2 className='lg:hidden cursor-pointer text-2xl' onClick={() => setOpen(true)} />
+                    <h2 className='text-xl font-bold text-gray-800 font-adaptive'>
+                        My Profile
+                    </h2>
+                </div>
+
                 <Card className='p-8'>
                     <div className='flex flex-col items-center mb-8'>
                         {user?.photoURL && (
@@ -48,8 +55,7 @@ const DashboardProfile = ({ fallbackName = 'User' }) => {
                                 className='w-32 h-32 rounded-full object-cover shadow-lg border-4 border-white'
                             />
                         )}
-                        <h2 className='text-3xl font-bold font-adaptive mt-6 flex items-center gap-3'>
-                            <HiMenuAlt2 className='lg:hidden cursor-pointer' onClick={() => setOpen(true)} />
+                        <h2 className='text-3xl font-bold font-adaptive mt-6'>
                             {user?.displayName || fallbackName}
                         </h2>
                     </div>

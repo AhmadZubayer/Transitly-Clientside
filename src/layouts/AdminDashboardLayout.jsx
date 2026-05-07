@@ -57,6 +57,12 @@ const AdminDashboardLayout = () => {
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
+                    <ListItemButton component={NavLink} to='/admin-dashboard/platform-analytics' sx={{ ...navItemSx, py: 0.75 }}>
+                        <ListItemIcon sx={{ minWidth: 40 }}><MdAnalytics size={20} style={{ color: theme.palette.mode === 'dark' ? '#818cf8' : 'inherit' }} /></ListItemIcon>
+                        <ListItemText primaryTypographyProps={{ fontSize: '0.9rem' }} primary='Platform Analytics' />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
                     <ListItemButton component={NavLink} to='/admin-dashboard/manage-users' sx={{ ...navItemSx, py: 0.75 }}>
                         <ListItemIcon sx={{ minWidth: 40 }}><MdManageAccounts size={20} style={{ color: theme.palette.mode === 'dark' ? '#818cf8' : 'inherit' }} /></ListItemIcon>
                         <ListItemText primaryTypographyProps={{ fontSize: '0.9rem' }} primary='Manage Users' />
@@ -72,12 +78,6 @@ const AdminDashboardLayout = () => {
                     <ListItemButton component={NavLink} to='/admin-dashboard/advertise-tickets' sx={{ ...navItemSx, py: 0.75 }}>
                         <ListItemIcon sx={{ minWidth: 40 }}><MdCampaign size={20} style={{ color: theme.palette.mode === 'dark' ? '#818cf8' : 'inherit' }} /></ListItemIcon>
                         <ListItemText primaryTypographyProps={{ fontSize: '0.9rem' }} primary='Advertise Tickets' />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={NavLink} to='/admin-dashboard/platform-analytics' sx={{ ...navItemSx, py: 0.75 }}>
-                        <ListItemIcon sx={{ minWidth: 40 }}><MdAnalytics size={20} style={{ color: theme.palette.mode === 'dark' ? '#818cf8' : 'inherit' }} /></ListItemIcon>
-                        <ListItemText primaryTypographyProps={{ fontSize: '0.9rem' }} primary='Platform Analytics' />
                     </ListItemButton>
                 </ListItem>
             </List>
