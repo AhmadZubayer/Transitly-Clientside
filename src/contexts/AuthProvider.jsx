@@ -37,7 +37,7 @@ const AuthProvider = ({children}) => {
                 if (currentUser) {
                     await currentUser.reload();
 
-                    // Fetch user role from backend
+                 
                     try {
                         const token = await currentUser.getIdToken();
                         const response = await axios.get(`${API_URL}/users/${currentUser.email}/role`, {
@@ -55,7 +55,7 @@ const AuthProvider = ({children}) => {
                         setUser(userWithRole);
                     } catch (error) {
                         console.log('Error fetching user role:', error);
-                        // Set user without role if fetch fails
+                      
                         setUser(currentUser);
                     }
                 } else {

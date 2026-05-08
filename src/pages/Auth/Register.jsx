@@ -12,7 +12,6 @@ import axios from 'axios';
 
 const Register = () => {
     const API_URL = import.meta.env.VITE_API_URL;
-    // ✅ REACT HOOK FORM: useForm hook initialization
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { registerUser, signInGoogle, user } = useAuth();
     
@@ -29,7 +28,6 @@ const Register = () => {
         }
     }, [user, navigate, location.state]);
 
-    // ✅ REACT HOOK FORM: handleSubmit wraps this function, data contains validated form values
     const handleRegistration = (data) => {
         setLoading(true);
         setUploadError('');
@@ -42,7 +40,6 @@ const Register = () => {
             return;
         }
         
-        // 1. Upload image to ImgBB
         const formData = new FormData();
         formData.append('image', photoFile);
         
@@ -53,10 +50,8 @@ const Register = () => {
             .then((imgResponse) => {
                 const photoURL = imgResponse.data.data.display_url;
                 
-                // 2. Create Firebase user
                 return registerUser(data.email, data.password)
                     .then((result) => {
-                        // 3. Update Firebase profile
                         const userProfile = {
                             displayName: data.name,
                             photoURL: photoURL
@@ -67,7 +62,6 @@ const Register = () => {
                     });
             })
             .then((result) => {
-                // 4. Save to your database
                 const userInfo = {
                     email: data.email,
                     displayName: data.name,
@@ -79,7 +73,6 @@ const Register = () => {
             })
             .then(() => {
                 reset();
-                // Navigation is handled by useEffect when user state changes
             })
             .catch((error) => {
                 console.error('Registration error:', error);
@@ -95,7 +88,6 @@ const Register = () => {
         signInGoogle()
             .then(() => {
                 alert('Signed up with Google successfully!');
-                // Navigation is handled by useEffect when user state changes
             })
             .catch((error) => {
                 console.error('Google sign-up error:', error);
@@ -110,20 +102,17 @@ const Register = () => {
                 <h1 className="auth-title">Sign Up</h1>
                 <p className="auth-subtitle">Create your account to start building habits</p>
 
-                {/* ✅ REACT HOOK FORM: handleSubmit wraps the handleRegistration function */}
                 <form onSubmit={handleSubmit(handleRegistration)} className="auth-form">
                     <div className="form-group">
                         <label className="form-label">
                             Name
                         </label>
-                        {/* ✅ REACT HOOK FORM: register() connects this input to the form */}
                         <input
                             type="text"
                             {...register('name', { required: true })}
                             className="form-input"
                             placeholder="Enter your full name"
                         />
-                        {/* ✅ REACT HOOK FORM: Display validation errors */}
                         {errors.name?.type === 'required' && (
                             <p className="error-message">Name is required.</p>
                         )}
@@ -133,7 +122,7 @@ const Register = () => {
                         <label className="form-label">
                             Profile Photo
                         </label>
-                        {/* ✅ REACT HOOK FORM: register() connects this file input to the form */}
+                   
                         <div className="custom-file-input">
                             <input
                                 type="file"
@@ -151,7 +140,7 @@ const Register = () => {
                                 <span>{fileName || 'Choose a file...'}</span>
                             </label>
                         </div>
-                        {/* ✅ REACT HOOK FORM: Display validation errors */}
+                
                         {errors.photo?.type === 'required' && (
                             <p className="error-message">Profile photo is required.</p>
                         )}
@@ -161,14 +150,14 @@ const Register = () => {
                         <label className="form-label">
                             Email
                         </label>
-                        {/* ✅ REACT HOOK FORM: register() connects this input to the form */}
+                
                         <input
                             type="email"
                             {...register('email', { required: true })}
                             className="form-input"
                             placeholder="Enter your email"
                         />
-                        {/* ✅ REACT HOOK FORM: Display validation errors */}
+                  
                         {errors.email?.type === 'required' && (
                             <p className="error-message">Email is required.</p>
                         )}
@@ -179,7 +168,7 @@ const Register = () => {
                             Password
                         </label>
                         <div className="password-input-container">
-                            {/* ✅ REACT HOOK FORM: register() connects this input with comprehensive validation */}
+                          
                             <input
                                 type={showPassword ? "text" : "password"}
                                 {...register('password', {
@@ -198,7 +187,7 @@ const Register = () => {
                                 {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
                             </button>
                         </div>
-                        {/* ✅ REACT HOOK FORM: Display validation errors with specific messages */}
+                      
                         {errors.password?.type === 'required' && (
                             <p className="error-message">Password is required.</p>
                         )}
@@ -210,7 +199,7 @@ const Register = () => {
                         )}
                     </div>
 
-                    {/* Submit button */}
+                  
                     <button 
                         type="submit" 
                         className="btn-primary" 

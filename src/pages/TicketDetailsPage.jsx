@@ -16,7 +16,7 @@ const TicketDetailsPage = () => {
     const { user } = useAuth();
     const { role, roleLoading } = useRole();
 
-    // Fetch ticket details
+
     const { data: ticket, isLoading, isError, error } = useQuery({
         queryKey: ['ticket', ticketId],
         queryFn: async () => {
@@ -26,7 +26,7 @@ const TicketDetailsPage = () => {
         enabled: !!ticketId
     });
 
-    // Format the date and time
+  
     const formatDateTime = (dateTimeString) => {
         if (!dateTimeString) return { date: 'N/A', time: 'N/A' };
         let dateObj;
@@ -52,13 +52,13 @@ const TicketDetailsPage = () => {
         };
     };
 
-    // Check if departure time has passed
+  
     const isDeparturePassed = () => {
         if (!ticket) return false;
         return new Date(ticket.departureDateTime) <= new Date();
     };
 
-    // Check if quantity is 0
+  
     const isOutOfStock = () => {
         if (!ticket) return false;
         return ticket.quantity === 0;
@@ -73,7 +73,7 @@ const TicketDetailsPage = () => {
             price: ticket.price,
             totalPrice: ticket.price * quantity
         });
-        // TODO: Handle booking submission
+      
     };
 
     if (isLoading) {
@@ -116,7 +116,6 @@ const TicketDetailsPage = () => {
     return (
         <div className='p-4 max-w-2xl mx-auto'>
             <Card className='px-6 py-4'>
-                {/* Back Button */}
                 <button
                     onClick={() => navigate(-1)}
                     className='mb-3 btn btn-ghost btn-xs text-sm font-adaptive'
@@ -124,14 +123,12 @@ const TicketDetailsPage = () => {
                     ← Back
                 </button>
 
-                {/* Main Content */}
                 <div className='space-y-3'>
-                    {/* Ticket Name Heading */}
                     <h1 className='font-bold text-xl text-center text-gray-800 font-adaptive'>
                         {ticket.ticketTitle}
                     </h1>
 
-                    {/* Departure and Destination */}
+                
                     <div className='grid grid-cols-2 gap-2'>
                         <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
                             <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Departure</p>
@@ -143,7 +140,7 @@ const TicketDetailsPage = () => {
                         </div>
                     </div>
 
-                    {/* Date and Time */}
+          
                     <div className='grid grid-cols-2 gap-2'>
                         <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
                             <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Date</p>
@@ -155,7 +152,6 @@ const TicketDetailsPage = () => {
                         </div>
                     </div>
 
-                    {/* Company and Bus Brand */}
                     <div className='grid grid-cols-2 gap-2'>
                         <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
                             <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Company</p>
@@ -167,13 +163,13 @@ const TicketDetailsPage = () => {
                         </div>
                     </div>
 
-                    {/* Transport Type */}
+         
                     <div className='p-2 rounded-lg border border-gray-200 dark:border-gray-700'>
                         <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Transport Type</p>
                         <p className='text-sm font-semibold text-gray-800 font-adaptive'>{ticket.transportType}</p>
                     </div>
 
-                    {/* Features */}
+         
                     {ticket.perks && ticket.perks.length > 0 && (
                         <div>
                             <p className='text-[10px] uppercase font-bold text-gray-500 mb-1.5 font-adaptive opacity-70'>Features</p>
@@ -190,7 +186,7 @@ const TicketDetailsPage = () => {
                         </div>
                     )}
 
-                    {/* Available Seats and Price */}
+         
                     <div className='grid grid-cols-2 gap-2'>
                         <div className={`p-2 rounded-lg border-2 ${isOutOfStock() ? 'border-red-500/50 bg-red-50/30' : 'border-gray-200 dark:border-gray-700'}`}>
                             <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>Available Seats</p>
@@ -204,7 +200,7 @@ const TicketDetailsPage = () => {
                         </div>
                     </div>
 
-                    {/* Status Messages */}
+      
                     {isDeparturePassed() && (
                         <div className='p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-800'>
                             <p className='text-red-600 dark:text-red-400 font-semibold text-sm'>Booking unavailable - Departure time has passed</p>
@@ -217,14 +213,13 @@ const TicketDetailsPage = () => {
                         </div>
                     )}
 
-                    {/* Countdown */}
                     {!isDeparturePassed() && (
                         <div className='pt-2'>
+                            <p className='text-[10px] uppercase font-bold text-gray-500 mb-0.5 font-adaptive opacity-70'>REMAINING COUNTDOWN</p>
                             <Countdown departureDateTime={ticket.departureDateTime} />
                         </div>
                     )}
 
-                    {/* Book Now Button - Only visible for users */}
                     {roleLoading ? (
                         <div className="flex justify-center p-2">
                             <span className="loading loading-dots loading-sm text-blue-500"></span>
@@ -255,7 +250,6 @@ const TicketDetailsPage = () => {
                 </div>
             </Card>
 
-            {/* Booking Quantity Modal */}
             <BookingQuantityModal
                 modalId="booking_quantity_modal"
                 ticket={ticket}

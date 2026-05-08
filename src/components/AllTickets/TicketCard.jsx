@@ -7,11 +7,11 @@ const TicketCard = ({ ticket, onClick }) => {
         
         let dateObj;
         try {
-            // Robust parsing for common formats (ISO, space-separated, etc.)
+           
             const cleanStr = dateTimeString.replace(' ', 'T');
             dateObj = new Date(cleanStr);
             
-            // If native parsing fails, try manual extraction
+          
             if (isNaN(dateObj.getTime())) {
                 const parts = dateTimeString.match(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/);
                 if (parts) {

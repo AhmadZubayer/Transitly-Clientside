@@ -30,7 +30,7 @@ const SignIn = () => {
       ...formData,
       [e.target.name]: e.target.value
     });
-    // Clear error for this field when user starts typing
+  
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: '' });
     }
@@ -61,7 +61,7 @@ const SignIn = () => {
     
     setLoading(true);
     
-    // Sign in with Firebase
+    
     signInUser(formData.email, formData.password)
       .then(() => {
         // Reset form
@@ -69,7 +69,7 @@ const SignIn = () => {
           email: '',
           password: ''
         });
-        // Navigation is handled by useEffect when user state changes
+       
       })
       .catch((error) => {
         console.error('Sign-in error:', error);
@@ -84,7 +84,7 @@ const SignIn = () => {
     setLoading(true);
     signInGoogle()
       .then((result) => {
-        // Extract user info from Google result
+     
         const userInfo = {
           email: result.user.email,
           displayName: result.user.displayName,
@@ -92,11 +92,10 @@ const SignIn = () => {
           photoURL: result.user.photoURL
         };
         
-        // Send to backend (upsert)
         return axios.post(`${API_URL}/users`, userInfo);
       })
       .then(() => {
-        // Navigation is handled by useEffect when user state changes
+      
       })
       .catch((error) => {
         console.error('Google sign-in error:', error);

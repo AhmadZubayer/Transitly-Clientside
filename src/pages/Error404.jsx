@@ -12,7 +12,7 @@ const Error404 = () => {
                     404
                 </h1>
                 <p className="text-xl font-semibold text-gray-600 mb-8 font-adaptive">
-                    this page does not exist :(
+                    This page does not exist :(
                 </p>
                 <button 
                     onClick={() => navigate('/')}

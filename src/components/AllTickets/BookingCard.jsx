@@ -46,7 +46,7 @@ const BookingCard = ({ booking, onClick }) => {
     const { date: paymentDate } = formatDateTime(booking.paymentDate || booking.createdAt);
 
     const handlePayNow = async (e) => {
-        e.stopPropagation(); // Don't trigger card click
+        e.stopPropagation(); 
         if (isPaying) return;
         setIsPaying(true);
 
@@ -60,7 +60,6 @@ const BookingCard = ({ booking, onClick }) => {
                 senderEmail: user?.email
             };
 
-            // Save for retrieval after payment
             sessionStorage.setItem('pendingPayment', JSON.stringify({
                 bookingId: booking._id,
                 ticketId: booking.ticketId,
@@ -90,7 +89,6 @@ const BookingCard = ({ booking, onClick }) => {
 
     return (
         <TicketCardStyle onClick={onClick} className="cursor-pointer relative overflow-hidden">
-            {/* Status Badge */}
             <div className={`absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider z-20 ${getStatusColor(booking.status)}`}>
                 {booking.status}
             </div>
@@ -128,7 +126,6 @@ const BookingCard = ({ booking, onClick }) => {
                     </div>
                 </div>
 
-                {/* Countdown - Removed if rejected */}
                 {booking.status !== 'rejected' && (
                     <div className='mb-4 scale-90 origin-left'>
                         <Countdown departureDateTime={booking.ticket.departureDateTime} />

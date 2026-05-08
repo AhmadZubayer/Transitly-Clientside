@@ -8,14 +8,11 @@ const Footer = () => {
     return (
         <StyledFooter>
             <div className="footer-content">
-                {/* Column 1: Logo + Description */}
                 <div className="footer-section">
                     <img src={logo} alt="Transitly Logo" className="footer-logo" />
                     
                     <p className="tagline font-adaptive">Seamless Ticket Booking & Management - Your Bookings Redefined</p>
                 </div>
-
-                {/* Column 2: Quick Links */}
                 <div className="footer-section">
                     <h3 className="section-title font-adaptive">Quick Links</h3>
                     <ul className="footer-links">
@@ -26,7 +23,6 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Column 3: Contact Info */}
                 <div className="footer-section">
                     <h3 className="section-title font-adaptive">Contact Info</h3>
                     <div className="contact-info">
@@ -36,7 +32,6 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Column 4: Payment Methods & Socials */}
                 <div className="footer-section">
                     <h3 className="section-title font-adaptive">Payment Methods</h3>
                     <div className="payment-methods">

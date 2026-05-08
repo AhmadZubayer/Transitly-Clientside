@@ -12,7 +12,6 @@ const UserPayments = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
-    // Fetch user's payments
     const { data: payments = [], isLoading, isError, error } = useQuery({
         queryKey: ['userPayments', user?.email],
         queryFn: async () => {
@@ -23,7 +22,6 @@ const UserPayments = () => {
         enabled: !!user?.email
     });
 
-    // Format date
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
@@ -38,15 +36,14 @@ const UserPayments = () => {
     return (
         <div className='p-4'>
             <div className='space-y-4'>
-                {/* Header */}
+          
                 <div className='flex flex-row items-center gap-3'>
                     <HiMenuAlt2 className='lg:hidden cursor-pointer' onClick={() => setOpen(true)} />
                     <h2 className='text-xl font-bold text-gray-800 font-adaptive'>
                         Payment Transactions ({payments.length})
                     </h2>
                 </div>
-
-                {/* Table */}
+             
                 {isLoading && (
                     <div className='flex justify-center items-center p-8'>
                         <Loading />
@@ -63,7 +60,6 @@ const UserPayments = () => {
                     <Card className='overflow-hidden !p-0'>
                         <div className="overflow-x-auto">
                             <table className="table table-zebra table-sm w-full">
-                                {/* head */}
                                 <thead>
                                     <tr className='bg-gray-100 dark:bg-gray-800/50'>
                                         <th className='text-gray-900 dark:text-gray-200 font-bold font-adaptive uppercase text-[11px]'>No.</th>

@@ -21,7 +21,7 @@ const Policies = () => {
 
     return (
         <div className='flex flex-col md:flex-row gap-6 p-4 max-w-6xl mx-auto'>
-            {/* Policy Selection Sidebar */}
+
             <div className='w-full md:w-1/3 lg:w-1/4'>
                 <Card className="p-4 border border-gray-200/50 dark:border-gray-800 shadow-lg">
                     <p className='text-[11px] uppercase font-black text-gray-500 mb-4 font-adaptive tracking-wider px-1 opacity-80'>
@@ -45,7 +45,6 @@ const Policies = () => {
                 </Card>
             </div>
 
-            {/* Policy Details Content */}
             <div className='flex-1'>
                 {selectedPolicy ? (
                     <Card className="p-8 border border-gray-200/50 dark:border-gray-800 shadow-lg h-full">

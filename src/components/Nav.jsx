@@ -82,7 +82,7 @@ const Nav = () => {
     <div className="p-2 sticky top-0 z-50 bg-transparent">
       <div className="navbar nav-shell bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-gray-200/50 px-4 min-h-[4rem]">
 
-        {/* LEFT */}
+  
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -110,26 +110,26 @@ const Nav = () => {
             </ul>
           </div>
           
-          {/* Desktop Logo */}
+       
           <NavLink to="/" className="hidden lg:flex items-center gap-2">
             <img src={logo} alt="Transitly" className="h-8 w-auto" />
           </NavLink>
         </div>
 
-        {/* CENTER */}
+   
         <div className="navbar-center">
-          {/* Mobile Logo */}
+      
           <NavLink to="/" className="flex lg:hidden items-center">
             <img src={logo} alt="Transitly" className="h-8 w-auto" />
           </NavLink>
 
-          {/* Desktop Links */}
+
           <ul className="menu menu-horizontal px-1 gap-1 hidden lg:flex">
             {links}
           </ul>
         </div>
 
-        {/* END */}
+
         <div className="navbar-end gap-1">
           <div className="hidden lg:flex">
             <ThemeSwitch checked={theme === 'dark'} onChange={toggle} />

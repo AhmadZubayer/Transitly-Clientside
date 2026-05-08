@@ -15,7 +15,6 @@ const UserBookings = () => {
     const { setOpen } = useOutletContext();
     const [selectedBooking, setSelectedBooking] = useState(null);
 
-    // Fetch user's bookings
     const { data: bookings = [], isLoading, isError, error, refetch } = useQuery({
         queryKey: ['userBookings', user?.email],
         queryFn: async () => {
@@ -51,7 +50,6 @@ const UserBookings = () => {
                     </h2>
                 </div>
 
-                {/* Content */}
                 {isLoading && (
                     <div className='flex justify-center items-center p-8'>
                         <Loading />
@@ -87,7 +85,6 @@ const UserBookings = () => {
                 )}
             </div>
 
-            {/* Booking Details Modal */}
             {selectedBooking && (
                 <BookingConfirmationModal
                     modalId="booking_confirmation_modal"

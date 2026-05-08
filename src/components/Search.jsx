@@ -5,7 +5,6 @@ const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
 
-  // Update local state when URL params change (e.g. on clear or back/forward)
   useEffect(() => {
     setSearchValue(searchParams.get('search') || '');
   }, [searchParams]);
@@ -18,7 +17,6 @@ const Search = () => {
     } else {
       params.delete('search');
     }
-    // Reset skip/page when searching
     params.delete('skip');
     setSearchParams(params);
   };

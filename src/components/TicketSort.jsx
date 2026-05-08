@@ -28,7 +28,6 @@ const TicketSort = () => {
         busFeatures,
         priceRange,
         setPriceRange,
-
         selDepartDistrict,
         selDestinationDistrict,
         selBusFeatures,

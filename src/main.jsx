@@ -10,7 +10,6 @@ import { ThemeContextProvider } from './contexts/ThemeContext.jsx';
 
 const queryClient = new QueryClient()
 
-// Apply saved theme ASAP (prevents flash)
 const savedTheme = localStorage.getItem('transitly-theme');
 document.documentElement.setAttribute('data-theme', savedTheme ? savedTheme : 'dark');
 

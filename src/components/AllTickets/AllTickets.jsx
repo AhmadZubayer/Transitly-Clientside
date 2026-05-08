@@ -14,9 +14,8 @@ const AllTickets = () => {
     const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [searchParams] = useSearchParams();
-    const TICKETS_PER_PAGE = 8; // Requirement: 6-9 per page
+    const TICKETS_PER_PAGE = 8; 
 
-    // Reset page to 1 when search parameters change
     useEffect(() => {
         setPage(1);
     }, [searchParams.toString()]);
@@ -25,8 +24,6 @@ const AllTickets = () => {
         queryKey: ['tickets', page, searchParams.toString()],
         queryFn: async () => {
             const skip = (page - 1) * TICKETS_PER_PAGE;
-
-            // Build query string with pagination and filters
             const params = new URLSearchParams(searchParams);
             params.set('limit', TICKETS_PER_PAGE);
             params.set('skip', skip);
@@ -51,7 +48,6 @@ const AllTickets = () => {
 
     return (
         <div className='p-6'>
-            {/* Sorting Modal */}
             <dialog id="ticket_sort_modal" className="modal modal-bottom sm:modal-middle">
                 <div 
                     className="modal-box max-w-md p-0 bg-base-100 border border-base-300 shadow-2xl" 
@@ -60,12 +56,10 @@ const AllTickets = () => {
                     aria-labelledby="filter-title"
                     onClick={(e) => {
                         if (e.target.type === 'submit') {
-                            // Small delay to allow form processing before closing
                             setTimeout(() => document.getElementById('ticket_sort_modal').close(), 100);
                         }
                     }}
                 >
-                    {/* Modal Header: [Close] [Title] [Search] */}
                     <div className='px-4 py-3 border-b flex justify-between items-center bg-base-200/50 backdrop-blur-md sticky top-0 z-10'>
                         <form method="dialog">
                             <button className="btn btn-sm btn-circle btn-ghost font-adaptive text-base-content/70">✕</button>
@@ -83,7 +77,6 @@ const AllTickets = () => {
                     </div>
 
                     <div className='max-h-[70vh] overflow-y-auto p-2'>
-                        {/* Wrap TicketSort to close modal after search button in header (or internal submit) is clicked */}
                         <div>
                             <TicketSort />
                         </div>
@@ -91,9 +84,7 @@ const AllTickets = () => {
                 </div>
             </dialog>
 
-            {/* Main Layout */}
             <div className='flex flex-col gap-4'>
-                {/* Top Section - Search, Count, and Filter Toggle */}
                 <Card className='p-4'>
                     <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
                         <div className='flex-1 flex justify-start'>
@@ -120,7 +111,6 @@ const AllTickets = () => {
                     </div>
                 </Card>
 
-                {/* Pagination */}
                 {totalPages > 1 && (
                     <div className='flex justify-center'>
                         <CustomPagination
@@ -131,23 +121,19 @@ const AllTickets = () => {
                     </div>
                 )}
 
-                {/* Ticket Container */}
                 <div className='min-h-[400px]'>
-                    {/* Loading State */}
                     {isLoading && (
                         <div className='flex justify-center items-center h-64'>
                             <Loading />
                         </div>
-                    )}
-
-                    {/* Error State */}
+                    )}  
                     {isError && (
                         <div className='text-center p-6 text-red-500'>
                             Error loading tickets: {error?.message}
                         </div>
                     )}
 
-                    {/* Tickets Grid */}
+            
                     {!isLoading && !isError && (
                         <>
                             <div className='tickets-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
@@ -161,7 +147,7 @@ const AllTickets = () => {
                                 ))}
                             </div>
 
-                            {/* No Tickets Message */}
+                        
                             {tickets.length === 0 && (
                                 <Card className='py-20 bg-transparent rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center'>
                                     <p className='text-gray-500 dark:text-gray-400 text-lg font-adaptive'>No tickets match your current filters.</p>
@@ -177,7 +163,7 @@ const AllTickets = () => {
                     )}
                 </div>
 
-                {/* Bottom Pagination */}
+        
                 {totalPages > 1 && !isLoading && (
                     <div className='flex justify-center pt-4'>
                         <CustomPagination

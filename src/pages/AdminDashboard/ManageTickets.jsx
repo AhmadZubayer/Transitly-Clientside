@@ -14,7 +14,7 @@ import Card from '../../components/Card';
 const ManageTickets = () => {
     const { setOpen } = useOutletContext();
     const axiosSecure = useAxiosSecure();
-    const [filter, setFilter] = useState('all'); // all | pending
+    const [filter, setFilter] = useState('all'); 
     const [page, setPage] = useState(1);
     const [deleteConfirm, setDeleteConfirm] = useState(null);
     const TICKETS_PER_PAGE = 20;

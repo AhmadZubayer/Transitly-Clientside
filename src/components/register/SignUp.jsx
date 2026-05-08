@@ -49,7 +49,7 @@ const SignUp = () => {
       ...formData,
       [e.target.name]: e.target.value
     });
-    // Clear error for this field when user starts typing
+    
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: '' });
     }
@@ -111,7 +111,7 @@ const SignUp = () => {
         });
     };
 
-    // If photo is provided, upload to ImgBB first
+    
     if (formData.photo) {
       const imgFormData = new FormData();
       imgFormData.append('image', formData.photo);
@@ -162,7 +162,7 @@ const SignUp = () => {
           setLoading(false);
         });
     } else {
-      // No photo provided, skip ImgBB upload
+    
       processRegistration(null)
         .then((result) => {
           const userInfo = {
@@ -209,7 +209,7 @@ const SignUp = () => {
     setLoading(true);
     signInGoogle()
       .then((result) => {
-        // Extract user info from Google result
+   
         const userInfo = {
           email: result.user.email,
           displayName: result.user.displayName,
@@ -218,12 +218,12 @@ const SignUp = () => {
         };
 
         console.log('Google sign-up successful. Saving user:', userInfo);
-        // Send to backend
+       
         return axios.post(`${API_URL}/users`, userInfo);
       })
       .then((response) => {
         console.log('User saved to MongoDB:', response.data);
-        // Navigation is handled by useEffect when user state changes
+
       })
       .catch((error) => {
         console.error('Google sign-up error:', error);

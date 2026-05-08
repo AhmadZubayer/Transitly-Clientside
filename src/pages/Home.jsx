@@ -20,7 +20,6 @@ const Home = () => {
                     contactSection.scrollIntoView({ behavior: 'smooth' });
                 }, 100);
             }
-            // Clear the state so it doesn't scroll again on reload
             window.history.replaceState({}, document.title);
         }
     }, [location]);

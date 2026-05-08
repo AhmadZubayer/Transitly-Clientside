@@ -40,18 +40,17 @@ const AddTicket = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [loadingTicket, setLoadingTicket] = useState(false);
 
-    // State for dropdown options
+
     const [districts, setDistricts] = useState([]);
     const [busTypes, setBusTypes] = useState([]);
     const [busCompanies, setBusCompanies] = useState([]);
     const [busBrands, setBusBrands] = useState([]);
     const [busFeatures, setBusFeatures] = useState([]);
 
-    // Form state
+
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [formData, setFormData] = useState(null);
 
-    // Fetch dropdown options from backend
     useEffect(() => {
         const fetchOptions = async () => {
             try {
@@ -76,7 +75,6 @@ const AddTicket = () => {
         fetchOptions();
     }, [axiosSecure]);
 
-    // If edit mode, fetch ticket and prefill
     useEffect(() => {
         const prefillForEdit = async () => {
             if (!editId) {
@@ -132,7 +130,6 @@ const AddTicket = () => {
     const destinationDistricts = districts.filter(d => d !== watchFrom);
 
     const onSubmit = async (data) => {
-        // Prepare the ticket data with pending status
         const ticketData = {
             ticketTitle: data.ticketTitle,
             from: data.from,
@@ -207,7 +204,6 @@ const AddTicket = () => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <div className="max-w-6xl mx-auto px-4 py-4">
-                {/* Header with Menu Icon */}
                 <div className='flex items-center gap-3 mb-6'>
                     <HiMenuAlt2 className='lg:hidden cursor-pointer text-2xl' onClick={() => setOpen(true)} />
                     <h1 className='text-3xl font-bold font-adaptive'>
@@ -223,10 +219,7 @@ const AddTicket = () => {
 
                 <Card>
                     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-                        {/* 3-Column Grid for Desktop */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-                            {/* TICKET DETAILS */}
                             <div className="flex flex-col gap-3">
                                 <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Ticket Details</h4>
 
@@ -278,8 +271,6 @@ const AddTicket = () => {
                                     {errors.quantity && <span className="text-red-500 text-xs">{errors.quantity.message}</span>}
                                 </fieldset>
                             </div>
-
-                            {/* ROUTE DETAILS */}
                             <div className="flex flex-col gap-3">
                                 <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Route Details</h4>
 
@@ -346,7 +337,6 @@ const AddTicket = () => {
                                 </fieldset>
                             </div>
 
-                            {/* BUS & VENDOR DETAILS */}
                             <div className="flex flex-col gap-3">
                                 <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Bus & Vendor Details</h4>
 
@@ -402,7 +392,6 @@ const AddTicket = () => {
                             </div>
                         </div>
 
-                        {/* FEATURES/PERKS SECTION */}
                         <div className="flex flex-col gap-3">
                             <h4 className="text-lg font-bold border-b pb-1 font-adaptive">Features/Perks</h4>
                             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
@@ -420,7 +409,6 @@ const AddTicket = () => {
                             </div>
                         </div>
 
-                        {/* Centered Submit Button */}
                         <div className="flex justify-center mt-2">
                             <button type="submit" className='btn btn-1 px-10'>
                                 {isEditing ? 'Update Ticket' : 'Add Ticket'}
@@ -429,7 +417,6 @@ const AddTicket = () => {
                     </form>
                 </Card>
 
-                {/* Confirmation Dialog */}
                 {showConfirmation && (
                     <dialog open className="modal modal-bottom sm:modal-middle">
                         <div className="modal-box max-w-2xl">

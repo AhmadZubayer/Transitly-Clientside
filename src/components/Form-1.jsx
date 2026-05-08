@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ModernBtn from './ModernBtn';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Form1 = ({ 
   heading = 'Sign Up for your account',
@@ -21,6 +22,7 @@ const Form1 = ({
   onFooterLinkClick,
   onGoogleSignIn
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
 
   const fieldConfig = {
     name: { type: 'text', label: 'Full Name', name: 'name', required: true },
@@ -65,24 +67,36 @@ const Form1 = ({
             <p className="error-message">{errors.photo}</p>
           )}
 
-          {/* Dynamic Form Fields */}
           {fields.map((fieldKey) => {
             const field = fieldConfig[fieldKey];
             if (!field) return null;
             
+            const isPasswordField = field.name === 'password' || field.name === 'retypePassword';
+            const inputType = isPasswordField && showPassword ? 'text' : field.type;
+
             return (
               <React.Fragment key={fieldKey}>
                 <div className="input-field">
                   <input 
                     required={field.required}
                     autoComplete="off" 
-                    type={field.type} 
+                    type={inputType} 
                     name={field.name} 
                     id={field.name}
                     value={formValues[field.name] || ''}
                     onChange={onInputChange}
+                    className={isPasswordField ? 'password-input' : ''}
                   />
                   <label htmlFor={field.name}>{field.label}</label>
+                  {isPasswordField && (
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  )}
                 </div>
                 {errors[field.name] && (
                   <p className="error-message">{errors[field.name]}</p>
@@ -91,7 +105,6 @@ const Form1 = ({
             );
           })}
 
-          {/* Display upload error */}
           {uploadError && (
             <p className="error-message">{uploadError}</p>
           )}
@@ -120,7 +133,7 @@ const Form1 = ({
             </>
           )}
 
-          {/* Footer Link */}
+        
           {footerText && footerLinkText && (
             <div className="acc-text">
               {footerText}
@@ -256,6 +269,10 @@ const StyledWrapper = styled.div`
     color: #1e1e1e;
   }
 
+  .input-field input.password-input {
+    padding-right: 40px;
+  }
+
   [data-theme="dark"] .input-field input {
     background-color: rgba(31, 41, 55, 0.8);
     border-color: rgba(148, 163, 184, 0.2);
@@ -283,6 +300,31 @@ const StyledWrapper = styled.div`
   [data-theme="dark"] .input-field input:focus ~ label,
   [data-theme="dark"] .input-field input:valid ~ label {
     background-color: #111827;
+    color: #5044e4;
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #8d8d8d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 1.1rem;
+    z-index: 10;
+  }
+
+  .password-toggle:hover {
+    color: #0034de;
+  }
+
+  [data-theme="dark"] .password-toggle:hover {
     color: #5044e4;
   }
 

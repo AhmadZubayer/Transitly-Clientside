@@ -25,22 +25,16 @@ const UserBookingConfirmed = () => {
           return;
         }
 
-        // Get payment data from sessionStorage
         const paymentData = sessionStorage.getItem('pendingPayment');
         if (!paymentData) {
-          // If no data but we haven't stored yet, maybe it's already gone
           if (!isStored.current) navigate('/dashboard/bookings');
           return;
         }
 
         isStored.current = true;
         const parsedPaymentData = JSON.parse(paymentData);
-        const { ticketId, quantity, totalPrice, bookingId } = parsedPaymentData;
-        
-        // Remove it immediately to prevent double processing from other turns/strict mode
+        const { ticketId, quantity, totalPrice, bookingId } = parsedPaymentData;      
         sessionStorage.removeItem('pendingPayment');
-
-        // Store payment in database
         const response = await axiosSecure.post('/store-payment', {
           userEmail: user.email,
           ticketId,
@@ -52,7 +46,7 @@ const UserBookingConfirmed = () => {
 
         console.log('Payment stored:', response.data);
         
-        // Show SweetAlert
+     
         await Swal.fire({
             icon: 'success',
             title: 'Payment Successful!',
@@ -62,7 +56,6 @@ const UserBookingConfirmed = () => {
             timerProgressBar: true,
             allowOutsideClick: false,
             didOpen: async () => {
-                // Auto-download ticket PDF
                 try {
                   const booking = response.data.booking;
                   const userDetails = {
@@ -77,7 +70,7 @@ const UserBookingConfirmed = () => {
             }
         });
 
-        // Redirect after SweetAlert
+      
         navigate('/dashboard/bookings');
       } catch (error) {
         console.error('Error storing payment:', error);

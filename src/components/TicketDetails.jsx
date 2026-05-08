@@ -21,7 +21,6 @@ const TicketDetails = ({ ticket, modalId }) => {
     return (
         <dialog id={modalId} className="modal modal-bottom sm:modal-middle">
             <div className="modal-box max-w-2xl p-0 bg-base-100 border border-base-300 shadow-2xl">
-                {/* Header with Title */}
                 <div className="flex justify-between items-center p-4 border-b bg-base-200/50 backdrop-blur-md sticky top-0 z-10">
                     <h3 className="font-bold text-lg text-base-content font-adaptive">
                         Ticket Details
@@ -32,12 +31,12 @@ const TicketDetails = ({ ticket, modalId }) => {
                 </div>
 
                 <div className="p-6 space-y-4">
-                    {/* Ticket Name Heading */}
+             
                     <h3 className="font-bold text-2xl text-center mb-2 text-base-content font-adaptive">
                         {ticket.ticketTitle}
                     </h3>
 
-                    {/* Departure and Destination */}
+           
                     <div className="grid grid-cols-2 gap-4">
                         <div className="p-4 rounded-xl border border-base-300 bg-base-100">
                             <p className="text-[10px] uppercase font-bold text-base-content/60 mb-1 font-adaptive tracking-wider">Departure</p>
@@ -49,7 +48,6 @@ const TicketDetails = ({ ticket, modalId }) => {
                         </div>
                     </div>
 
-                    {/* Date and Time */}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="p-4 rounded-xl border border-base-300 bg-base-100">
                             <p className="text-[10px] uppercase font-bold text-base-content/60 mb-1 font-adaptive tracking-wider">Date</p>
@@ -61,7 +59,6 @@ const TicketDetails = ({ ticket, modalId }) => {
                         </div>
                     </div>
 
-                    {/* Company and Bus Brand */}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="p-4 rounded-xl border border-base-300 bg-base-100">
                             <p className="text-[10px] uppercase font-bold text-base-content/60 mb-1 font-adaptive tracking-wider">Company</p>
@@ -73,13 +70,12 @@ const TicketDetails = ({ ticket, modalId }) => {
                         </div>
                     </div>
 
-                    {/* Transport Type */}
                     <div className="p-4 rounded-xl border border-base-300 bg-base-100">
                         <p className="text-[10px] uppercase font-bold text-base-content/60 mb-1 font-adaptive tracking-wider">Category</p>
                         <p className="text-lg font-semibold text-base-content font-adaptive">{ticket.transportType}</p>
                     </div>
 
-                    {/* Features */}
+          
                     {ticket.perks && ticket.perks.length > 0 && (
                         <div>
                             <p className="text-[10px] uppercase font-bold text-base-content/60 mb-2 font-adaptive tracking-wider">Features</p>
@@ -96,7 +92,7 @@ const TicketDetails = ({ ticket, modalId }) => {
                         </div>
                     )}
 
-                    {/* Available Seats and Price */}
+                 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="p-4 rounded-xl border-2 border-base-300 bg-base-100">
                             <p className="text-[10px] uppercase font-bold text-base-content/60 mb-1 font-adaptive tracking-wider">Available Seats</p>
@@ -108,7 +104,7 @@ const TicketDetails = ({ ticket, modalId }) => {
                         </div>
                     </div>
 
-                    {/* Booking Status */}
+          
                     {ticket.bookingStatus && (
                         <div className="p-4 rounded-xl border border-base-300 bg-base-200/30">
                             <p className="text-[10px] uppercase font-bold text-base-content/40 mb-1 font-adaptive tracking-wider">Status</p>
@@ -118,7 +114,6 @@ const TicketDetails = ({ ticket, modalId }) => {
                         </div>
                     )}
 
-                    {/* Modal Actions */}
                     <div className="flex justify-between items-center gap-3 pt-2">
                         <form method="dialog" className="flex-1">
                             <button className="btn btn-ghost w-full font-adaptive">Close</button>
@@ -132,7 +127,6 @@ const TicketDetails = ({ ticket, modalId }) => {
                 </div>
             </div>
 
-            {/* Click outside to close */}
             <form method="dialog" className="modal-backdrop">
                 <button>close</button>
             </form>
