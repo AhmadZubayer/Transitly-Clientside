@@ -5,7 +5,7 @@ import { auth } from '../firebase/firebase.init';
 import axios from 'axios';
 
 const googleProvider = new GoogleAuthProvider();
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);

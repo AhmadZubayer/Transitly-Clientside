@@ -87,9 +87,9 @@ const DashboardProfile = ({ fallbackName = 'User' }) => {
                     </div>
 
                     <div className='mt-8 flex gap-4 justify-center'>
-                        <button onClick={handleEditProfile} className='btn btn-1'>
+                        {/* <button onClick={handleEditProfile} className='btn btn-1'>
                             Edit Profile
-                        </button>
+                        </button> */}
                         <button onClick={handleSignOut} className='btn btn-1'>
                             Sign Out
                         </button>

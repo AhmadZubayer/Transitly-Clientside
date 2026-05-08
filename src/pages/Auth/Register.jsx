@@ -11,6 +11,7 @@ import axios from 'axios';
 
 
 const Register = () => {
+    const API_URL = import.meta.env.VITE_API_URL;
     // ✅ REACT HOOK FORM: useForm hook initialization
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { registerUser, signInGoogle, user } = useAuth();
@@ -74,7 +75,7 @@ const Register = () => {
                     createdAt: new Date()
                 };
                 
-                return axios.post('http://localhost:5000/users', userInfo);
+                return axios.post(`${API_URL}/users`, userInfo);
             })
             .then(() => {
                 reset();

@@ -5,7 +5,7 @@ import { updateProfile } from 'firebase/auth';
 import axios from 'axios';
 import Form1 from '../Form-1';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL;
 const DEFAULT_PHOTO_URL = 'https://i.ibb.co/pjGx3Psc/images.jpg';
 
 const SignUp = () => {
