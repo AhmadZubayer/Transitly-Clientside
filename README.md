@@ -90,13 +90,17 @@ The platform operates on a revenue-sharing model for every successful booking (V
 ![Preview 9](screenshots/9.png)
 ![Preview 10](screenshots/10.png)
 ![Preview 12](screenshots/12.png)
+Stripe Gateway
 ![Preview 13](screenshots/13.png)
+Ticket PDF
 ![Preview 14](screenshots/14.png)
 ![Preview 15](screenshots/15.png)
+Vendor Dashboard
 ![Preview 16](screenshots/16.png)
 ![Preview 17](screenshots/17.png)
 ![Preview 11](screenshots/11.png)
 ![Preview 18](screenshots/18.png)
+Admin Dashboard
 ![Preview 19](screenshots/19.png)
 ![Preview 20](screenshots/20.png)
 ![Preview 21](screenshots/21.png)
@@ -104,6 +108,11 @@ The platform operates on a revenue-sharing model for every successful booking (V
 ![Preview 23](screenshots/23.png)
 ![Preview 24](screenshots/24.png)
 ![Preview 25](screenshots/25.png)
+Policies
+![Preview 26](screenshots/26.png)
+Footer
+![Preview 27](screenshots/27.png)
+
 
 ---
 
