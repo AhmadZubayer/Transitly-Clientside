@@ -48,7 +48,7 @@ const RequestedBookings = () => {
             showCancelButton: true,
             confirmButtonColor: status === 'accepted' ? '#3085d6' : '#d33',
             cancelButtonColor: '#aaa',
-            confirmButtonText: `Yes, ${actionText} it!`
+            confirmButtonText: `Yes, ${actionText}`
         });
 
         if (result.isConfirmed) {

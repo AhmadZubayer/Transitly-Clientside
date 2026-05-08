@@ -204,7 +204,7 @@ export default function ManageTickets() {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, unfeature it!'
+                confirmButtonText: 'Yes, Confirm'
             });
 
             if (!result.isConfirmed) return;

@@ -70,7 +70,7 @@ export default function AdvertiseTickets() {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, unfeature it!'
+            confirmButtonText: 'Confirm'
         });
 
         if (!result.isConfirmed) return;
