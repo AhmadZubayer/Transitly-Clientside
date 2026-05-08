@@ -96,16 +96,20 @@ const ManageUsers = () => {
                                                                 ⋮
                                                             </button>
                                                             <ul tabIndex={0} className='dropdown-content menu bg-base-100 dark:bg-gray-800 rounded-box z-1 w-44 p-2 shadow border dark:border-gray-700'>
-                                                                <li>
-                                                                    <button onClick={() => handleRoleChange(user._id, 'admin')} className="dark:text-gray-200">
-                                                                        Make Admin
-                                                                    </button>
-                                                                </li>
-                                                                <li>
-                                                                    <button onClick={() => handleRoleChange(user._id, 'vendor')} className="dark:text-gray-200">
-                                                                        Make Vendor
-                                                                    </button>
-                                                                </li>
+                                                                {user.role !== 'admin' && (
+                                                                    <li>
+                                                                        <button onClick={() => handleRoleChange(user._id, 'admin')} className="dark:text-gray-200">
+                                                                            Make Admin
+                                                                        </button>
+                                                                    </li>
+                                                                )}
+                                                                {user.role !== 'vendor' && (
+                                                                    <li>
+                                                                        <button onClick={() => handleRoleChange(user._id, 'vendor')} className="dark:text-gray-200">
+                                                                            Make Vendor
+                                                                        </button>
+                                                                    </li>
+                                                                )}
                                                                 {user.role === 'vendor' && (
                                                                     <li>
                                                                         <button className='text-red-600 dark:text-red-400 font-bold' onClick={() => handleRoleChange(user._id, 'fraud')}>

@@ -75,6 +75,36 @@ The platform operates on a revenue-sharing model for every successful booking (V
 *   **Platform Share**: 30% of the customer's payment.
 *   **Vendor Share**: 70% of the customer's payment.
 
+## Preview
+
+### Platform Overview
+
+![Preview 1](screenshots/1.png)
+![Preview 2](screenshots/2.png)
+![Preview 3](screenshots/3.png)
+![Preview 4](screenshots/4.png)
+![Preview 5](screenshots/5.png)
+![Preview 6](screenshots/6.png)
+![Preview 7](screenshots/7.png)
+![Preview 8](screenshots/8.png)
+![Preview 9](screenshots/9.png)
+![Preview 10](screenshots/10.png)
+![Preview 12](screenshots/12.png)
+![Preview 13](screenshots/13.png)
+![Preview 14](screenshots/14.png)
+![Preview 15](screenshots/15.png)
+![Preview 16](screenshots/16.png)
+![Preview 17](screenshots/17.png)
+![Preview 11](screenshots/11.png)
+![Preview 18](screenshots/18.png)
+![Preview 19](screenshots/19.png)
+![Preview 20](screenshots/20.png)
+![Preview 21](screenshots/21.png)
+![Preview 22](screenshots/22.png)
+![Preview 23](screenshots/23.png)
+![Preview 24](screenshots/24.png)
+![Preview 25](screenshots/25.png)
+
 ---
 
 ## Tech Stack

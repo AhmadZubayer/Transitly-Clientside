@@ -46,7 +46,7 @@ export const Router = createBrowserRouter([
       },
       {
         path: 'all-tickets',
-        element: <PrivateRoute><AllTickets></AllTickets></PrivateRoute>
+        element: <AllTickets></AllTickets>
       },
       {
         path: 'policies',
