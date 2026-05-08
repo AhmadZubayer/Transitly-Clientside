@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useOutletContext } from 'react-router-dom';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useOutletContext, useSearchParams } from 'react-router-dom';
 import { HiMenuAlt2 } from 'react-icons/hi';
 import { MdDelete } from 'react-icons/md';
 import { FaStar, FaRegStar, FaCheck, FaTimes } from 'react-icons/fa';
@@ -10,14 +10,23 @@ import Loading from '../../components/Loading';
 import TicketCard from '../../components/AllTickets/TicketCard';
 import CustomPagination from '../../components/Pagination';
 import Card from '../../components/Card';
+import Search from '../../components/Search';
 
-const ManageTickets = () => {
+export default function ManageTickets() {
     const { setOpen } = useOutletContext();
     const axiosSecure = useAxiosSecure();
+    const queryClient = useQueryClient();
+    const [searchParams] = useSearchParams();
     const [filter, setFilter] = useState('all'); 
     const [page, setPage] = useState(1);
     const [deleteConfirm, setDeleteConfirm] = useState(null);
     const TICKETS_PER_PAGE = 20;
+
+    const searchTerm = searchParams.get('search') || '';
+
+    useEffect(() => {
+        setPage(1);
+    }, [searchTerm, filter]);
 
     const {
         data = { tickets: [], total: 0 },
@@ -26,10 +35,21 @@ const ManageTickets = () => {
         error,
         refetch
     } = useQuery({
-        queryKey: ['adminManageTickets', page, filter],
+        queryKey: ['adminManageTickets', page, filter, searchTerm],
         queryFn: async () => {
             const skip = (page - 1) * TICKETS_PER_PAGE;
-            const res = await axiosSecure.get(`/tickets/all?filter=${filter}&limit=${TICKETS_PER_PAGE}&skip=${skip}`);
+            const res = await axiosSecure.get(`/tickets/all?filter=${filter}&limit=${TICKETS_PER_PAGE}&skip=${skip}&search=${searchTerm}`);
+            return res.data;
+        }
+    });
+
+    const {
+        data: featuredTickets = [],
+        refetch: refetchFeatured
+    } = useQuery({
+        queryKey: ['allFeaturedTickets'],
+        queryFn: async () => {
+            const res = await axiosSecure.get('/tickets/advertised');
             return res.data;
         }
     });
@@ -40,15 +60,18 @@ const ManageTickets = () => {
     const MAX_FEATURED_TICKETS = 6;
 
     const featuredCount = useMemo(() => {
-        return tickets.filter(t => (t.adminFeatured || 'No') === 'Yes').length;
-    }, [tickets]);
+        return featuredTickets.length;
+    }, [featuredTickets]);
 
     const { mutateAsync: verifyTicket, isPending: isVerifying } = useMutation({
         mutationFn: async (id) => {
             const res = await axiosSecure.patch(`/tickets/${id}/verify`);
             return res.data;
         },
-        onSuccess: () => refetch()
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['adminManageTickets'] });
+            refetch();
+        }
     });
 
     const { mutateAsync: rejectTicket, isPending: isRejecting } = useMutation({
@@ -56,7 +79,10 @@ const ManageTickets = () => {
             const res = await axiosSecure.patch(`/tickets/${id}/reject`);
             return res.data;
         },
-        onSuccess: () => refetch()
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['adminManageTickets'] });
+            refetch();
+        }
     });
 
     const { mutateAsync: deleteTicket, isPending: isDeleting } = useMutation({
@@ -64,8 +90,17 @@ const ManageTickets = () => {
             const res = await axiosSecure.delete(`/tickets/${id}`);
             return res.data;
         },
-        onSuccess: () => refetch()
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['adminManageTickets'] });
+            queryClient.invalidateQueries({ queryKey: ['allFeaturedTickets'] });
+            queryClient.invalidateQueries({ queryKey: ['adminFeaturedTickets'] });
+            refetch();
+            refetchFeatured();
+        }
     });
+
+    const getTicketId = (ticket) =>
+        typeof ticket._id === 'string' ? ticket._id : ticket._id?.toString?.();
 
     const handleReject = async (ticket) => {
         const id = getTicketId(ticket);
@@ -82,7 +117,13 @@ const ManageTickets = () => {
             const res = await axiosSecure.patch(`/tickets/${id}/feature`, { adminFeatured: 'Yes' });
             return res.data;
         },
-        onSuccess: () => refetch()
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['adminManageTickets'] });
+            queryClient.invalidateQueries({ queryKey: ['allFeaturedTickets'] });
+            queryClient.invalidateQueries({ queryKey: ['adminFeaturedTickets'] });
+            refetch();
+            refetchFeatured();
+        }
     });
 
     const { mutateAsync: unfeatureTicket, isPending: isUnfeaturing } = useMutation({
@@ -90,11 +131,14 @@ const ManageTickets = () => {
             const res = await axiosSecure.patch(`/tickets/${id}/feature`, { adminFeatured: 'No' });
             return res.data;
         },
-        onSuccess: () => refetch()
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['adminManageTickets'] });
+            queryClient.invalidateQueries({ queryKey: ['allFeaturedTickets'] });
+            queryClient.invalidateQueries({ queryKey: ['adminFeaturedTickets'] });
+            refetch();
+            refetchFeatured();
+        }
     });
-
-    const getTicketId = (ticket) =>
-        typeof ticket._id === 'string' ? ticket._id : ticket._id?.toString?.();
 
     const handleApprove = async (ticket) => {
         const id = getTicketId(ticket);
@@ -134,22 +178,36 @@ const ManageTickets = () => {
 
     const handleFeature = async (ticket) => {
         const id = getTicketId(ticket);
-        const isFeatured = (ticket.adminFeatured || 'No') === 'Yes';
+        const isFeatured = featuredTickets.some(ft => getTicketId(ft) === id);
 
         if (!isFeatured && featuredCount >= MAX_FEATURED_TICKETS) {
             Swal.fire({
                 toast: true,
                 position: 'top-end',
-                icon: 'warning',
+                icon: 'error',
                 title: `Cannot feature more than ${MAX_FEATURED_TICKETS} tickets`,
                 text: 'Please unfeature a ticket first.',
                 showConfirmButton: false,
                 timer: 3000,
                 timerProgressBar: true,
-                background: '#fff3cd',
-                color: '#856404'
+                background: '#fde8e8',
+                color: '#9b1c1c'
             });
             return;
+        }
+
+        if (isFeatured) {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will remove the ticket from the homepage featured section.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, unfeature it!'
+            });
+
+            if (!result.isConfirmed) return;
         }
 
         try {
@@ -174,16 +232,21 @@ const ManageTickets = () => {
     return (
         <div className='p-4'>
             <div className='space-y-4'>
-                <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
+                <div className='flex flex-col lg:flex-row justify-between items-center gap-4'>
                     <div className='flex flex-row items-center gap-3'>
                         <HiMenuAlt2 className='lg:hidden cursor-pointer' onClick={() => setOpen(true)} />
                         <div>
-                            <h2 className='text-xl font-bold text-gray-800 font-adaptive'>
+                            <h2 className='text-xl font-bold text-gray-800 dark:text-gray-100 font-adaptive'>
                                 Manage Tickets ({total})
                             </h2>
-                            <p className='text-[12px] text-gray-500 mt-0.5 font-adaptive'>Page {page} of {totalPages}</p>
+                            <p className='text-[12px] text-gray-500 dark:text-gray-400 mt-0.5 font-adaptive'>Page {page} of {totalPages}</p>
                         </div>
                     </div>
+
+                    <div className='w-full lg:max-w-md'>
+                        <Search />
+                    </div>
+
                     <div className='flex justify-center'>
                         <div className='join'>
                             <button
@@ -240,6 +303,7 @@ const ManageTickets = () => {
                                     const isVerified = (ticket.adminVerified || 'No') === 'Yes';
                                     const isRejected = (ticket.adminVerified || 'No') === 'Rejected';
                                     const isPending = !isVerified && !isRejected;
+                                    const isFeatured = featuredTickets.some(ft => getTicketId(ft) === getTicketId(ticket));
 
                                     return (
                                         <div key={getTicketId(ticket)} className='flex flex-col gap-2 h-full'>
@@ -277,15 +341,15 @@ const ManageTickets = () => {
                                                 <button
                                                     type='button'
                                                     className={`w-8 h-8 flex items-center justify-center rounded-full border transition-colors disabled:opacity-30 ${
-                                                        (ticket.adminFeatured || 'No') === 'Yes'
+                                                        isFeatured
                                                             ? 'border-yellow-400 text-yellow-500 bg-yellow-50/50 dark:bg-yellow-500/10'
                                                             : 'border-gray-300 dark:border-gray-600 text-gray-400 hover:border-yellow-400 hover:text-yellow-500 hover:bg-yellow-50 dark:hover:bg-yellow-500/10'
                                                     }`}
-                                                    disabled={busy || (featuredCount >= MAX_FEATURED_TICKETS && (ticket.adminFeatured || 'No') === 'No')}
+                                                    disabled={busy}
                                                     onClick={() => handleFeature(ticket)}
-                                                    title={featuredCount >= MAX_FEATURED_TICKETS && (ticket.adminFeatured || 'No') === 'No' ? `Maximum ${MAX_FEATURED_TICKETS} featured tickets reached` : `${(ticket.adminFeatured || 'No') === 'Yes' ? 'Unfeature' : 'Feature'} this ticket`}
+                                                    title={`${isFeatured ? 'Unfeature' : 'Feature'} this ticket`}
                                                 >
-                                                    {(ticket.adminFeatured || 'No') === 'Yes' ? (
+                                                    {isFeatured ? (
                                                         <FaStar size={12} />
                                                     ) : (
                                                         <FaRegStar size={12} />
@@ -350,6 +414,4 @@ const ManageTickets = () => {
             </dialog>
         </div>
     );
-};
-
-export default ManageTickets;
+}

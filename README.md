@@ -105,7 +105,7 @@ Admin Dashboard
 ![Preview 20](screenshots/20.png)
 ![Preview 21](screenshots/21.png)
 ![Preview 22](screenshots/22.png)
-![Preview 23](screenshots/23.png)
+![Preview 23-2](screenshots/23-2.png)
 ![Preview 24](screenshots/24.png)
 ![Preview 25](screenshots/25.png)
 Policies
